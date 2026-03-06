@@ -1,6 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import type { Language } from '@/i18n/config';
-import type { BlogListItem } from '@/types/content';
+import type { BlogListItem, BubbleDiarySummary } from '@/types/content';
 
 export type BlogEntry = CollectionEntry<'blog'>;
 
@@ -11,6 +11,14 @@ interface BlogListOptions {
 
 export function extractBlogSlug(id: string, lang: Language): string {
   return id.replace(new RegExp(`^${lang}/`), '').replace(/\.[^/.]+$/, '');
+}
+
+function getEntryLang(post: BlogEntry): Language {
+  return post.id.startsWith('zh/') ? 'zh' : 'en';
+}
+
+function buildBlogUrl(slug: string, lang: Language): string {
+  return lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`;
 }
 
 export function mapBlogListItem(post: BlogEntry, lang: Language): BlogListItem {
@@ -56,6 +64,31 @@ export async function getBlogStaticPathsByLang(lang: Language) {
   }));
 }
 
+export async function getBubbleDiarySummary(): Promise<BubbleDiarySummary | null> {
+  const bubblePosts = (await getCollection('blog'))
+    .filter((post) => post.data.source === 'openclaw')
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  if (bubblePosts.length === 0) {
+    return null;
+  }
+
+  const latestEntry = bubblePosts[0];
+  const latestEntryLang = getEntryLang(latestEntry);
+  const uniqueEntries = new Set(bubblePosts.map((post) => post.data.externalId ?? post.id));
+
+  return {
+    totalEntries: uniqueEntries.size,
+    latestEntry: {
+      title: latestEntry.data.title,
+      description: latestEntry.data.description,
+      pubDate: latestEntry.data.pubDate,
+      lang: latestEntryLang,
+      url: buildBlogUrl(extractBlogSlug(latestEntry.id, latestEntryLang), latestEntryLang),
+    },
+  };
+}
+
 export function getReadTime(content: string, lang: Language): number {
   const sanitized = content
     .replace(/```[\s\S]*?```/g, ' ')
@@ -78,4 +111,3 @@ export function getReadTime(content: string, lang: Language): number {
   const wordCount = sanitized.split(' ').length;
   return Math.max(1, Math.ceil(wordCount / 220));
 }
-

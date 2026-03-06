@@ -18,6 +18,17 @@ export interface BlogListItem {
   };
 }
 
+export interface BubbleDiarySummary {
+  totalEntries: number;
+  latestEntry: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    lang: 'en' | 'zh';
+    url: string;
+  };
+}
+
 export interface ProjectListItem {
   slug: string;
   data: {

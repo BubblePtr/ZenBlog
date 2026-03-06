@@ -1,16 +1,19 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import BubbleDiarySpotlight from '@/features/blog/components/BubbleDiarySpotlight.client';
 import type { BlogListItem } from '@/types/content';
+import type { BubbleDiarySummary } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
 
 interface BlogListSectionProps {
   posts: BlogListItem[];
+  bubbleDiary: BubbleDiarySummary | null;
   lang: Language;
   t: TranslationDictionary;
 }
 
-export default function BlogListSection({ posts, lang, t }: BlogListSectionProps) {
+export default function BlogListSection({ posts, bubbleDiary, lang, t }: BlogListSectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
 
   const postsByYear = useMemo(() => {
@@ -35,6 +38,8 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
           {translate('blog.description')}
         </p>
       </div>
+
+      <BubbleDiarySpotlight bubbleDiary={bubbleDiary} lang={lang} t={t} variant="blog" />
 
       <div className="space-y-24">
         {years.map((year, yearIndex) => (

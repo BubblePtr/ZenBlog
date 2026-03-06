@@ -1,6 +1,7 @@
 export {
   getBlogListByLang,
   getBlogStaticPathsByLang,
+  getBubbleDiarySummary,
   mapBlogListItem,
   getReadTime,
   extractBlogSlug,
