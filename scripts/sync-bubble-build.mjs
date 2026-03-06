@@ -91,12 +91,6 @@ async function findTargetEntry({ bubbleBuildDir, bubbleEntryPath, publishedExter
     const candidate = path.isAbsolute(bubbleEntryPath)
       ? bubbleEntryPath
       : path.join(bubbleBuildDir, bubbleEntryPath);
-
-    const entry = await readEntry(candidate, bubbleBuildDir);
-    if (!overwrite && publishedExternalIds.has(entry.entryId)) {
-      return null;
-    }
-
     return candidate;
   }
 
