@@ -1,0 +1,67 @@
+name: Sync Bubble Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      entry_path:
+        description: bubble-build 中要同步的 entry 路径
+        required: false
+        type: string
+      overwrite:
+        description: 是否覆盖同一 externalId 的现有文章
+        required: false
+        type: boolean
+        default: false
+  repository_dispatch:
+    types:
+      - bubble-build-sync
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout ZenBlog
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.3
+
+      - name: Checkout bubble-build
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.BUBBLE_BUILD_REPOSITORY }}
+          token: ${{ secrets.BUBBLE_BUILD_READ_TOKEN }}
+          path: .tmp/bubble-build
+          fetch-depth: 1
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Synchronize Bubble entry
+        id: sync
+        env:
+          BUBBLE_BUILD_DIR: .tmp/bubble-build
+          BUBBLE_ENTRY_PATH: ${{ github.event.client_payload.entry_path || inputs.entry_path || '' }}
+          BUBBLE_OVERWRITE: ${{ github.event.client_payload.overwrite || inputs.overwrite || 'false' }}
+        run: bun run bubble:sync
+
+      - name: Build site
+        if: steps.sync.outputs.changed == 'true'
+        run: bun run build
+
+      - name: Commit synchronized content
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content/blog/zh/openclaw
+          git commit -m "feat(content): publish Bubble diary ${{ steps.sync.outputs.entry_id }}"
+          git push
