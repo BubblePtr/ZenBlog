@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check:arch": "node scripts/check-architecture.mjs",
+    "bubble:sync": "node scripts/sync-bubble-build.mjs",
     "new:post": "node scripts/create-post.mjs",
     "new:project": "node scripts/create-project.mjs",
     "photos:sync-exif": "node scripts/sync-photo-exif.mjs",
