@@ -32,7 +32,7 @@ export default function GiscusComments({ lang }: GiscusCommentsProps) {
 
   return (
     <Giscus
-      repo="nonabit/ZenBlog"
+      repo="BubblePtr/ZenBlog"
       repoId="R_kgDOQZxLYQ"
       category="Announcements"
       categoryId="DIC_kwDOQZxLYc4C04o7"
