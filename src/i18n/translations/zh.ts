@@ -24,7 +24,7 @@ export const zh = {
 
   // 博客页
   'blog.title': '文章',
-  'blog.description': '所谓算法，大抵是这时代的新的迷信罢。人们拜倒在二进制的神庙里，却忘了最初不过是要算清几斤白菜的账。',
+  'blog.description': '所谓算法，大抵是这时代的新的迷信。人们拜倒在二进制的神庙里，却忘了最初不过是要算清几斤白菜的账。',
   'blog.grid.summary': '当前结果',
   'blog.grid.filters.year': '年份',
   'blog.grid.filters.author': '作者',

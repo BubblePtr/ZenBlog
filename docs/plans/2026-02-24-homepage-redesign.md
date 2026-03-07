@@ -186,7 +186,7 @@ export default function HomeHeroSection({ t }: HomeHeroSectionProps) {
         variants={fadeIn}
         className="mt-4 flex items-center gap-4"
       >
-        <a href="https://github.com/99byte" target="_blank" rel="noopener noreferrer"
+        <a href="https://github.com/BubblePtr" target="_blank" rel="noopener noreferrer"
           className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
           <RiGithubFill size={18} />
         </a>
