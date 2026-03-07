@@ -9,10 +9,8 @@ import SiteHeader from '@/shared/components/navigation/SiteHeader.client';
 import SiteFooter from '@/shared/components/layout/SiteFooter.client';
 import ScrollProgress from '@/features/blog/components/ScrollProgress.client';
 import GiscusComments from '@/features/blog/components/GiscusComments.client';
+import { resolveBlogAuthor } from '@/features/blog/authors';
 import { RiCalendarLine, RiTimeLine } from '@remixicon/react';
-
-// R2 CDN 头像 URL
-const AVATAR_URL = 'https://cdn.ninthbit.org/avatar.jpg';
 
 type Props = CollectionEntry<'blog'>['data'] & {
   slug?: string;
@@ -25,6 +23,7 @@ const {
   pubDate,
   heroImage,
   author,
+  source,
   slug,
   readTimeMinutes,
 } = Astro.props;
@@ -52,9 +51,7 @@ const readTimeLabel =
     : `${Math.max(1, readTimeMinutes ?? 5)} min read`;
 
 const sectionLabel = 'WORK INSIGHTS';
-const authorName = author?.name ?? '静水深流';
-const authorTitle = author?.title ?? '天行健，君子以自强不息';
-const authorAvatar = author?.avatar ?? AVATAR_URL;
+const resolvedAuthor = resolveBlogAuthor(author, source, lang);
 ---
 
 <html lang={lang}>
@@ -109,19 +106,15 @@ const authorAvatar = author?.avatar ?? AVATAR_URL;
           </p>
 
           <div class="inline-flex items-center gap-3">
-            <Image
-              src={authorAvatar}
-              alt={authorName}
+            <img
+              src={resolvedAuthor.avatar}
+              alt={resolvedAuthor.name}
               class="h-10 w-10 rounded-full object-cover border border-zinc-200 dark:border-zinc-700"
-              width={200}
-              height={200}
-              format="png"
-              quality={100}
               loading="lazy"
             />
             <div>
-              <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 leading-none mb-0.5">{authorName}</p>
-              <p class="text-xs text-zinc-500 dark:text-zinc-400">{authorTitle}</p>
+              <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 leading-none mb-0.5">{resolvedAuthor.name}</p>
+              <p class="text-xs text-zinc-500 dark:text-zinc-400">{resolvedAuthor.title}</p>
             </div>
           </div>
 
@@ -144,6 +137,6 @@ const authorAvatar = author?.avatar ?? AVATAR_URL;
       </section>
     </main>
 
-    <SiteFooter client:visible lang={lang} t={t} currentPath={currentPath} />
+    <SiteFooter client:visible lang={lang} t={t} />
   </body>
 </html>

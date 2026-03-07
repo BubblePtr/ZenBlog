@@ -1,13 +1,16 @@
 ---
 import { SITE_TITLE } from '@/consts';
 import { BlogListSection } from '@/features/blog';
-import { getBlogListByLang } from '@/features/blog/server';
+import { getBlogListByLang, getBubbleDiarySummary } from '@/features/blog/server';
 import PageShell from '@/shared/components/layout/PageShell.astro';
 import { getTranslationDictionary } from '@/shared/i18n/types';
 
 const lang = 'zh' as const;
 const t = getTranslationDictionary(lang);
-const posts = await getBlogListByLang(lang);
+const [posts, bubbleDiary] = await Promise.all([
+  getBlogListByLang(lang),
+  getBubbleDiarySummary(),
+]);
 ---
 
 <PageShell
@@ -17,5 +20,5 @@ const posts = await getBlogListByLang(lang);
   currentPath="/zh/blog"
   mainClass="max-w-[84rem] mx-auto px-6 py-12 sm:py-20 relative z-10"
 >
-  <BlogListSection client:load posts={posts} lang={lang} t={t} />
+  <BlogListSection client:load posts={posts} bubbleDiary={bubbleDiary} lang={lang} t={t} />
 </PageShell>

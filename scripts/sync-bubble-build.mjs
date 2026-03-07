@@ -159,7 +159,7 @@ function normalizeEntry(data) {
       date,
       title,
       summary: summary || buildSummary(contentMarkdown),
-      contentMarkdown,
+      contentMarkdown: removeLeadingDuplicateHeading(contentMarkdown, title),
       tags,
       createdAt,
       mood,
@@ -211,6 +211,22 @@ function buildSummary(contentMarkdown) {
   }
 
   return plainText.slice(0, 120);
+}
+
+function removeLeadingDuplicateHeading(contentMarkdown, title) {
+  const match = contentMarkdown.match(/^#\s+(.+?)\s*#*\s*(?:\n+|$)/);
+
+  if (!match) {
+    return contentMarkdown;
+  }
+
+  const headingText = match[1].trim();
+
+  if (headingText !== title.trim()) {
+    return contentMarkdown;
+  }
+
+  return contentMarkdown.slice(match[0].length).trimStart();
 }
 
 async function listFiles(dirPath, extension) {

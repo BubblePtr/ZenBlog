@@ -143,7 +143,7 @@ const NAV_LINKS = [
 
 ```typescript
 const SOCIAL_LINKS = [
-  { icon: RiGithubFill, href: 'https://github.com/99byte', label: 'GitHub' },
+  { icon: RiGithubFill, href: 'https://github.com/BubblePtr', label: 'GitHub' },
   { icon: RiTwitterXFill, href: 'https://twitter.com/ninthbit_ai', label: 'Twitter' },
   { icon: RiMailLine, href: 'mailto:oldmeatovo@gmail.com', label: 'Email' },
   { icon: RiRssLine, href: '/rss.xml', label: 'RSS Feed' },

@@ -29,12 +29,12 @@
 
 ### Astro Fusion Theme
 极简主义博客主题，基于 Astro + React + Tailwind CSS 构建。
-- GitHub: https://github.com/99byte/ZenBlog
+- GitHub: https://github.com/BubblePtr/ZenBlog
 - Demo: https://ninthbit.org
 
 ### Harmony Tools MCP
 HarmonyOS 命令行工具的 MCP 封装，方便 AI 助手操作鸿蒙开发环境。
-- GitHub: https://github.com/99byte/harmony-tools
+- GitHub: https://github.com/BubblePtr/harmony-tools
 - PyPI: https://pypi.org/project/harmony-tools-mcp/
 
 ## 精选文章

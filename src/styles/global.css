@@ -11,6 +11,11 @@
   :root {
     --background: 255 255 255;
     --foreground: 24 24 27;
+    --rainbow-color-1: #ff6b6b;
+    --rainbow-color-2: #8b5cf6;
+    --rainbow-color-3: #3b82f6;
+    --rainbow-color-4: #06b6d4;
+    --rainbow-color-5: #84cc16;
     /* 字体变量已在 typography.css 的 @theme 中定义 */
 
     /* 文字颜色系统（RGBA 方案，减少视觉疲劳） */
@@ -69,6 +74,15 @@
   pre {
     font-family: var(--font-mono);
     font-size: var(--font-size-code);
+  }
+
+  @keyframes rainbow {
+    0% {
+      background-position: 0%;
+    }
+    100% {
+      background-position: 200%;
+    }
   }
 }
 

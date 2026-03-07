@@ -5,6 +5,7 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { stripLeadingHeadingOne } from './src/remark/strip-leading-heading-one.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -24,7 +25,9 @@ export default defineConfig({
     domains: ['gravatar.com', 'cdn.ninthbit.org'],
   },
   integrations: [
-    mdx(),
+    mdx({
+      remarkPlugins: [stripLeadingHeadingOne],
+    }),
     sitemap(),
     react()
   ],

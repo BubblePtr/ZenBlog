@@ -12,7 +12,7 @@ const NAV_LINKS = [
 ] as const;
 
 const SOCIAL_LINKS = [
-  { icon: RiGithubFill, href: 'https://github.com/99byte', label: 'GitHub' },
+  { icon: RiGithubFill, href: 'https://github.com/BubblePtr', label: 'GitHub' },
   { icon: RiTwitterXFill, href: 'https://twitter.com/ninthbit_ai', label: 'Twitter' },
   { icon: RiMailLine, href: 'mailto:oldmeatovo@gmail.com', label: 'Email' },
   { icon: RiRssLine, href: '/rss.xml', label: 'RSS Feed' },
@@ -28,8 +28,10 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
     return lang === 'zh' ? `/zh${path}` : path;
   };
 
+  const formatFooterLabel = (label: string) => label.toUpperCase();
+
   return (
-    <footer className="border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black">
+    <footer className="bg-white dark:bg-black">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="flex flex-col md:flex-row justify-between gap-12">
           {/* 左侧：品牌区 + 版权信息 */}
@@ -67,7 +69,7 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
                     href={getLocalizedPath(link.href)}
                     className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
                   >
-                    {t[link.labelKey]}
+                    {formatFooterLabel(t[link.labelKey])}
                   </a>
                 ))}
               </nav>
@@ -89,7 +91,7 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
                     aria-label={link.label}
                   >
                     <link.icon size={20} />
-                    <span>{link.label}</span>
+                    <span>{formatFooterLabel(link.label)}</span>
                   </a>
                 ))}
               </div>
