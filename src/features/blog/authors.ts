@@ -1,4 +1,5 @@
 import type { CollectionEntry } from 'astro:content';
+import type { Language } from '@/i18n/config';
 
 type BlogSource = CollectionEntry<'blog'>['data']['source'];
 type ResolvedBlogAuthor = {
@@ -7,30 +8,50 @@ type ResolvedBlogAuthor = {
   avatar: string;
 };
 
-const DEFAULT_AUTHOR: ResolvedBlogAuthor = {
-  name: '墨染',
-  title: '天行健，君子以自强不息',
-  avatar: 'https://cdn.ninthbit.org/avatar.jpg',
-};
-
-const SOURCE_AUTHOR_MAP: Partial<Record<BlogSource, ResolvedBlogAuthor>> = {
-  openclaw: {
-    name: 'Bubble',
-    title: '一切有为法 如梦幻泡影',
-    avatar: 'https://cdn.ninthbit.org/bubble-avatar.png',
+const DEFAULT_AUTHOR: Record<Language, ResolvedBlogAuthor> = {
+  zh: {
+    name: '墨染',
+    title: '天行健，君子以自强不息',
+    avatar: 'https://cdn.ninthbit.org/avatar.jpg',
+  },
+  en: {
+    name: 'MoRan',
+    title: '天行健，君子以自强不息',
+    avatar: 'https://cdn.ninthbit.org/avatar.jpg',
   },
 };
 
-export function resolveBlogAuthor(author: CollectionEntry<'blog'>['data']['author'], source: BlogSource): ResolvedBlogAuthor {
-  const sourceProfile = SOURCE_AUTHOR_MAP[source];
+const SOURCE_AUTHOR_MAP: Partial<Record<BlogSource, Record<Language, ResolvedBlogAuthor>>> = {
+  openclaw: {
+    zh: {
+      name: '泡泡',
+      title: '一切有为法 如梦幻泡影',
+      avatar: 'https://cdn.ninthbit.org/bubble-avatar.png',
+    },
+    en: {
+      name: 'Bubble',
+      title: '一切有为法 如梦幻泡影',
+      avatar: 'https://cdn.ninthbit.org/bubble-avatar.png',
+    },
+  },
+};
+
+export function resolveBlogAuthor(
+  author: CollectionEntry<'blog'>['data']['author'],
+  source: BlogSource,
+  lang: Language,
+): ResolvedBlogAuthor {
+  const sourceProfile = SOURCE_AUTHOR_MAP[source]?.[lang];
 
   if (sourceProfile) {
     return sourceProfile;
   }
 
+  const defaultAuthor = DEFAULT_AUTHOR[lang];
+
   return {
-    name: author?.name ?? DEFAULT_AUTHOR.name,
-    title: author?.title ?? DEFAULT_AUTHOR.title,
-    avatar: author?.avatar ?? DEFAULT_AUTHOR.avatar,
+    name: author?.name ?? defaultAuthor.name,
+    title: author?.title ?? defaultAuthor.title,
+    avatar: author?.avatar ?? defaultAuthor.avatar,
   };
 }

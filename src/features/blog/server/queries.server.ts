@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { resolveBlogAuthor } from '@/features/blog/authors';
 import type { Language } from '@/i18n/config';
 import type { BlogListItem, BubbleDiarySummary } from '@/types/content';
 
@@ -22,6 +23,8 @@ function buildBlogUrl(slug: string, lang: Language): string {
 }
 
 export function mapBlogListItem(post: BlogEntry, lang: Language): BlogListItem {
+  const resolvedAuthor = resolveBlogAuthor(post.data.author, post.data.source, lang);
+
   return {
     slug: extractBlogSlug(post.id, lang),
     data: {
@@ -30,6 +33,10 @@ export function mapBlogListItem(post: BlogEntry, lang: Language): BlogListItem {
       pubDate: post.data.pubDate,
       heroImage: post.data.heroImage,
       author: post.data.author,
+      authorName: resolvedAuthor.name,
+      source: post.data.source,
+      series: post.data.series,
+      tags: post.data.tags,
       showOnHome: post.data.showOnHome === true,
     },
   };
@@ -75,10 +82,35 @@ export async function getBubbleDiarySummary(): Promise<BubbleDiarySummary | null
 
   const latestEntry = bubblePosts[0];
   const latestEntryLang = getEntryLang(latestEntry);
-  const uniqueEntries = new Set(bubblePosts.map((post) => post.data.externalId ?? post.id));
+  const totalUniqueEntries = new Set(bubblePosts.map((post) => post.data.externalId ?? post.id));
+  const uniqueEntries = new Set<string>();
+  const recentEntries: BubbleDiarySummary['recentEntries'] = [];
+
+  for (const post of bubblePosts) {
+    const uniqueKey = post.data.externalId ?? post.id;
+
+    if (uniqueEntries.has(uniqueKey)) {
+      continue;
+    }
+
+    uniqueEntries.add(uniqueKey);
+
+    const entryLang = getEntryLang(post);
+    recentEntries.push({
+      title: post.data.title,
+      pubDate: post.data.pubDate,
+      lang: entryLang,
+      url: buildBlogUrl(extractBlogSlug(post.id, entryLang), entryLang),
+    });
+
+    if (recentEntries.length === 5) {
+      break;
+    }
+  }
 
   return {
-    totalEntries: uniqueEntries.size,
+    totalEntries: totalUniqueEntries.size,
+    recentEntries,
     latestEntry: {
       title: latestEntry.data.title,
       description: latestEntry.data.description,
