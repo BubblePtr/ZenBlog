@@ -23,7 +23,6 @@ export default function BubbleDiarySpotlight({
   }
 
   const translate = (key: TranslationKey) => t[key] || key;
-  const isCrossLang = bubbleDiary.latestEntry.lang !== lang;
   const secondaryText =
     lang === 'zh'
       ? `${translate('bubbleDiary.cta.secondaryPrefix')}${bubbleDiary.totalEntries}${translate('bubbleDiary.cta.secondarySuffix')}`
@@ -39,8 +38,7 @@ export default function BubbleDiarySpotlight({
     >
       {variant === 'home' ? (
         <HomeSpotlight
-          bubbleDiary={bubbleDiary}
-          isCrossLang={isCrossLang}
+          lang={lang}
           translate={translate}
         />
       ) : (
@@ -63,16 +61,16 @@ interface SpotlightBodyProps {
 }
 
 interface HomeSpotlightProps {
-  bubbleDiary: BubbleDiarySummary;
-  isCrossLang: boolean;
+  lang: Language;
   translate: (key: TranslationKey) => string;
 }
 
 function HomeSpotlight({
-  bubbleDiary,
-  isCrossLang,
+  lang,
   translate,
 }: HomeSpotlightProps) {
+  const blogListUrl = lang === 'zh' ? '/zh/blog' : '/blog';
+
   return (
     <div>
       <div className="mb-8">
@@ -88,10 +86,10 @@ function HomeSpotlight({
 
         <div className="mt-6">
           <RainbowButton
-            href={bubbleDiary.latestEntry.url}
+            href={blogListUrl}
             className="gap-2"
           >
-            <span>{translate(isCrossLang ? 'bubbleDiary.cta.primaryAlt' : 'bubbleDiary.homeCta')}</span>
+            <span>{translate('bubbleDiary.homeCta')}</span>
             <RiQuillPenAiLine className="h-[18px] w-[18px] opacity-80" />
           </RainbowButton>
         </div>
