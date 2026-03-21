@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { RiArrowDownSLine, RiCheckLine } from '@remixicon/react';
 import BubbleDiarySpotlight from '@/features/blog/components/BubbleDiarySpotlight.client';
 import type { BlogListItem, BubbleDiarySummary } from '@/types/content';
@@ -237,8 +237,15 @@ function FilterDropdown({
         />
       </button>
 
+      <AnimatePresence>
       {open && (
-        <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 border border-zinc-200 bg-white py-1 shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:border-zinc-800 dark:bg-zinc-950">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97, y: -4 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.97, y: -4 }}
+          transition={{ duration: 0.14, ease: 'easeOut' }}
+          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 border border-zinc-200 bg-white py-1 shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:border-zinc-800 dark:bg-zinc-950"
+        >
           {options.map((option) => {
             const active = option.value === value;
 
@@ -261,8 +268,9 @@ function FilterDropdown({
               </button>
             );
           })}
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 }

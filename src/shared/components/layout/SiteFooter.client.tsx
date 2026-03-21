@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { RiGithubFill, RiTwitterXFill, RiMailLine, RiRssLine } from '@remixicon/react';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary } from '@/shared/i18n/types';
@@ -29,6 +30,17 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
   };
 
   const formatFooterLabel = (label: string) => label.toUpperCase();
+
+  useEffect(() => {
+    console.log(
+      '%c Silicon Universe ',
+      'background:#18181b;color:#f4f4f5;font-size:13px;font-weight:600;padding:3px 8px;border-radius:3px;',
+    );
+    console.log(
+      '%c Curious enough to open DevTools? Built with Astro 5 + React 19.  ninthbit.org/about',
+      'color:#71717a;font-size:11px;',
+    );
+  }, []);
 
   return (
     <footer className="bg-white dark:bg-black">
@@ -67,7 +79,7 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
                   <a
                     key={link.href}
                     href={getLocalizedPath(link.href)}
-                    className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                    className="inline-block text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:translate-x-0.5 transition-all duration-200"
                   >
                     {formatFooterLabel(t[link.labelKey])}
                   </a>

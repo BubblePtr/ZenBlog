@@ -115,117 +115,94 @@ function BlogSpotlight({
     .filter(Boolean);
 
   return (
-    <div className="relative mx-auto w-full max-w-[84rem] px-4 py-4 sm:px-5 sm:py-5">
-      <ScaleFrame />
-
-      <div className="relative bg-white px-4 py-4 dark:bg-black sm:px-6 sm:py-6">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.8fr)] lg:items-center lg:gap-14">
-          <div>
-            <div className="flex items-center gap-3">
-              <img
-                src={bubbleProfile.avatar}
-                alt={bubbleProfile.name}
-                className="h-11 w-11 rounded-full border border-zinc-200 object-cover dark:border-zinc-800"
-                loading="lazy"
-              />
-              <div className="text-zinc-500 dark:text-zinc-400">
-                <span className="font-mono text-[11px] uppercase tracking-[0.22em]">
-                  {translate('bubbleDiary.eyebrow')}
-                </span>
-                <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-                  {bubbleProfile.name}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 max-w-none space-y-4 text-zinc-700 dark:text-zinc-300">
-              {descriptionParagraphs.map((paragraph) => (
-                <p key={paragraph} className="text-base font-light leading-8">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-
-            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
-              <span>{secondaryText}</span>
+    <div className="border-t border-b border-zinc-200 py-12 dark:border-zinc-800 sm:py-14">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.8fr)] lg:items-center lg:gap-14">
+        <div>
+          <div className="flex items-center gap-3">
+            <img
+              src={bubbleProfile.avatar}
+              alt={bubbleProfile.name}
+              className="h-11 w-11 rounded-full border border-zinc-200 object-cover dark:border-zinc-800"
+              loading="lazy"
+            />
+            <div className="text-zinc-500 dark:text-zinc-400">
+              <span className="font-mono text-[11px] uppercase tracking-[0.22em]">
+                {translate('bubbleDiary.eyebrow')}
+              </span>
+              <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
+                {bubbleProfile.name}
+              </p>
             </div>
           </div>
 
-          <div className="space-y-0">
-            {timelineEntries.map((entry, index) => {
-              const isLatest = index === timelineEntries.length - 1;
-              const dateLabel = entry.dateLabel;
-              const content = (
-                <div
-                  className={`grid grid-cols-[18px_1fr] gap-x-4 ${!isLatest ? 'opacity-55' : ''}`}
-                >
-                  <div className="relative flex justify-center">
-                    {isLatest ? (
-                      <span className="relative mt-1.5 flex h-2.5 w-2.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-zinc-400/70 dark:bg-zinc-500/60" />
-                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100" />
-                      </span>
-                    ) : (
-                      <span className="mt-1.5 h-2.5 w-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-                    )}
-                    {index < timelineEntries.length - 1 && (
-                      <span className="absolute top-4.5 bottom-[-0.35rem] w-px bg-zinc-200 dark:bg-zinc-800" />
-                    )}
-                  </div>
-                  <div className="pb-2.5">
-                    <p className="text-sm font-light leading-6 text-zinc-400 dark:text-zinc-500">
-                      {dateLabel}
-                    </p>
-                    <p
-                      className={`mt-0.5 text-base font-light leading-6 ${
-                        isLatest
-                          ? 'text-zinc-900 transition-colors hover:text-zinc-600 dark:text-zinc-100 dark:hover:text-zinc-300'
-                        : 'text-zinc-500 dark:text-zinc-400'
-                      }`}
-                    >
-                      {entry.title}
-                    </p>
-                  </div>
+          <div className="mt-5 max-w-none space-y-4 text-zinc-700 dark:text-zinc-300">
+            {descriptionParagraphs.map((paragraph) => (
+              <p key={paragraph} className="text-base font-light leading-8">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
+            <span>{secondaryText}</span>
+          </div>
+        </div>
+
+        <div className="space-y-0">
+          {timelineEntries.map((entry, index) => {
+            const isLatest = index === timelineEntries.length - 1;
+            const dateLabel = entry.dateLabel;
+            const content = (
+              <div
+                className={`grid grid-cols-[18px_1fr] gap-x-4 ${!isLatest ? 'opacity-55' : ''}`}
+              >
+                <div className="relative flex justify-center">
+                  {isLatest ? (
+                    <span className="relative mt-1.5 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-zinc-400/70 dark:bg-zinc-500/60" />
+                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100" />
+                    </span>
+                  ) : (
+                    <span className="mt-1.5 h-2.5 w-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                  )}
+                  {index < timelineEntries.length - 1 && (
+                    <span className="absolute top-4.5 bottom-[-0.35rem] w-px bg-zinc-200 dark:bg-zinc-800" />
+                  )}
                 </div>
-              );
+                <div className="pb-2.5">
+                  <p className="text-sm font-light leading-6 text-zinc-400 dark:text-zinc-500">
+                    {dateLabel}
+                  </p>
+                  <p
+                    className={`mt-0.5 text-base font-light leading-6 ${
+                      isLatest
+                        ? 'text-zinc-900 transition-colors hover:text-zinc-600 dark:text-zinc-100 dark:hover:text-zinc-300'
+                        : 'text-zinc-500 dark:text-zinc-400'
+                    }`}
+                  >
+                    {entry.title}
+                  </p>
+                </div>
+              </div>
+            );
 
-              if (!isLatest || !entry.url) {
-                return <div key={`${entry.title}-${entry.dateLabel}-${index}`}>{content}</div>;
-              }
+            if (!isLatest || !entry.url) {
+              return <div key={`${entry.title}-${entry.dateLabel}-${index}`}>{content}</div>;
+            }
 
-              return (
-                <a
-                  key={`${entry.title}-${entry.dateLabel}-${index}`}
-                  href={entry.url}
-                  className="block no-underline"
-                >
-                  {content}
-                </a>
-              );
-            })}
-          </div>
+            return (
+              <a
+                key={`${entry.title}-${entry.dateLabel}-${index}`}
+                href={entry.url}
+                className="block no-underline"
+              >
+                {content}
+              </a>
+            );
+          })}
         </div>
       </div>
     </div>
-  );
-}
-
-function ScaleFrame() {
-  return (
-    <>
-      <div className="pointer-events-none absolute -left-9 -right-9 -top-4 h-7 sm:h-8">
-        <div className="h-full w-full bg-[repeating-linear-gradient(135deg,rgba(161,161,170,0.16)_0_2px,transparent_2px_8px)] dark:bg-[repeating-linear-gradient(135deg,rgba(113,113,122,0.22)_0_2px,transparent_2px_8px)]" />
-      </div>
-      <div className="pointer-events-none absolute -left-9 -right-9 -bottom-4 h-7 sm:h-8">
-        <div className="h-full w-full bg-[repeating-linear-gradient(135deg,rgba(161,161,170,0.16)_0_2px,transparent_2px_8px)] dark:bg-[repeating-linear-gradient(135deg,rgba(113,113,122,0.22)_0_2px,transparent_2px_8px)]" />
-      </div>
-      <div className="pointer-events-none absolute -bottom-9 -top-9 -left-4 w-7 sm:w-8">
-        <div className="h-full w-full bg-[repeating-linear-gradient(135deg,rgba(161,161,170,0.16)_0_2px,transparent_2px_8px)] dark:bg-[repeating-linear-gradient(135deg,rgba(113,113,122,0.22)_0_2px,transparent_2px_8px)]" />
-      </div>
-      <div className="pointer-events-none absolute -bottom-9 -top-9 -right-4 w-7 sm:w-8">
-        <div className="h-full w-full bg-[repeating-linear-gradient(135deg,rgba(161,161,170,0.16)_0_2px,transparent_2px_8px)] dark:bg-[repeating-linear-gradient(135deg,rgba(113,113,122,0.22)_0_2px,transparent_2px_8px)]" />
-      </div>
-    </>
   );
 }
 

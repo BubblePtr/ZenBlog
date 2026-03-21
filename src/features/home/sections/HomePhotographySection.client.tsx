@@ -30,9 +30,10 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
           </h2>
           <a
             href={getPhotographyUrl()}
-            className="text-sm text-zinc-400"
+            className="group inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
           >
-            {translate('home.viewAll')} →
+            <span>{translate('home.viewAll')}</span>
+            <span className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">→</span>
           </a>
         </div>
         <p className="mt-4 max-w-4xl text-base font-light leading-8 text-[var(--color-text-primary)]">
@@ -40,14 +41,22 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {photos.map((photo) => (
-          <div key={photo.slug} className="relative overflow-hidden aspect-[4/3]">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+        {photos.slice(0, 5).map((photo, index) => (
+          <div
+            key={photo.slug}
+            className={[
+              'group relative overflow-hidden',
+              index === 0 ? 'col-span-2 aspect-[3/2] lg:aspect-[16/10]' : '',
+              index === 1 ? 'aspect-[4/3] lg:aspect-auto' : '',
+              index >= 2 ? 'aspect-[4/3]' : '',
+            ].join(' ')}
+          >
             <img
               src={photo.data.imageSrc}
               alt={photo.data.title}
               loading="lazy"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
             />
           </div>
         ))}

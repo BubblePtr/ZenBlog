@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { RiMoonFill, RiSunFill } from '@remixicon/react';
 import { flushSync } from 'react-dom';
 
@@ -70,8 +71,19 @@ export default function ThemeToggle({ className = '', duration = 400, ...props }
   }, [duration, isDark]);
 
   return (
-    <button ref={buttonRef} onClick={toggleTheme} className={className} {...props}>
-      {isDark ? <RiSunFill size={18} /> : <RiMoonFill size={18} />}
+    <button ref={buttonRef} onClick={toggleTheme} className={`relative overflow-hidden ${className}`} {...props}>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={isDark ? 'sun' : 'moon'}
+          initial={{ opacity: 0, rotate: -45, scale: 0.7 }}
+          animate={{ opacity: 1, rotate: 0, scale: 1 }}
+          exit={{ opacity: 0, rotate: 45, scale: 0.7 }}
+          transition={{ duration: 0.18, ease: 'easeOut' }}
+          className="flex items-center justify-center"
+        >
+          {isDark ? <RiSunFill size={18} /> : <RiMoonFill size={18} />}
+        </motion.span>
+      </AnimatePresence>
       <span className="sr-only">Toggle theme</span>
     </button>
   );

@@ -29,9 +29,10 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
           </h2>
           <a
             href={getBlogListUrl()}
-            className="text-sm text-zinc-400"
+            className="group inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
           >
-            {translate('home.viewAll')} →
+            <span>{translate('home.viewAll')}</span>
+            <span className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">→</span>
           </a>
         </div>
         <p className="mt-4 max-w-4xl text-base font-light leading-8 text-[var(--color-text-primary)]">

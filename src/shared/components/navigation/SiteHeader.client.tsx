@@ -1,4 +1,5 @@
 import { RiMenuLine, RiCloseLine } from '@remixicon/react';
+import { AnimatePresence } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
@@ -100,12 +101,15 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
         </nav>
       </div>
 
-      {mobileMenuOpen && (
-        <MobileNavMenu
-          items={mobileItems}
-          onItemClick={() => setMobileMenuOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <MobileNavMenu
+            key="mobile-nav"
+            items={mobileItems}
+            onItemClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </header>
   );
 }
