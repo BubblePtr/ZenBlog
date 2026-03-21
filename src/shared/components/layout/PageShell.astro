@@ -37,9 +37,19 @@ const t = getTranslationDictionary(lang);
   </head>
   <body class={bodyClass}>
     <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} />
+    <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
+      <div class="-mx-6 section-rule"></div>
+    </div>
     <main class={mainClass}>
       <slot />
     </main>
-    {showFooter && <SiteFooter client:visible lang={lang} t={t} />}
+    {showFooter && (
+      <>
+        <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
+          <div class="-mx-6 section-rule"></div>
+        </div>
+        <SiteFooter client:visible lang={lang} t={t} />
+      </>
+    )}
   </body>
 </html>

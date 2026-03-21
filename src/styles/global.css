@@ -23,6 +23,9 @@
     --color-text-secondary: rgba(0, 0, 0, 0.6);   /* 次要文字 */
     --color-text-disabled: rgba(0, 0, 0, 0.38);   /* 禁用文字 */
     --color-text-emphasis: rgba(0, 0, 0, 0.92);   /* 强调文字 */
+
+    /* 内容导轨颜色 */
+    --rail-color: rgba(0, 0, 0, 0.07);
   }
 
   .dark {
@@ -34,6 +37,9 @@
     --color-text-secondary: rgba(255, 255, 255, 0.6);
     --color-text-disabled: rgba(255, 255, 255, 0.38);
     --color-text-emphasis: rgba(255, 255, 255, 0.92);
+
+    /* 暗色导轨颜色 */
+    --rail-color: rgba(255, 255, 255, 0.08);
   }
 
   html {
@@ -49,6 +55,24 @@
     line-height: var(--line-height-normal);
     /* 亚像素渲染让细字体更清晰饱满 */
     -webkit-font-smoothing: subpixel-antialiased;
+  }
+
+  /* 内容导轨：两条与正文列宽对齐的竖向虚线
+     使用 fixed 伪元素确保导轨穿透导航栏和页脚的背景色，从顶部贯穿到底部 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background-image:
+      repeating-linear-gradient(to bottom, var(--rail-color) 0px, var(--rail-color) 3px, transparent 3px, transparent 9px),
+      repeating-linear-gradient(to bottom, var(--rail-color) 0px, var(--rail-color) 3px, transparent 3px, transparent 9px);
+    background-size: 1px 9px, 1px 9px;
+    background-position:
+      max(1.5rem, calc(50vw - 42rem)) 0,
+      min(calc(100vw - 1.5rem), calc(50vw + 42rem)) 0;
+    background-repeat: repeat-y, repeat-y;
   }
 
   /* 深色模式下使用默认渲染，避免彩边 */
@@ -207,9 +231,17 @@
     @apply my-0;
   }
 
-  /* 水平线 */
+  /* 水平线 — Vercel 风格虚线分割 */
   .prose hr {
-    @apply border-zinc-200 dark:border-zinc-700 my-12;
+    @apply my-12;
+    border: none;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 50%, transparent 50%);
+    background-size: 6px 1px;
+  }
+
+  .dark .prose hr {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.14) 50%, transparent 50%);
   }
 
   /* 行内代码 */
@@ -299,6 +331,18 @@
   /* 自定义选中文本颜色 */
   ::selection {
     @apply bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100;
+  }
+
+  /* 内容导轨横向分隔线，与竖向导轨保持一致的虚线风格 */
+  .section-rule {
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--rail-color) 0px,
+      var(--rail-color) 3px,
+      transparent 3px,
+      transparent 9px
+    );
   }
 }
 
