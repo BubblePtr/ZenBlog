@@ -115,7 +115,9 @@ function BlogSpotlight({
     .filter(Boolean);
 
   return (
-    <div className="border-t border-b border-zinc-200 py-12 dark:border-zinc-800 sm:py-14">
+    <div>
+      <div aria-hidden="true" className="-mx-6 section-rule" />
+      <div className="py-12 sm:py-14">
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.8fr)] lg:items-center lg:gap-14">
         <div>
           <div className="flex items-center gap-3">
@@ -202,6 +204,8 @@ function BlogSpotlight({
           })}
         </div>
       </div>
+      </div>
+      <div aria-hidden="true" className="-mx-6 section-rule" />
     </div>
   );
 }

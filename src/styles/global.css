@@ -25,7 +25,7 @@
     --color-text-emphasis: rgba(0, 0, 0, 0.92);   /* 强调文字 */
 
     /* 内容导轨颜色 */
-    --rail-color: rgba(0, 0, 0, 0.07);
+    --rail-color: rgba(0, 0, 0, 0.14);
   }
 
   .dark {
@@ -34,12 +34,12 @@
 
     /* 暗色模式文字颜色 */
     --color-text-primary: rgba(255, 255, 255, 0.87);
-    --color-text-secondary: rgba(255, 255, 255, 0.6);
+    --color-text-secondary: #a1a1aa;  /* zinc-400，有色温，比透明白更有质感 */
     --color-text-disabled: rgba(255, 255, 255, 0.38);
     --color-text-emphasis: rgba(255, 255, 255, 0.92);
 
     /* 暗色导轨颜色 */
-    --rail-color: rgba(255, 255, 255, 0.08);
+    --rail-color: rgba(255, 255, 255, 0.14);
   }
 
   html {
@@ -49,7 +49,7 @@
   body {
     /* 界面默认使用无衬线字体 */
     font-family: var(--font-ui);
-    @apply bg-white text-zinc-800 dark:bg-black dark:text-zinc-200
+    @apply bg-[oklch(98%_0.006_60)] text-zinc-800 dark:bg-zinc-950 dark:text-zinc-200
            transition-colors duration-300;
     letter-spacing: var(--letter-spacing-normal);
     line-height: var(--line-height-normal);
@@ -193,8 +193,8 @@
 
   /* 链接 */
   .prose a {
-    @apply text-zinc-700 dark:text-zinc-300 underline underline-offset-2;
-    @apply hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors;
+    @apply text-orange-600 dark:text-orange-400 underline underline-offset-2 decoration-orange-600/40 dark:decoration-orange-400/40;
+    @apply hover:text-orange-700 dark:hover:text-orange-300 hover:decoration-orange-700/60 dark:hover:decoration-orange-300/60 transition-colors;
   }
 
   /* 无序列表 */

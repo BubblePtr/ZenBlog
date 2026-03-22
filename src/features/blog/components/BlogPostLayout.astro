@@ -59,10 +59,13 @@ const resolvedAuthor = resolveBlogAuthor(author, source, lang);
     <BaseHead title={title} description={description} image={`/og/${Astro.params.slug}.png`} />
   </head>
 
-  <body class="bg-white dark:bg-black text-zinc-800 dark:text-zinc-200 transition-colors duration-500 antialiased font-sans">
+  <body class="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-500 antialiased font-sans">
     <ScrollProgress client:load />
 
     <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} />
+    <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
+      <div class="-mx-6 section-rule"></div>
+    </div>
 
     <main class="max-w-7xl mx-auto px-6 py-12 sm:py-20 relative z-10">
       <article class="animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -118,7 +121,7 @@ const resolvedAuthor = resolveBlogAuthor(author, source, lang);
             </div>
           </div>
 
-          <hr class="border-zinc-200 dark:border-zinc-800 mt-6" />
+          <div aria-hidden="true" class="-mx-[calc(50vw-50%)] section-rule mt-6" />
         </section>
 
         <div class="prose mx-auto max-w-xl">
@@ -126,7 +129,8 @@ const resolvedAuthor = resolveBlogAuthor(author, source, lang);
         </div>
       </article>
 
-      <section class="mx-auto w-full max-w-xl mt-16 pt-12 border-t border-zinc-100 dark:border-zinc-800">
+      <section class="mx-auto w-full max-w-xl mt-16 pt-12">
+        <div aria-hidden="true" class="-mx-[calc(50vw-50%)] section-rule mb-12" />
         <h2
           class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-8"
           style={lang === 'zh' ? 'font-family: var(--font-serif)' : 'font-family: var(--font-serif-en)'}
@@ -137,6 +141,9 @@ const resolvedAuthor = resolveBlogAuthor(author, source, lang);
       </section>
     </main>
 
+    <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
+      <div class="-mx-6 section-rule"></div>
+    </div>
     <SiteFooter client:visible lang={lang} t={t} />
   </body>
 </html>

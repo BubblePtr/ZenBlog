@@ -43,7 +43,7 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
 
   return (
     <header className="relative z-40 w-full transition-all duration-300">
-      <div className="absolute inset-0 bg-white/80 dark:bg-black/80 backdrop-blur-md" />
+      <div className="absolute inset-0 bg-[oklch(98%_0.006_60)]/80 dark:bg-zinc-950/80 backdrop-blur-md" />
 
       <div className="relative max-w-[84rem] mx-auto px-6 h-16 flex items-center justify-between">
         <a

@@ -19,7 +19,7 @@ export default function MobileNavMenu({ items, onItemClick }: MobileNavMenuProps
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -6 }}
       transition={{ duration: 0.18, ease: [0.25, 1, 0.5, 1] }}
-      className="sm:hidden bg-white dark:bg-black relative z-50"
+      className="sm:hidden bg-[oklch(98%_0.006_60)] dark:bg-zinc-950 relative z-50"
     >
       <div className="max-w-5xl mx-auto px-6 py-8">
         <div className="bg-zinc-100 dark:bg-zinc-900 rounded-3xl p-4 space-y-2">
