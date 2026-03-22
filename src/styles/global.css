@@ -58,11 +58,19 @@
   }
 
   /* 内容导轨：两条与正文列宽对齐的竖向虚线
-     使用 fixed 伪元素确保导轨穿透导航栏和页脚的背景色，从顶部贯穿到底部 */
+     使用 absolute 伪元素让导轨随页面内容一起滚动，像长纸上的线条 */
+  body {
+    position: relative;
+    min-height: 100vh;
+  }
+
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     pointer-events: none;
     z-index: 9999;
     background-image:
@@ -110,17 +118,20 @@
   }
 }
 
-/* 滚动条美化 (全局生效，不放在 layer 中以免被 purge) */
+/* 隐藏滚动条 (全局生效，不放在 layer 中以免被 purge) */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 0;
+  display: none;
 }
 
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
+/* Firefox */
+html {
+  scrollbar-width: none;
 }
 
-::-webkit-scrollbar-thumb {
-  @apply bg-zinc-300 dark:bg-zinc-700 rounded-full;
+/* IE/Edge */
+body {
+  -ms-overflow-style: none;
 }
 
 @layer components {
