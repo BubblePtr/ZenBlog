@@ -9,6 +9,7 @@ export function mapProjectListItem(project: ProjectEntry): ProjectListItem {
     data: {
       title: project.data.title,
       description: project.data.description,
+      content: project.body.trim(),
       heroImage: project.data.heroImage ? project.data.heroImage.src : undefined,
       stack: project.data.stack,
       github: project.data.github,

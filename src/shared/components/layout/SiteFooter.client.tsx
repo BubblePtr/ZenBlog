@@ -25,6 +25,8 @@ interface SiteFooterProps {
 }
 
 export default function SiteFooter({ lang, t }: SiteFooterProps) {
+  const brandName = lang === 'zh' ? '第九比特' : 'Ninth Bit';
+
   const getLocalizedPath = (path: string) => {
     return lang === 'zh' ? `/zh${path}` : path;
   };
@@ -33,14 +35,14 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
 
   useEffect(() => {
     console.log(
-      '%c Silicon Universe ',
+      `%c ${brandName} `,
       'background:#18181b;color:#f4f4f5;font-size:13px;font-weight:600;padding:3px 8px;border-radius:3px;',
     );
     console.log(
       '%c Curious enough to open DevTools? Built with Astro 5 + React 19.  ninthbit.org/about',
       'color:#71717a;font-size:11px;',
     );
-  }, []);
+  }, [brandName]);
 
   return (
     <footer className="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950">
@@ -49,11 +51,11 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
           {/* 左侧：品牌区 + 版权信息 */}
           <div className="flex flex-col gap-4">
             <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-100">
-              Silicon Universe
+              {brandName}
             </h2>
             <div className="flex flex-col gap-2">
               <p className="text-xs text-zinc-400">
-                © {new Date().getFullYear()} Silicon Universe · All rights reserved
+                © {new Date().getFullYear()} {brandName} · All rights reserved
               </p>
               <div className="flex items-center gap-1.5">
                 <span className="relative flex h-2 w-2">

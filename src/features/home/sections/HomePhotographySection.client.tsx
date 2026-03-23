@@ -23,14 +23,14 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
       transition={{ duration: 0.5 }}
       className="mb-24 sm:mb-32"
     >
-      <div className="mb-8">
+      <div className="mb-10 max-w-3xl">
         <div className="flex items-baseline justify-between">
-          <h2 className="text-[17px] font-normal tracking-tight text-zinc-900 dark:text-zinc-100">
+          <h2 className="text-2xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
             {translate('home.photography')}
           </h2>
           <a
             href={getPhotographyUrl()}
-            className="group inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+            className="group inline-flex items-center gap-1 text-sm text-zinc-500 transition-colors hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           >
             <span>{translate('home.viewAll')}</span>
             <span className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">→</span>
@@ -41,15 +41,17 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
         </p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2 lg:grid-cols-12">
         {photos.slice(0, 5).map((photo, index) => (
           <div
             key={photo.slug}
             className={[
               'group relative overflow-hidden',
-              index === 0 ? 'col-span-2 aspect-[3/2] lg:aspect-[16/10]' : '',
-              index === 1 ? 'aspect-[4/3] lg:aspect-auto' : '',
-              index >= 2 ? 'aspect-[4/3]' : '',
+              index === 0 ? 'col-span-2 aspect-[4/3] lg:col-span-7 lg:row-span-2 lg:aspect-auto lg:min-h-[32rem]' : '',
+              index === 1 ? 'aspect-[4/5] lg:col-span-5 lg:min-h-[15.5rem]' : '',
+              index === 2 ? 'aspect-[4/3] lg:col-span-5 lg:min-h-[15.5rem]' : '',
+              index === 3 ? 'aspect-[4/3] lg:col-span-4 lg:min-h-[14rem]' : '',
+              index === 4 ? 'aspect-[4/3] lg:col-span-8 lg:min-h-[14rem]' : '',
             ].join(' ')}
           >
             <img
@@ -58,6 +60,13 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
               loading="lazy"
               className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
+            <div className="absolute inset-x-0 bottom-0 p-4 text-white sm:p-5">
+              <p className="text-sm tracking-tight">{photo.data.title}</p>
+              {photo.data.location ? (
+                <p className="mt-1 text-xs text-white/72">{photo.data.location}</p>
+              ) : null}
+            </div>
           </div>
         ))}
       </div>

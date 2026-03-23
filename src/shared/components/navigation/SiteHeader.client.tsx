@@ -46,16 +46,16 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
       <div className="absolute inset-0 bg-[oklch(98%_0.006_60)]/80 dark:bg-zinc-950/80 backdrop-blur-md" />
 
       <div className="relative max-w-[84rem] mx-auto px-6 h-16 flex items-center justify-between">
-        <a
-          href={lang === 'zh' ? '/zh' : '/'}
-          className="font-heading font-normal text-xl tracking-tight flex items-center gap-2 no-underline text-zinc-900 dark:text-zinc-100 leading-none"
-        >
-          <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
-          Silicon Universe
-        </a>
+        <div className="flex items-center gap-8">
+          <a
+            href={lang === 'zh' ? '/zh' : '/'}
+            className="font-heading font-normal text-xl tracking-tight flex items-center gap-2 no-underline text-zinc-900 dark:text-zinc-100 leading-none"
+          >
+            <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
+            Ninth Bit
+          </a>
 
-        <nav className="flex items-center gap-6">
-          <div className="hidden sm:flex items-center gap-6 text-sm font-normal text-zinc-500 dark:text-zinc-400">
+          <nav className="hidden sm:flex items-center gap-6 text-sm font-normal text-zinc-500 dark:text-zinc-400">
             {navItems.map((item) => {
               const active = isActive(item.key);
               const href = getHref(item.key);
@@ -81,24 +81,24 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
                 </a>
               );
             })}
-          </div>
+          </nav>
+        </div>
 
-          <div className="flex items-center gap-3 border-l border-zinc-200 dark:border-zinc-800 pl-6">
-            <LanguageSwitcher currentLang={lang} currentPath={currentPath} />
-            <ThemeToggle
-              className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-              aria-label="Toggle theme"
-            />
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher currentLang={lang} currentPath={currentPath} />
+          <ThemeToggle
+            className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+            aria-label="Toggle theme"
+          />
 
-            <button
-              onClick={() => setMobileMenuOpen((prev) => !prev)}
-              className="sm:hidden flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <RiCloseLine size={20} /> : <RiMenuLine size={20} />}
-            </button>
-          </div>
-        </nav>
+          <button
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            className="sm:hidden flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <RiCloseLine size={20} /> : <RiMenuLine size={20} />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>

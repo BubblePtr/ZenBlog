@@ -355,6 +355,100 @@ body {
       transparent 9px
     );
   }
+
+  .rail-line-t {
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--rail-color) 0px,
+      var(--rail-color) 3px,
+      transparent 3px,
+      transparent 9px
+    );
+    background-size: auto 1px;
+    background-position: top left;
+    background-repeat: repeat-x;
+  }
+
+  .rail-line-b {
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--rail-color) 0px,
+      var(--rail-color) 3px,
+      transparent 3px,
+      transparent 9px
+    );
+    background-size: auto 1px;
+    background-position: bottom left;
+    background-repeat: repeat-x;
+  }
+
+  .rail-line-x {
+    background-image:
+      repeating-linear-gradient(
+        to right,
+        var(--rail-color) 0px,
+        var(--rail-color) 3px,
+        transparent 3px,
+        transparent 9px
+      ),
+      repeating-linear-gradient(
+        to right,
+        var(--rail-color) 0px,
+        var(--rail-color) 3px,
+        transparent 3px,
+        transparent 9px
+      );
+    background-size: auto 1px, auto 1px;
+    background-position: top left, bottom left;
+    background-repeat: repeat-x, repeat-x;
+  }
+
+  .rail-line-l {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--rail-color) 0px,
+      var(--rail-color) 3px,
+      transparent 3px,
+      transparent 9px
+    );
+    background-size: 1px auto;
+    background-position: top left;
+    background-repeat: repeat-y;
+  }
+
+  .rail-line-r {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--rail-color) 0px,
+      var(--rail-color) 3px,
+      transparent 3px,
+      transparent 9px
+    );
+    background-size: 1px auto;
+    background-position: top right;
+    background-repeat: repeat-y;
+  }
+
+  .rail-line-y {
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        var(--rail-color) 0px,
+        var(--rail-color) 3px,
+        transparent 3px,
+        transparent 9px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        var(--rail-color) 0px,
+        var(--rail-color) 3px,
+        transparent 3px,
+        transparent 9px
+      );
+    background-size: 1px auto, 1px auto;
+    background-position: top left, top right;
+    background-repeat: repeat-y, repeat-y;
+  }
 }
 
 /* View Transitions API 样式（主题切换动画） */

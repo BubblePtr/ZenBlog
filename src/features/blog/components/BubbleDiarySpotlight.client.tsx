@@ -38,6 +38,7 @@ export default function BubbleDiarySpotlight({
     >
       {variant === 'home' ? (
         <HomeSpotlight
+          bubbleDiary={bubbleDiary}
           lang={lang}
           translate={translate}
         />
@@ -61,21 +62,29 @@ interface SpotlightBodyProps {
 }
 
 interface HomeSpotlightProps {
+  bubbleDiary: BubbleDiarySummary;
   lang: Language;
   translate: (key: TranslationKey) => string;
 }
 
 function HomeSpotlight({
+  bubbleDiary,
   lang,
   translate,
 }: HomeSpotlightProps) {
   const blogListUrl = lang === 'zh' ? '/zh/blog' : '/blog';
+  const latestEntry = bubbleDiary.latestEntry;
+  const latestDate = new Date(latestEntry.pubDate).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
+    year: 'numeric',
+    month: lang === 'zh' ? '2-digit' : 'short',
+    day: '2-digit',
+  });
 
   return (
-    <div>
-      <div className="mb-8">
+    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+      <div className="max-w-3xl">
         <div className="flex items-baseline justify-between">
-          <h2 className="text-[17px] font-normal tracking-tight text-zinc-900 dark:text-zinc-100">
+          <h2 className="text-2xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
             {translate('bubbleDiary.homeHeading')}
           </h2>
         </div>
@@ -94,6 +103,23 @@ function HomeSpotlight({
           </RainbowButton>
         </div>
       </div>
+      <a
+        href={latestEntry.url}
+        className="block border border-zinc-200 px-5 py-5 no-underline transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900/40"
+      >
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400 dark:text-zinc-500">
+          {bubbleDiary.totalEntries} {lang === 'zh' ? '篇公开记录' : 'entries live'}
+        </p>
+        <h3 className="mt-4 text-lg leading-7 text-zinc-900 dark:text-zinc-100">
+          {latestEntry.title}
+        </h3>
+        <p className="mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
+          {latestEntry.description}
+        </p>
+        <p className="mt-4 text-sm text-zinc-400 dark:text-zinc-500">
+          {latestDate}
+        </p>
+      </a>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export const en = {
   'nav.about': 'ABOUT ME',
 
   // Home
-  'home.title': 'Silicon Universe',
+  'home.title': 'Ninth Bit',
   'home.description': 'Welcome to my digital garden!',
   'home.latest': 'Latest Posts',
   'home.viewAll': 'View All',
@@ -15,7 +15,7 @@ export const en = {
   'home.writing': 'Selected Writing',
   'home.hero.name': 'Mo Ran',
   'home.hero.tagline': 'Software Engineer & Indie Developer',
-  'home.hero.intro': 'Welcome to my personal website. I share thoughts and hands-on work around software engineering, AI products, and indie building, along with selected projects in progress.',
+  'home.hero.intro': 'Notes on software engineering, AI products, and indie building, alongside a few projects and field observations in progress.',
   'home.photography': 'Photography',
   'home.projects': 'Projects',
   'home.projects.description': 'A pragmatist with an obsession for aesthetics — I strive to craft products that are both beautiful and functional, and document the practices and results here.',

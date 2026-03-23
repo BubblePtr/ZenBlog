@@ -44,6 +44,7 @@ export interface ProjectListItem {
   data: {
     title: string;
     description: string;
+    content: string;
     heroImage?: string;
     stack: string[];
     github?: string;

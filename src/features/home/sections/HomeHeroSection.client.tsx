@@ -2,10 +2,13 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import {
+  RiArrowRightUpLine,
   RiGithubLine,
+  RiSparklingLine,
   RiRssLine,
   RiTwitterXLine,
 } from '@remixicon/react';
+import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
 
 const fadeIn = {
@@ -19,78 +22,128 @@ const fadeIn = {
 
 interface HomeHeroSectionProps {
   t: TranslationDictionary;
+  lang: Language;
 }
 
-export default function HomeHeroSection({ t }: HomeHeroSectionProps) {
+const HERO_IMAGE_URL = 'https://cdn.ninthbit.org/web-images/DSC_0992_120.JPG';
+
+export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
+  const photographyHref = lang === 'zh' ? '/zh/photography' : '/photography';
+  const blogHref = lang === 'zh' ? '/zh/blog' : '/blog';
 
   return (
-    <section className="mb-24 sm:mb-32">
-      <motion.h1
-        custom={0}
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        className="text-2xl sm:text-3xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100"
-      >
-        {translate('home.hero.name')}
-      </motion.h1>
-      <motion.p
-        custom={1}
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        className="mt-3 text-[17px] text-zinc-900 dark:text-zinc-100"
-      >
-        {translate('home.hero.tagline')}
-      </motion.p>
-      <motion.p
-        custom={2}
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        className="mt-5 max-w-4xl text-base font-light leading-8 text-[var(--color-text-primary)]"
-      >
-        {translate('home.hero.intro')}
-      </motion.p>
-      <motion.div
-        custom={3}
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        className="mt-8 flex flex-wrap items-center gap-2.5"
-      >
-        <a
-          href="https://x.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 h-10 px-3.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 no-underline font-ui text-[11px] sm:text-[0.95rem] leading-none"
-        >
-          <span className="inline-flex items-center gap-1 leading-none">
-            <RiTwitterXLine className="h-4 w-4 shrink-0" />
-            <span className="block leading-none">Follow me on X</span>
-          </span>
-        </a>
+    <section className="flex min-h-[calc(100svh-4rem-1px)] items-center py-8 sm:py-10">
+      <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(22rem,0.82fr)] lg:items-center">
+        <div className="max-w-3xl">
+          <motion.h1
+            custom={0}
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+            className="font-heading text-5xl leading-[0.95] tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-6xl lg:text-[5.5rem]"
+          >
+            {translate('home.hero.name')}
+          </motion.h1>
+          <motion.p
+            custom={1}
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+            className="mt-4 max-w-xl text-lg text-zinc-900 dark:text-zinc-100"
+          >
+            {translate('home.hero.tagline')}
+          </motion.p>
+          <motion.p
+            custom={2}
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+            className="mt-6 max-w-2xl text-base font-light leading-8 text-[var(--color-text-primary)]"
+          >
+            {translate('home.hero.intro')}
+          </motion.p>
+          <motion.div
+            custom={3}
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+            className="mt-8 flex flex-wrap items-center gap-3"
+          >
+            <a
+              href={blogHref}
+              className="inline-flex h-11 items-center gap-2 rounded-full bg-zinc-900 px-4 text-sm text-white no-underline transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              <span>{translate('home.writing')}</span>
+              <RiArrowRightUpLine className="h-4 w-4 shrink-0" />
+            </a>
+            <a
+              href={photographyHref}
+              className="inline-flex h-11 items-center gap-2 rounded-full border border-zinc-300 px-4 text-sm text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+            >
+              <RiSparklingLine className="h-4 w-4 shrink-0" />
+              <span>{translate('home.photography')}</span>
+            </a>
+            <RssPopoverButton lang={lang} />
+            <a
+              href="https://github.com/BubblePtr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+              aria-label="Open GitHub"
+            >
+              <RiGithubLine className="h-[18px] w-[18px] shrink-0" />
+            </a>
+            <a
+              href="https://x.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+              aria-label="Open X"
+            >
+              <RiTwitterXLine className="h-[18px] w-[18px] shrink-0" />
+            </a>
+          </motion.div>
+        </div>
 
-        <RssPopoverButton />
-
-        <a
-          href="https://github.com/BubblePtr"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 no-underline"
-          aria-label="Open GitHub"
+        <motion.a
+          custom={4}
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+          href={photographyHref}
+          className="group block no-underline"
         >
-          <RiGithubLine className="h-[18px] w-[18px] shrink-0" />
-        </a>
-      </motion.div>
+          <div className="relative overflow-hidden rounded-[1.75rem] bg-zinc-100 p-2 dark:bg-zinc-900">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem]">
+              <img
+                src={HERO_IMAGE_URL}
+                alt={lang === 'zh' ? '春日旋转花影' : 'Spring flowers in motion'}
+                loading="eager"
+                className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-transparent opacity-70" />
+            </div>
+          </div>
+          <div className="mt-4 flex items-center justify-between gap-4 text-sm text-zinc-500 dark:text-zinc-400">
+            <span>{lang === 'zh' ? 'Recent frame / 2026.03' : 'Recent frame / Mar 2026'}</span>
+            <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+          </div>
+        </motion.a>
+      </div>
     </section>
   );
 }
 
-function RssPopoverButton() {
+function RssPopoverButton({ lang }: { lang: Language }) {
   const [open, setOpen] = React.useState(false);
   const closeTimerRef = React.useRef<number | null>(null);
+  const copyLabel = lang === 'zh' ? '复制链接' : 'Copy feed URL';
+  const copiedLabel = lang === 'zh' ? '已复制' : 'Copied';
+  const title = lang === 'zh' ? '订阅 RSS' : 'Subscribe via RSS';
+  const description = lang === 'zh'
+    ? '复制链接到你喜欢的 RSS 阅读器，比如 Feedly、Inoreader 或 NetNewsWire。'
+    : 'Copy the feed URL into your preferred RSS reader, such as Feedly, Inoreader, or NetNewsWire.';
 
   const clearCloseTimer = React.useCallback(() => {
     if (closeTimerRef.current) {
@@ -125,13 +178,14 @@ function RssPopoverButton() {
       <Popover.Trigger asChild>
         <button
           type="button"
+          onClick={() => setOpen((value) => !value)}
           onMouseEnter={openNow}
           onMouseLeave={closeLater}
-          className="inline-flex h-10 items-center gap-1 rounded-full bg-zinc-100 px-3.5 text-zinc-900 outline-none focus:outline-none focus-visible:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+          className="inline-flex h-11 items-center gap-2 rounded-full border border-zinc-300 px-4 text-sm text-zinc-700 outline-none transition-colors hover:border-zinc-900 hover:text-zinc-900 focus:outline-none focus-visible:outline-none dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
         >
           <span className="inline-flex items-center gap-1 leading-none">
-            <RiRssLine className="h-3.5 w-3.5 shrink-0" />
-            <span className="font-ui text-[11px] sm:text-[0.95rem] leading-none">RSS</span>
+            <RiRssLine className="h-4 w-4 shrink-0" />
+            <span className="font-ui leading-none">RSS</span>
           </span>
         </button>
       </Popover.Trigger>
@@ -155,35 +209,35 @@ function RssPopoverButton() {
       </Popover.Portal>
     </Popover.Root>
   );
-}
 
-function RssTooltipContent() {
-  const [copied, setCopied] = React.useState(false);
-  const rssUrl = 'https://ninthbit.org/rss.xml';
+  function RssTooltipContent() {
+    const [copied, setCopied] = React.useState(false);
+    const rssUrl = 'https://ninthbit.org/rss.xml';
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(rssUrl);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
-    } catch {
-      setCopied(false);
-    }
-  };
+    const handleCopy = async () => {
+      try {
+        await navigator.clipboard.writeText(rssUrl);
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1600);
+      } catch {
+        setCopied(false);
+      }
+    };
 
-  return (
-    <div className="w-full">
-      <h4 className="font-ui text-[15px] font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">订阅 RSS</h4>
-      <p className="mt-2 font-ui text-[13px] leading-7 text-neutral-600 dark:text-neutral-400">
-        复制下方链接到你喜欢的 RSS 阅读器（如 Feedly、Inoreader、NetNewsWire 等）即可订阅更新。
-      </p>
-      <button
-        type="button"
-        onClick={handleCopy}
-        className="mt-3 inline-flex h-10 w-full items-center justify-center border-0 bg-zinc-900 px-3 font-ui text-sm font-semibold text-white outline-none transition-colors hover:bg-zinc-800 focus:outline-none focus-visible:outline-none dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-      >
-        {copied ? '已复制' : '复制链接'}
-      </button>
-    </div>
-  );
+    return (
+      <div className="w-full">
+        <h4 className="font-ui text-[15px] font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">{title}</h4>
+        <p className="mt-2 font-ui text-[13px] leading-7 text-neutral-600 dark:text-neutral-400">
+          {description}
+        </p>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="mt-3 inline-flex h-10 w-full items-center justify-center border-0 bg-zinc-900 px-3 font-ui text-sm font-semibold text-white outline-none transition-colors hover:bg-zinc-800 focus:outline-none focus-visible:outline-none dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+        >
+          {copied ? copiedLabel : copyLabel}
+        </button>
+      </div>
+    );
+  }
 }

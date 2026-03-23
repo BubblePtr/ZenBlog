@@ -7,7 +7,7 @@ export const zh = {
   'nav.about': '关于我',
 
   // 首页
-  'home.title': 'Silicon Universe',
+  'home.title': '第九比特',
   'home.description': '欢迎来到我的数字花园！',
   'home.latest': '最新文章',
   'home.viewAll': '查看全部',
@@ -15,7 +15,7 @@ export const zh = {
   'home.writing': '博客',
   'home.hero.name': '墨染',
   'home.hero.tagline': '软件工程师 & 独立开发者',
-  'home.hero.intro': '好久不见，欢迎来到我的个人网站。这里记录我在软件工程、AI 产品与独立开发上的思考和实践，也分享一些正在打磨中的项目。希望这些内容能为你带来一点启发。',
+  'home.hero.intro': '记录软件工程、AI 产品与独立开发，也把一些正在发生的项目和观察留在这里。',
   'home.photography': '摄影',
   'home.projects': '项目',
   'home.projects.description': '我信奉实用主义但也对好看有着偏执，希望打磨出好看又好用的产品，把已有的一些实践和成果记录在这里。',
