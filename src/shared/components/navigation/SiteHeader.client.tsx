@@ -52,7 +52,7 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
             className="font-heading font-normal text-xl tracking-tight flex items-center gap-2 no-underline text-zinc-900 dark:text-zinc-100 leading-none"
           >
             <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
-            Ninth Bit
+            NinthBit
           </a>
 
           <nav className="hidden sm:flex items-center gap-6 text-sm font-normal text-zinc-500 dark:text-zinc-400">

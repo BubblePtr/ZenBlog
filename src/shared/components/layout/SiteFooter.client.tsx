@@ -25,7 +25,7 @@ interface SiteFooterProps {
 }
 
 export default function SiteFooter({ lang, t }: SiteFooterProps) {
-  const brandName = lang === 'zh' ? '第九比特' : 'Ninth Bit';
+  const brandName = 'NinthBit';
 
   const getLocalizedPath = (path: string) => {
     return lang === 'zh' ? `/zh${path}` : path;
