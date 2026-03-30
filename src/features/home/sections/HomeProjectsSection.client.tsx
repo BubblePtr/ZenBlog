@@ -102,7 +102,7 @@ export default function HomeProjectsSection({ projects, t }: HomeProjectsSection
           </div>
         </aside>
 
-        <div className="rail-line-y">
+        <div className="lg:rail-line-y">
           {projects.map((project, index) => {
             const paragraphs = getProjectParagraphs(project.data.content);
 
@@ -118,7 +118,7 @@ export default function HomeProjectsSection({ projects, t }: HomeProjectsSection
                   index > 0 ? 'rail-line-t' : ''
                 }`}
               >
-                <div className="rail-line-r px-6 py-8 lg:px-10 lg:py-10">
+                <div className="px-6 py-8 lg:rail-line-r lg:px-10 lg:py-10">
                   <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400 dark:text-zinc-500">
                     {String(index + 1).padStart(2, '0')}
                   </p>
