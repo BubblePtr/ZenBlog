@@ -12,7 +12,6 @@ const baseClassName = cn(
   'h-10 px-4 text-sm whitespace-nowrap no-underline',
   'rounded-md',
   'font-normal text-white',
-  'transition-transform duration-200 hover:-translate-y-px',
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/60 dark:focus-visible:ring-zinc-500/70',
   'animate-[rainbow_4.8s_linear_infinite]',
   'bg-[linear-gradient(#121213,#121213),linear-gradient(#121213_50%,rgba(18,18,19,0.65)_82%,rgba(18,18,19,0)),linear-gradient(90deg,var(--rainbow-color-1),var(--rainbow-color-5),var(--rainbow-color-3),var(--rainbow-color-4),var(--rainbow-color-2))]',

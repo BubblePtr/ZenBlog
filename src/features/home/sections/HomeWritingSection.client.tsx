@@ -35,10 +35,10 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
           </h2>
           <a
             href={getBlogListUrl()}
-            className="group inline-flex items-center gap-1 text-sm text-zinc-500 transition-colors hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+            className="inline-flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400"
           >
             <span>{translate('home.viewAll')}</span>
-            <span className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">→</span>
+            <span>→</span>
           </a>
         </div>
         <p className="mt-4 max-w-4xl text-base font-light leading-8 text-[var(--color-text-primary)]">
@@ -51,13 +51,13 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
           <a
             key={post.slug}
             href={getBlogUrl(post.slug)}
-            className="grid gap-3 border-b border-zinc-200/80 py-6 no-underline transition-colors last:border-b-0 hover:bg-zinc-50/60 dark:border-zinc-800 dark:hover:bg-zinc-900/30 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-6"
+            className="grid gap-3 border-b border-zinc-200/80 py-6 no-underline last:border-b-0 dark:border-zinc-800 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-6"
           >
             <p className="pt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
               {formatDate(post.data.pubDate)}
             </p>
             <div>
-              <h3 className="text-lg font-normal leading-6 text-zinc-900 transition-colors dark:text-zinc-100">
+              <h3 className="text-lg font-normal leading-6 text-zinc-900 dark:text-zinc-100">
                 {post.data.title}
               </h3>
               <p className="mt-2 max-w-2xl text-sm font-light leading-7 text-[var(--color-text-primary)]">

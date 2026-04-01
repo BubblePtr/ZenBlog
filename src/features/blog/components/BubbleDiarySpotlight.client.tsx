@@ -105,7 +105,7 @@ function HomeSpotlight({
       </div>
       <a
         href={latestEntry.url}
-        className="block border border-zinc-200 px-5 py-5 no-underline transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900/40"
+        className="block border border-zinc-200 px-5 py-5 no-underline dark:border-zinc-800"
       >
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400 dark:text-zinc-500">
           {bubbleDiary.totalEntries} {lang === 'zh' ? '篇公开记录' : 'entries live'}

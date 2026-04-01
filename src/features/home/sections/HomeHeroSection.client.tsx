@@ -89,7 +89,7 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
               href="https://github.com/BubblePtr"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300 text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
               aria-label="Open GitHub"
             >
               <RiGithubLine className="h-[18px] w-[18px] shrink-0" />
@@ -98,7 +98,7 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
               href="https://x.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300 text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
               aria-label="Open X"
             >
               <RiTwitterXLine className="h-[18px] w-[18px] shrink-0" />
@@ -112,7 +112,7 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
           animate="visible"
           variants={fadeIn}
           href={photographyHref}
-          className="group block no-underline"
+          className="block no-underline"
         >
           <div className="relative overflow-hidden rounded-[1.75rem] bg-zinc-100 p-2 dark:bg-zinc-900">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem]">
@@ -120,14 +120,14 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
                 src={HERO_IMAGE_URL}
                 alt={lang === 'zh' ? '春日旋转花影' : 'Spring flowers in motion'}
                 loading="eager"
-                className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-transparent opacity-70" />
             </div>
           </div>
           <div className="mt-4 flex items-center justify-between gap-4 text-sm text-zinc-500 dark:text-zinc-400">
             <span>{lang === 'zh' ? 'Recent frame / 2026.03' : 'Recent frame / Mar 2026'}</span>
-            <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+            <span>→</span>
           </div>
         </motion.a>
       </div>

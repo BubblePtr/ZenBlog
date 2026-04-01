@@ -30,10 +30,10 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
           </h2>
           <a
             href={getPhotographyUrl()}
-            className="group inline-flex items-center gap-1 text-sm text-zinc-500 transition-colors hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+            className="inline-flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400"
           >
             <span>{translate('home.viewAll')}</span>
-            <span className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">→</span>
+            <span>→</span>
           </a>
         </div>
         <p className="mt-4 max-w-4xl text-base font-light leading-8 text-[var(--color-text-primary)]">
@@ -46,7 +46,7 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
           <div
             key={photo.slug}
             className={[
-              'group relative overflow-hidden',
+              'relative overflow-hidden',
               index === 0 ? 'col-span-2 aspect-[4/3] lg:col-span-7 lg:row-span-2 lg:aspect-auto lg:min-h-[32rem]' : '',
               index === 1 ? 'aspect-[4/5] lg:col-span-5 lg:min-h-[15.5rem]' : '',
               index === 2 ? 'aspect-[4/3] lg:col-span-5 lg:min-h-[15.5rem]' : '',
@@ -58,9 +58,9 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
               src={photo.data.imageSrc}
               alt={photo.data.title}
               loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              className="h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-70" />
             <div className="absolute inset-x-0 bottom-0 p-4 text-white sm:p-5">
               <p className="text-sm tracking-tight">{photo.data.title}</p>
               {photo.data.location ? (

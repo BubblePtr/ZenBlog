@@ -79,17 +79,17 @@ export default function HomeProjectsSection({ projects, t }: HomeProjectsSection
                   <a
                     key={project.slug}
                     href={`#project-${project.slug}`}
-                    className={`group flex items-center gap-3 border-l pl-4 no-underline transition-all duration-300 ${
+                    className={`flex items-center gap-3 border-l pl-4 no-underline ${
                       isActive
                         ? 'border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100'
-                        : 'border-zinc-200 text-zinc-400 hover:border-zinc-500 hover:text-zinc-700 dark:border-zinc-800 dark:text-zinc-500 dark:hover:border-zinc-500 dark:hover:text-zinc-300'
+                        : 'border-zinc-200 text-zinc-400 dark:border-zinc-800 dark:text-zinc-500'
                     }`}
                   >
                     <span
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[11px] font-medium uppercase tracking-[0.12em] transition-colors ${
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[11px] font-medium uppercase tracking-[0.12em] ${
                         isActive
                           ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
-                          : 'border-zinc-300 text-zinc-500 group-hover:border-zinc-500 group-hover:text-zinc-700 dark:border-zinc-700 dark:text-zinc-500 dark:group-hover:border-zinc-500 dark:group-hover:text-zinc-300'
+                          : 'border-zinc-300 text-zinc-500 dark:border-zinc-700 dark:text-zinc-500'
                       }`}
                     >
                       {projectMark}
