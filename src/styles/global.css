@@ -26,6 +26,8 @@
 
     /* 内容导轨颜色 */
     --rail-color: rgba(0, 0, 0, 0.14);
+    --rail-left-position: max(1.5rem, calc(50vw - 42rem));
+    --rail-right-position: min(calc(100vw - 1.5rem), calc(50vw + 42rem));
   }
 
   .dark {
@@ -57,7 +59,7 @@
     -webkit-font-smoothing: subpixel-antialiased;
   }
 
-  /* 内容导轨：两条与正文列宽对齐的竖向虚线
+  /* 内容导轨：两条与正文列宽对齐的竖向实线
      使用 absolute 伪元素让导轨随页面内容一起滚动，像长纸上的线条 */
   body {
     position: relative;
@@ -74,13 +76,19 @@
     pointer-events: none;
     z-index: 9999;
     background-image:
-      repeating-linear-gradient(to bottom, var(--rail-color) 0px, var(--rail-color) 3px, transparent 3px, transparent 9px),
-      repeating-linear-gradient(to bottom, var(--rail-color) 0px, var(--rail-color) 3px, transparent 3px, transparent 9px);
-    background-size: 1px 9px, 1px 9px;
+      linear-gradient(var(--rail-color), var(--rail-color)),
+      linear-gradient(var(--rail-color), var(--rail-color));
+    background-size: 1px 100%, 1px 100%;
     background-position:
-      max(1.5rem, calc(50vw - 42rem)) 0,
-      min(calc(100vw - 1.5rem), calc(50vw + 42rem)) 0;
+      var(--rail-left-position) 0,
+      var(--rail-right-position) 0;
     background-repeat: repeat-y, repeat-y;
+  }
+
+  @media (max-width: 767px) {
+    body::before {
+      display: none;
+    }
   }
 
   /* 深色模式下使用默认渲染，避免彩边 */
@@ -344,39 +352,21 @@ body {
     @apply bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100;
   }
 
-  /* 内容导轨横向分隔线，与竖向导轨保持一致的虚线风格 */
+  /* 内容导轨横向分隔线，与竖向导轨保持一致的实线风格 */
   .section-rule {
     height: 1px;
-    background-image: repeating-linear-gradient(
-      to right,
-      var(--rail-color) 0px,
-      var(--rail-color) 3px,
-      transparent 3px,
-      transparent 9px
-    );
+    background-color: var(--rail-color);
   }
 
   .rail-line-t {
-    background-image: repeating-linear-gradient(
-      to right,
-      var(--rail-color) 0px,
-      var(--rail-color) 3px,
-      transparent 3px,
-      transparent 9px
-    );
+    background-image: linear-gradient(var(--rail-color), var(--rail-color));
     background-size: auto 1px;
     background-position: top left;
     background-repeat: repeat-x;
   }
 
   .rail-line-b {
-    background-image: repeating-linear-gradient(
-      to right,
-      var(--rail-color) 0px,
-      var(--rail-color) 3px,
-      transparent 3px,
-      transparent 9px
-    );
+    background-image: linear-gradient(var(--rail-color), var(--rail-color));
     background-size: auto 1px;
     background-position: bottom left;
     background-repeat: repeat-x;
@@ -384,46 +374,22 @@ body {
 
   .rail-line-x {
     background-image:
-      repeating-linear-gradient(
-        to right,
-        var(--rail-color) 0px,
-        var(--rail-color) 3px,
-        transparent 3px,
-        transparent 9px
-      ),
-      repeating-linear-gradient(
-        to right,
-        var(--rail-color) 0px,
-        var(--rail-color) 3px,
-        transparent 3px,
-        transparent 9px
-      );
+      linear-gradient(var(--rail-color), var(--rail-color)),
+      linear-gradient(var(--rail-color), var(--rail-color));
     background-size: auto 1px, auto 1px;
     background-position: top left, bottom left;
     background-repeat: repeat-x, repeat-x;
   }
 
   .rail-line-l {
-    background-image: repeating-linear-gradient(
-      to bottom,
-      var(--rail-color) 0px,
-      var(--rail-color) 3px,
-      transparent 3px,
-      transparent 9px
-    );
+    background-image: linear-gradient(var(--rail-color), var(--rail-color));
     background-size: 1px auto;
     background-position: top left;
     background-repeat: repeat-y;
   }
 
   .rail-line-r {
-    background-image: repeating-linear-gradient(
-      to bottom,
-      var(--rail-color) 0px,
-      var(--rail-color) 3px,
-      transparent 3px,
-      transparent 9px
-    );
+    background-image: linear-gradient(var(--rail-color), var(--rail-color));
     background-size: 1px auto;
     background-position: top right;
     background-repeat: repeat-y;
@@ -431,20 +397,8 @@ body {
 
   .rail-line-y {
     background-image:
-      repeating-linear-gradient(
-        to bottom,
-        var(--rail-color) 0px,
-        var(--rail-color) 3px,
-        transparent 3px,
-        transparent 9px
-      ),
-      repeating-linear-gradient(
-        to bottom,
-        var(--rail-color) 0px,
-        var(--rail-color) 3px,
-        transparent 3px,
-        transparent 9px
-      );
+      linear-gradient(var(--rail-color), var(--rail-color)),
+      linear-gradient(var(--rail-color), var(--rail-color));
     background-size: 1px auto, 1px auto;
     background-position: top left, top right;
     background-repeat: repeat-y, repeat-y;

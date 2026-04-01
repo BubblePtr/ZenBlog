@@ -47,17 +47,17 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
   return (
     <footer className="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="flex flex-col md:flex-row justify-between gap-12">
+        <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left justify-between gap-12">
           {/* 左侧：品牌区 + 版权信息 */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col items-center gap-4 md:items-start">
             <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-100">
               {brandName}
             </h2>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col items-center gap-2 md:items-start">
               <p className="text-xs text-zinc-400">
                 © {new Date().getFullYear()} {brandName} · All rights reserved
               </p>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center justify-center gap-1.5 md:justify-start">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
@@ -70,13 +70,13 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
           </div>
 
           {/* 右侧：导航 + 社交 */}
-          <div className="flex flex-col sm:flex-row gap-12 sm:gap-40">
+          <div className="flex flex-col items-center gap-12 sm:flex-row sm:gap-40 md:items-start">
             {/* 导航区 */}
-            <div>
+            <div className="text-center md:text-left">
               <h3 className="text-xs uppercase tracking-wider text-zinc-400 mb-3">
                 {t['footer.navigate']}
               </h3>
-              <nav className="flex flex-col space-y-2">
+              <nav className="flex flex-col items-center space-y-2 md:items-start">
                 {NAV_LINKS.map((link) => (
                   <a
                     key={link.href}
@@ -90,18 +90,18 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
             </div>
 
             {/* 社交区 */}
-            <div>
+            <div className="text-center md:text-left">
               <h3 className="text-xs uppercase tracking-wider text-zinc-400 mb-3">
                 {t['footer.connect']}
               </h3>
-              <div className="flex flex-col space-y-2">
+              <div className="flex flex-col items-center space-y-2 md:items-start">
                 {SOCIAL_LINKS.map((link) => (
                   <a
                     key={link.label}
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                    className="flex items-center justify-center gap-2 text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors md:justify-start"
                     aria-label={link.label}
                   >
                     <link.icon size={20} />
