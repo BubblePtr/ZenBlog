@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { motion, useScroll, useSpring, useTransform, useVelocity, type MotionValue } from 'framer-motion';
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  useVelocity,
+  type MotionValue,
+} from 'framer-motion';
 
 interface TickProps {
   index: number;
@@ -14,7 +21,11 @@ function Tick({ index, total, progress, velocity }: TickProps) {
   const isLong = index % 5 === 0;
   const baseWidth = isLong ? 24 : 12;
 
-  const waveValue = useTransform(progress, [position - threshold, position, position + threshold], [0, 1, 0]);
+  const waveValue = useTransform(
+    progress,
+    [position - threshold, position, position + threshold],
+    [0, 1, 0],
+  );
   const amplitudeFactor = useTransform(velocity, (v) => 1 + Math.min(Math.abs(v) * 0.2, 0.5));
 
   const width = useTransform([waveValue, amplitudeFactor], ([wave, amp]) => {
@@ -24,7 +35,12 @@ function Tick({ index, total, progress, velocity }: TickProps) {
 
   const colorClass = isLong ? 'bg-zinc-900 dark:bg-zinc-100' : 'bg-zinc-300 dark:bg-zinc-700';
 
-  return <motion.div style={{ width }} className={`h-px ${colorClass} rounded-full origin-left will-change-transform`} />;
+  return (
+    <motion.div
+      style={{ width }}
+      className={`h-px ${colorClass} rounded-full origin-left will-change-transform`}
+    />
+  );
 }
 
 export default function ScrollProgress() {
@@ -67,11 +83,20 @@ export default function ScrollProgress() {
       <div className="absolute left-[14px] top-0 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800" />
       <div className="absolute left-[14px] top-0 bottom-0 flex flex-col justify-between w-full py-[2px]">
         {ticks.map((i) => (
-          <Tick key={i} index={i} total={totalTicks} progress={smoothProgress} velocity={smoothVelocity} />
+          <Tick
+            key={i}
+            index={i}
+            total={totalTicks}
+            progress={smoothProgress}
+            velocity={smoothVelocity}
+          />
         ))}
       </div>
 
-      <motion.div className="absolute left-0 w-full flex items-center z-10" style={{ top: y, translateY: '-50%' }}>
+      <motion.div
+        className="absolute left-0 w-full flex items-center z-10"
+        style={{ top: y, translateY: '-50%' }}
+      >
         <div className="w-0 h-0 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent border-l-8 border-l-orange-500 drop-shadow-sm" />
         <div className="h-px w-12 bg-orange-500 ml-1 shadow-[0_0_10px_rgba(249,115,22,0.8)]" />
       </motion.div>

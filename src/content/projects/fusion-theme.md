@@ -1,10 +1,10 @@
 ---
-title: "Astro Fusion Theme"
-description: "A minimalist yet interactive blog theme built for developers. Featuring distinct typography and micro-interactions."
+title: 'Astro Fusion Theme'
+description: 'A minimalist yet interactive blog theme built for developers. Featuring distinct typography and micro-interactions.'
 order: 1
-stack: ["Astro", "React", "Tailwind", "Framer Motion"]
-github: "https://github.com/BubblePtr/ZenBlog"
-demo: "https://ninthbit.org"
+stack: ['Astro', 'React', 'Tailwind', 'Framer Motion']
+github: 'https://github.com/BubblePtr/ZenBlog'
+demo: 'https://ninthbit.org'
 ---
 
 Here is a detailed breakdown of how I built this theme...

@@ -8,7 +8,7 @@ interface PollProps {
 
 export default function Poll({ question, options }: PollProps) {
   const [voted, setVoted] = useState<number | null>(null);
-  
+
   // 模拟初始数据：生成一些随机票数，让演示看起来不空
   const [votes, setVotes] = useState(() => options.map(() => Math.floor(Math.random() * 20) + 5));
 
@@ -44,23 +44,24 @@ export default function Poll({ question, options }: PollProps) {
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${percent}%` }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
                   className={`absolute top-0 bottom-0 left-0 rounded-lg opacity-10 ${isSelected ? 'bg-zinc-700 dark:bg-zinc-300' : 'bg-zinc-500'}`}
                 />
               )}
-              
+
               {/* 选项内容 */}
-              <div className={`relative p-3 rounded-lg border transition-all flex justify-between items-center
-                ${voted === null
-                  ? 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-500 dark:hover:border-zinc-500 bg-zinc-50 dark:bg-zinc-800/50'
-                  : `border-transparent ${isSelected ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 dark:text-zinc-400'}`
+              <div
+                className={`relative p-3 rounded-lg border transition-all flex justify-between items-center
+                ${
+                  voted === null
+                    ? 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-500 dark:hover:border-zinc-500 bg-zinc-50 dark:bg-zinc-800/50'
+                    : `border-transparent ${isSelected ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 dark:text-zinc-400'}`
                 }
-              `}>
-                <span className="font-medium text-sm">
-                  {option}
-                </span>
+              `}
+              >
+                <span className="font-medium text-sm">{option}</span>
                 {voted !== null && (
-                  <motion.span 
+                  <motion.span
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="text-xs font-mono"

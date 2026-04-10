@@ -18,7 +18,8 @@ const EXPERIENCES = [
     company: 'StartUp Inc.',
     period: '2020 - 2022',
     type: 'work',
-    description: 'Shipped the MVP in 3 months. Handled everything from Postgres DB design to Tailwind UI components.',
+    description:
+      'Shipped the MVP in 3 months. Handled everything from Postgres DB design to Tailwind UI components.',
   },
   {
     id: 3,
@@ -79,7 +80,9 @@ export default function CareerTimeline() {
             <span>{item.company}</span>
           </div>
 
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-prose">{item.description}</p>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-prose">
+            {item.description}
+          </p>
         </motion.div>
       ))}
     </div>

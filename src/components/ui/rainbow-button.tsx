@@ -19,7 +19,7 @@ const baseClassName = cn(
   'before:pointer-events-none before:absolute before:bottom-[-18%] before:left-1/2 before:-z-10 before:h-1/4 before:w-3/5 before:-translate-x-1/2 before:animate-[rainbow_4.8s_linear_infinite]',
   'before:bg-[linear-gradient(90deg,var(--rainbow-color-1),var(--rainbow-color-5),var(--rainbow-color-3),var(--rainbow-color-4),var(--rainbow-color-2))] before:[filter:blur(0.8rem)] before:opacity-55',
   'dark:bg-[linear-gradient(#fff,#fff),linear-gradient(#fff_50%,rgba(255,255,255,0.6)_82%,rgba(255,255,255,0)),linear-gradient(90deg,var(--rainbow-color-1),var(--rainbow-color-5),var(--rainbow-color-3),var(--rainbow-color-4),var(--rainbow-color-2))]',
-  'dark:text-zinc-950'
+  'dark:text-zinc-950',
 );
 
 export function RainbowButton(props: RainbowButtonProps) {

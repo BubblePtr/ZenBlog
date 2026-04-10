@@ -7,7 +7,11 @@ interface ThemeToggleProps extends React.ComponentPropsWithoutRef<'button'> {
   duration?: number;
 }
 
-export default function ThemeToggle({ className = '', duration = 400, ...props }: ThemeToggleProps) {
+export default function ThemeToggle({
+  className = '',
+  duration = 400,
+  ...props
+}: ThemeToggleProps) {
   const [isDark, setIsDark] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -57,10 +61,7 @@ export default function ThemeToggle({ className = '', duration = 400, ...props }
 
     document.documentElement.animate(
       {
-        clipPath: [
-          `circle(0px at ${x}px ${y}px)`,
-          `circle(${maxRadius}px at ${x}px ${y}px)`,
-        ],
+        clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxRadius}px at ${x}px ${y}px)`],
       },
       {
         duration,
@@ -71,7 +72,12 @@ export default function ThemeToggle({ className = '', duration = 400, ...props }
   }, [duration, isDark]);
 
   return (
-    <button ref={buttonRef} onClick={toggleTheme} className={`relative overflow-hidden ${className}`} {...props}>
+    <button
+      ref={buttonRef}
+      onClick={toggleTheme}
+      className={`relative overflow-hidden ${className}`}
+      {...props}
+    >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={isDark ? 'sun' : 'moon'}

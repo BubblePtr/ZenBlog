@@ -50,9 +50,7 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
         <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left justify-between gap-12">
           {/* 左侧：品牌区 + 版权信息 */}
           <div className="flex flex-col items-center gap-4 md:items-start">
-            <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-100">
-              {brandName}
-            </h2>
+            <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-100">{brandName}</h2>
             <div className="flex flex-col items-center gap-2 md:items-start">
               <p className="text-xs text-zinc-400">
                 © {new Date().getFullYear()} {brandName} · All rights reserved
@@ -62,9 +60,7 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
                 </span>
-                <span className="text-xs text-zinc-500 font-mono">
-                  All Systems Normal
-                </span>
+                <span className="text-xs text-zinc-500 font-mono">All Systems Normal</span>
               </div>
             </div>
           </div>

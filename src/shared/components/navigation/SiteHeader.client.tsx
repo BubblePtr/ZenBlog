@@ -2,7 +2,7 @@ import { RiMenuLine, RiCloseLine } from '@remixicon/react';
 import { AnimatePresence } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import type { Language } from '@/i18n/config';
-import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
+import type { TranslationDictionary } from '@/shared/i18n/types';
 import LanguageSwitcher from './LanguageSwitcher.client';
 import ThemeToggle from '@/shared/components/theme/ThemeToggle.client';
 import MobileNavMenu from './MobileNavMenu.client';
@@ -17,7 +17,6 @@ type NavItemKey = 'blog' | 'photography' | 'about';
 
 export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const translate = (key: TranslationKey) => t[key] || key;
   const getHref = (item: NavItemKey) => (lang === 'zh' ? `/zh/${item}` : `/${item}`);
 
   const isActive = (item: NavItemKey) => {
@@ -28,9 +27,9 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
 
   const navItems = useMemo(
     () => [
-      { key: 'blog' as const, label: translate('nav.blog') },
-      { key: 'photography' as const, label: translate('nav.photography') },
-      { key: 'about' as const, label: translate('nav.about') },
+      { key: 'blog' as const, label: t['nav.blog'] || 'nav.blog' },
+      { key: 'photography' as const, label: t['nav.photography'] || 'nav.photography' },
+      { key: 'about' as const, label: t['nav.about'] || 'nav.about' },
     ],
     [t],
   );

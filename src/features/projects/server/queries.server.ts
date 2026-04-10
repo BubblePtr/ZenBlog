@@ -19,16 +19,12 @@ export function mapProjectListItem(project: ProjectEntry): ProjectListItem {
 }
 
 export async function getProjects(): Promise<ProjectListItem[]> {
-  const allProjects = (await getCollection('projects')).sort(
-    (a, b) => a.data.order - b.data.order,
-  );
+  const allProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 
   return allProjects.map(mapProjectListItem);
 }
 
 export async function getProjectsForHome(limit = 4): Promise<ProjectListItem[]> {
-  const allProjects = (await getCollection('projects')).sort(
-    (a, b) => a.data.order - b.data.order,
-  );
+  const allProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
   return allProjects.slice(0, limit).map(mapProjectListItem);
 }

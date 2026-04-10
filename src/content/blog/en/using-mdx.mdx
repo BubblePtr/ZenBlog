@@ -1,7 +1,7 @@
 ---
-title: "The Magic of MDX: From Text to Interaction"
-description: "Explore how to squeeze every drop of potential from MDX in your Astro blog—embedding React components, interactive charts, and custom typography."
-pubDate: "2025-11-25"
+title: 'The Magic of MDX: From Text to Interaction'
+description: 'Explore how to squeeze every drop of potential from MDX in your Astro blog—embedding React components, interactive charts, and custom typography.'
+pubDate: '2025-11-25'
 showOnHome: true
 lang: en
 ---
@@ -31,15 +31,18 @@ Try clicking the `+` and `-` above. You'll see the number change in real-time. T
 Plain Markdown blockquotes `>` are a bit boring. We can wrap a `<Callout />` component to convey information with different emotional tones.
 
 <Callout type="info" title="Did you know?">
-  Astro's MDX integration supports GitHub Flavored Markdown (GFM) by default, including tables and task lists.
+  Astro's MDX integration supports GitHub Flavored Markdown (GFM) by default, including tables and
+  task lists.
 </Callout>
 
 <Callout type="warning" title="Performance Tip">
-  While MDX is powerful, note that every embedded React component adds to the page's JS bundle size. Use `client:visible` accordingly.
+  While MDX is powerful, note that every embedded React component adds to the page's JS bundle size.
+  Use `client:visible` accordingly.
 </Callout>
 
 <Callout type="error" title="Common Mistake">
-  Don't define complex React component logic directly in MDX. It's better to extract them into separate `.tsx` files and import them to keep your articles clean.
+  Don't define complex React component logic directly in MDX. It's better to extract them into
+  separate `.tsx` files and import them to keep your articles clean.
 </Callout>
 
 ---
@@ -51,7 +54,7 @@ Since MDX supports React, we can embed complex interactive logic in articles, li
 <Poll
   client:visible
   question="Which frontend framework do you prefer?"
-  options={["React / Next.js", "Vue / Nuxt", "Svelte / SvelteKit", "Astro (The Best!)"]}
+  options={['React / Next.js', 'Vue / Nuxt', 'Svelte / SvelteKit', 'Astro (The Best!)']}
 />
 
 When you click an option, you'll see a smooth animation showing simulated voting results. This demonstrates MDX's ability to handle user events and dynamic styles.

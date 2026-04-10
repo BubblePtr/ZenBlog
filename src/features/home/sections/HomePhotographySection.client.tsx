@@ -47,7 +47,9 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
             key={photo.slug}
             className={[
               'relative overflow-hidden',
-              index === 0 ? 'col-span-2 aspect-[4/3] lg:col-span-7 lg:row-span-2 lg:aspect-auto lg:min-h-[32rem]' : '',
+              index === 0
+                ? 'col-span-2 aspect-[4/3] lg:col-span-7 lg:row-span-2 lg:aspect-auto lg:min-h-[32rem]'
+                : '',
               index === 1 ? 'aspect-[4/5] lg:col-span-5 lg:min-h-[15.5rem]' : '',
               index === 2 ? 'aspect-[4/3] lg:col-span-5 lg:min-h-[15.5rem]' : '',
               index === 3 ? 'aspect-[4/3] lg:col-span-4 lg:min-h-[14rem]' : '',

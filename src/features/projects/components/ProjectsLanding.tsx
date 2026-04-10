@@ -87,11 +87,15 @@ export default function ProjectsLanding({ lang }: ProjectsLandingProps) {
           <span className="block">{copy.headingLine1}</span>
           <span className="block mt-2">{copy.headingLine2}</span>
         </h1>
-        <p className="mt-8 text-base sm:text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">{copy.intro}</p>
+        <p className="mt-8 text-base sm:text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
+          {copy.intro}
+        </p>
       </div>
 
       <div className="mt-20 sm:mt-28">
-        <h2 className="font-heading text-xl text-zinc-900 dark:text-zinc-100">{copy.sectionTitle}</h2>
+        <h2 className="font-heading text-xl text-zinc-900 dark:text-zinc-100">
+          {copy.sectionTitle}
+        </h2>
         <p className="mt-2 text-base text-zinc-500 dark:text-zinc-400">{copy.sectionSubtitle}</p>
 
         <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-2xl text-zinc-500 dark:text-zinc-400">
@@ -105,11 +109,17 @@ export default function ProjectsLanding({ lang }: ProjectsLandingProps) {
         {copy.cards.map((card) => (
           <article key={card.title} className="min-w-0">
             <div className="h-64 bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center">
-              <div className="font-heading text-5xl text-zinc-900 dark:text-zinc-100">{card.brand}</div>
+              <div className="font-heading text-5xl text-zinc-900 dark:text-zinc-100">
+                {card.brand}
+              </div>
             </div>
 
-            <h3 className="mt-5 font-heading text-2xl text-zinc-900 dark:text-zinc-100">{card.title}</h3>
-            <p className="mt-2 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">{card.description}</p>
+            <h3 className="mt-5 font-heading text-2xl text-zinc-900 dark:text-zinc-100">
+              {card.title}
+            </h3>
+            <p className="mt-2 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
+              {card.description}
+            </p>
 
             <div className="mt-4 flex flex-wrap gap-2">
               {card.tags.map((tag) => (

@@ -2,7 +2,7 @@
 @import './_variables.scss';
 @import './_keyframe-animations.scss';
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Tailwind CSS 4: 使用 class 策略的暗色模式（基于 .dark 类） */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -19,10 +19,10 @@
     /* 字体变量已在 typography.css 的 @theme 中定义 */
 
     /* 文字颜色系统（RGBA 方案，减少视觉疲劳） */
-    --color-text-primary: rgba(0, 0, 0, 0.87);    /* 正文、标题 */
-    --color-text-secondary: rgba(0, 0, 0, 0.6);   /* 次要文字 */
-    --color-text-disabled: rgba(0, 0, 0, 0.38);   /* 禁用文字 */
-    --color-text-emphasis: rgba(0, 0, 0, 0.92);   /* 强调文字 */
+    --color-text-primary: rgba(0, 0, 0, 0.87); /* 正文、标题 */
+    --color-text-secondary: rgba(0, 0, 0, 0.6); /* 次要文字 */
+    --color-text-disabled: rgba(0, 0, 0, 0.38); /* 禁用文字 */
+    --color-text-emphasis: rgba(0, 0, 0, 0.92); /* 强调文字 */
 
     /* 内容导轨颜色 */
     --rail-color: rgba(0, 0, 0, 0.14);
@@ -36,7 +36,7 @@
 
     /* 暗色模式文字颜色 */
     --color-text-primary: rgba(255, 255, 255, 0.87);
-    --color-text-secondary: #a1a1aa;  /* zinc-400，有色温，比透明白更有质感 */
+    --color-text-secondary: #a1a1aa; /* zinc-400，有色温，比透明白更有质感 */
     --color-text-disabled: rgba(255, 255, 255, 0.38);
     --color-text-emphasis: rgba(255, 255, 255, 0.92);
 
@@ -78,7 +78,9 @@
     background-image:
       linear-gradient(var(--rail-color), var(--rail-color)),
       linear-gradient(var(--rail-color), var(--rail-color));
-    background-size: 1px 100%, 1px 100%;
+    background-size:
+      1px 100%,
+      1px 100%;
     background-position:
       var(--rail-left-position) 0,
       var(--rail-right-position) 0;
@@ -149,10 +151,10 @@ body {
   .prose {
     font-family: var(--font-body);
     font-size: var(--font-size-body);
-    font-weight: var(--font-weight-light);  /* 300 */
+    font-weight: var(--font-weight-light); /* 300 */
     line-height: var(--line-height-relaxed);
     letter-spacing: var(--letter-spacing-normal);
-    color: var(--color-text-primary);  /* rgba(0,0,0,0.87) */
+    color: var(--color-text-primary); /* rgba(0,0,0,0.87) */
   }
 
   /* 段落 */
@@ -164,7 +166,7 @@ body {
   /* 加粗文字：400 字重，颜色稍深 */
   .prose strong,
   .prose b {
-    font-weight: var(--font-weight-normal);  /* 400 */
+    font-weight: var(--font-weight-normal); /* 400 */
     color: var(--color-text-emphasis);
   }
 
@@ -172,7 +174,7 @@ body {
   .prose h1 {
     font-family: var(--font-article-title);
     font-size: var(--font-size-article-title);
-    font-weight: var(--font-weight-bold);  /* 700 */
+    font-weight: var(--font-weight-bold); /* 700 */
     line-height: var(--line-height-tight);
     color: var(--color-text-emphasis);
     margin-top: 0;
@@ -183,7 +185,7 @@ body {
   .prose h2 {
     font-family: var(--font-heading);
     font-size: var(--font-size-prose-heading);
-    font-weight: var(--font-weight-normal);  /* 400 */
+    font-weight: var(--font-weight-normal); /* 400 */
     line-height: var(--line-height-tight);
     color: var(--color-text-emphasis);
     margin-top: 3rem;
@@ -192,7 +194,7 @@ body {
 
   .prose h3 {
     font-family: var(--font-heading);
-    font-size: 1.25rem;  /* 20px */
+    font-size: 1.25rem; /* 20px */
     font-weight: var(--font-weight-normal);
     line-height: var(--line-height-tight);
     color: var(--color-text-emphasis);
@@ -202,7 +204,7 @@ body {
 
   .prose h4 {
     font-family: var(--font-heading);
-    font-size: 1.125rem;  /* 18px */
+    font-size: 1.125rem; /* 18px */
     font-weight: var(--font-weight-normal);
     line-height: var(--line-height-tight);
     color: var(--color-text-emphasis);
@@ -255,12 +257,22 @@ body {
     @apply my-12;
     border: none;
     height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 50%, transparent 50%);
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.12) 0%,
+      rgba(0, 0, 0, 0.12) 50%,
+      transparent 50%
+    );
     background-size: 6px 1px;
   }
 
   .dark .prose hr {
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.14) 50%, transparent 50%);
+    background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.14) 50%,
+      transparent 50%
+    );
   }
 
   /* 行内代码 */
@@ -295,9 +307,11 @@ body {
 
   /* 代码块 Mac 窗口风格 - 红黄绿三个点 */
   .prose pre::before {
-    content: "";
+    content: '';
     @apply absolute top-4 left-4 w-3 h-3 rounded-full bg-red-400;
-    box-shadow: 20px 0 0 #facc15, 40px 0 0 #4ade80;
+    box-shadow:
+      20px 0 0 #facc15,
+      40px 0 0 #4ade80;
   }
 
   /* 图片 */
@@ -376,8 +390,12 @@ body {
     background-image:
       linear-gradient(var(--rail-color), var(--rail-color)),
       linear-gradient(var(--rail-color), var(--rail-color));
-    background-size: auto 1px, auto 1px;
-    background-position: top left, bottom left;
+    background-size:
+      auto 1px,
+      auto 1px;
+    background-position:
+      top left,
+      bottom left;
     background-repeat: repeat-x, repeat-x;
   }
 
@@ -399,8 +417,12 @@ body {
     background-image:
       linear-gradient(var(--rail-color), var(--rail-color)),
       linear-gradient(var(--rail-color), var(--rail-color));
-    background-size: 1px auto, 1px auto;
-    background-position: top left, top right;
+    background-size:
+      1px auto,
+      1px auto;
+    background-position:
+      top left,
+      top right;
     background-repeat: repeat-y, repeat-y;
   }
 }

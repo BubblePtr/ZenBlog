@@ -41,7 +41,9 @@ export default function ProjectsShowcase({ projects, t }: ProjectsShowcaseProps)
 
           <div className="p-5">
             <div className="flex items-start justify-between gap-4">
-              <h3 className="font-heading text-xl text-zinc-900 dark:text-zinc-100">{project.data.title}</h3>
+              <h3 className="font-heading text-xl text-zinc-900 dark:text-zinc-100">
+                {project.data.title}
+              </h3>
               <div className="flex items-center gap-2">
                 {project.data.github && (
                   <a

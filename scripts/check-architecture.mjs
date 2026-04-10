@@ -91,7 +91,7 @@ function checkRule(importer, imported, specifier) {
 
 function extractImports(source) {
   const matches = [];
-  const pattern = /(import|export)\\s+[^'\"]*?from\\s+['\"]([^'\"]+)['\"]/g;
+  const pattern = /(import|export)\\s+[^'"]*?from\\s+['"]([^'"]+)['"]/g;
 
   let match = pattern.exec(source);
   while (match) {

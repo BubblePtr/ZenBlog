@@ -19,15 +19,15 @@ export default function Magnetic({ children, strength = 0.2 }: MagneticProps) {
   const handleMouseMove = (e: MouseEvent) => {
     const { clientX, clientY } = e;
     if (!ref.current) return;
-    
+
     const { height, width, left, top } = ref.current.getBoundingClientRect();
-    
+
     // 计算鼠标距离元素中心的偏移量
     const middleX = clientX - (left + width / 2);
     const middleY = clientY - (top + height / 2);
-    
+
     // 设置位移 (偏移量 * 强度)
-    x.set(middleX * strength); 
+    x.set(middleX * strength);
     y.set(middleY * strength);
   };
 

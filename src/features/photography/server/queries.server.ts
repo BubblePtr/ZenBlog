@@ -33,7 +33,10 @@ function comparePhotographyEntries(a: PhotographyEntry, b: PhotographyEntry): nu
   return a.id.localeCompare(b.id);
 }
 
-export function mapPhotographyPhotoItem(entry: PhotographyEntry, lang: Language): PhotographyPhotoItem {
+export function mapPhotographyPhotoItem(
+  entry: PhotographyEntry,
+  lang: Language,
+): PhotographyPhotoItem {
   const imageSrc = typeof entry.data.image === 'string' ? entry.data.image : entry.data.image.src;
   const imageWidth = typeof entry.data.image === 'string' ? undefined : entry.data.image.width;
   const imageHeight = typeof entry.data.image === 'string' ? undefined : entry.data.image.height;
@@ -70,7 +73,10 @@ export async function getPhotographyDateGroups(lang: Language): Promise<Photogra
   return Array.from(groups.entries()).map(([dateKey, photos]) => ({ dateKey, photos }));
 }
 
-export async function getPhotographyForHome(lang: Language, limit = 6): Promise<PhotographyPhotoItem[]> {
+export async function getPhotographyForHome(
+  lang: Language,
+  limit = 6,
+): Promise<PhotographyPhotoItem[]> {
   const entries = (await getCollection('photography')).sort(comparePhotographyEntries);
   return entries.slice(0, limit).map((entry) => mapPhotographyPhotoItem(entry, lang));
 }

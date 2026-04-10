@@ -59,17 +59,17 @@ export default function BlogListSection({ posts, bubbleDiary, lang, t }: BlogLis
 
   const yearOptions = useMemo<FilterOption[]>(() => {
     return [
-      { value: 'all', label: translate('blog.grid.filters.allYears') },
+      { value: 'all', label: t['blog.grid.filters.allYears'] || 'blog.grid.filters.allYears' },
       ...years.map((year) => ({ value: year, label: year })),
     ];
-  }, [years, translate]);
+  }, [years, t]);
 
   const authorOptions = useMemo<FilterOption[]>(() => {
     return [
-      { value: 'all', label: translate('blog.grid.filters.allAuthors') },
+      { value: 'all', label: t['blog.grid.filters.allAuthors'] || 'blog.grid.filters.allAuthors' },
       ...authors.map((author) => ({ value: author, label: author })),
     ];
-  }, [authors, translate]);
+  }, [authors, t]);
 
   const filteredRows = useMemo(() => {
     return rows.filter((row) => {
@@ -100,11 +100,7 @@ export default function BlogListSection({ posts, bubbleDiary, lang, t }: BlogLis
             <span className="mb-2 block text-sm text-zinc-400 dark:text-zinc-500">
               {translate('blog.grid.filters.year')}
             </span>
-            <FilterDropdown
-              value={selectedYear}
-              options={yearOptions}
-              onChange={setSelectedYear}
-            />
+            <FilterDropdown value={selectedYear} options={yearOptions} onChange={setSelectedYear} />
           </div>
 
           <div className="block">
@@ -238,38 +234,38 @@ function FilterDropdown({
       </button>
 
       <AnimatePresence>
-      {open && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.97, y: -4 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.97, y: -4 }}
-          transition={{ duration: 0.14, ease: 'easeOut' }}
-          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 border border-zinc-200 bg-white py-1 shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:border-zinc-800 dark:bg-zinc-950"
-        >
-          {options.map((option) => {
-            const active = option.value === value;
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97, y: -4 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.97, y: -4 }}
+            transition={{ duration: 0.14, ease: 'easeOut' }}
+            className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 border border-zinc-200 bg-white py-1 shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:border-zinc-800 dark:bg-zinc-950"
+          >
+            {options.map((option) => {
+              const active = option.value === value;
 
-            return (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => {
-                  onChange(option.value);
-                  setOpen(false);
-                }}
-                className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm transition-colors ${
-                  active
-                    ? 'text-zinc-950 dark:text-zinc-50'
-                    : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100'
-                }`}
-              >
-                <span>{option.label}</span>
-                {active && <RiCheckLine className="h-4 w-4 text-zinc-900 dark:text-zinc-100" />}
-              </button>
-            );
-          })}
-        </motion.div>
-      )}
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(option.value);
+                    setOpen(false);
+                  }}
+                  className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm transition-colors ${
+                    active
+                      ? 'text-zinc-950 dark:text-zinc-50'
+                      : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100'
+                  }`}
+                >
+                  <span>{option.label}</span>
+                  {active && <RiCheckLine className="h-4 w-4 text-zinc-900 dark:text-zinc-100" />}
+                </button>
+              );
+            })}
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );

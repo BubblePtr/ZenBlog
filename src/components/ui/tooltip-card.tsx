@@ -1,8 +1,8 @@
-"use client";
-import { useState, useRef, useEffect } from "react";
-import type { ReactNode } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
+'use client';
+import { useState, useRef, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 export const Tooltip = ({
   content,
@@ -30,8 +30,7 @@ export const Tooltip = ({
   }, [isVisible, content]);
 
   const calculatePosition = (mouseX: number, mouseY: number) => {
-    if (!contentRef.current || !containerRef.current)
-      return { x: mouseX + 12, y: mouseY + 12 };
+    if (!contentRef.current || !containerRef.current) return { x: mouseX + 12, y: mouseY + 12 };
 
     const tooltip = contentRef.current;
     const container = containerRef.current;
@@ -121,7 +120,7 @@ export const Tooltip = ({
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // Toggle visibility on click for mobile devices
-    if (window.matchMedia("(hover: none)").matches) {
+    if (window.matchMedia('(hover: none)').matches) {
       e.preventDefault();
       if (isVisible) {
         setIsVisible(false);
@@ -148,7 +147,7 @@ export const Tooltip = ({
   return (
     <div
       ref={containerRef}
-      className={cn("relative inline-block", containerClassName)}
+      className={cn('relative inline-block', containerClassName)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
@@ -165,7 +164,7 @@ export const Tooltip = ({
             animate={{ height, opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{
-              type: "spring",
+              type: 'spring',
               stiffness: 200,
               damping: 20,
             }}

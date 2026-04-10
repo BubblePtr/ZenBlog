@@ -5,7 +5,14 @@ import HomeWritingSection from '@/features/home/sections/HomeWritingSection.clie
 import HomePhotographySection from '@/features/home/sections/HomePhotographySection.client';
 import HomeProjectsSection from '@/features/home/sections/HomeProjectsSection.client';
 
-export default function HomeLanding({ posts, bubbleDiary, photos, projects, lang, t }: HomeLandingProps) {
+export default function HomeLanding({
+  posts,
+  bubbleDiary,
+  photos,
+  projects,
+  lang,
+  t,
+}: HomeLandingProps) {
   return (
     <div className="max-w-[84rem] mx-auto px-6 pb-16 sm:pb-24">
       <HomeHeroSection t={t} lang={lang} />
