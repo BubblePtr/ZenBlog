@@ -25,7 +25,7 @@ interface HomeHeroSectionProps {
   lang: Language;
 }
 
-const HERO_IMAGE_URL = 'https://cdn.ninthbit.org/web-images/DSC_0992_120.JPG';
+const HERO_IMAGE_URL = '/images/home-hero.jpg';
 
 export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
@@ -106,30 +106,22 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
           </motion.div>
         </div>
 
-        <motion.a
+        <motion.div
           custom={4}
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          href={photographyHref}
-          className="block no-underline"
+          className="block"
         >
-          <div className="relative overflow-hidden rounded-[1.75rem] bg-zinc-100 p-2 dark:bg-zinc-900">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem]">
-              <img
-                src={HERO_IMAGE_URL}
-                alt={lang === 'zh' ? '春日旋转花影' : 'Spring flowers in motion'}
-                loading="eager"
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-transparent opacity-70" />
-            </div>
+          <div className="relative aspect-[4/5] overflow-hidden">
+            <img
+              src={HERO_IMAGE_URL}
+              alt={lang === 'zh' ? '抽象金属球体' : 'Abstract metallic sphere'}
+              loading="eager"
+              className="h-full w-full object-cover"
+            />
           </div>
-          <div className="mt-4 flex items-center justify-between gap-4 text-sm text-zinc-500 dark:text-zinc-400">
-            <span>{lang === 'zh' ? 'Recent frame / 2026.03' : 'Recent frame / Mar 2026'}</span>
-            <span>→</span>
-          </div>
-        </motion.a>
+        </motion.div>
       </div>
     </section>
   );
@@ -141,9 +133,10 @@ function RssPopoverButton({ lang }: { lang: Language }) {
   const copyLabel = lang === 'zh' ? '复制链接' : 'Copy feed URL';
   const copiedLabel = lang === 'zh' ? '已复制' : 'Copied';
   const title = lang === 'zh' ? '订阅 RSS' : 'Subscribe via RSS';
-  const description = lang === 'zh'
-    ? '复制链接到你喜欢的 RSS 阅读器，比如 Feedly、Inoreader 或 NetNewsWire。'
-    : 'Copy the feed URL into your preferred RSS reader, such as Feedly, Inoreader, or NetNewsWire.';
+  const description =
+    lang === 'zh'
+      ? '复制链接到你喜欢的 RSS 阅读器，比如 Feedly、Inoreader 或 NetNewsWire。'
+      : 'Copy the feed URL into your preferred RSS reader, such as Feedly, Inoreader, or NetNewsWire.';
 
   const clearCloseTimer = React.useCallback(() => {
     if (closeTimerRef.current) {
@@ -226,7 +219,9 @@ function RssPopoverButton({ lang }: { lang: Language }) {
 
     return (
       <div className="w-full">
-        <h4 className="font-ui text-[15px] font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">{title}</h4>
+        <h4 className="font-ui text-[15px] font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
+          {title}
+        </h4>
         <p className="mt-2 font-ui text-[13px] leading-7 text-neutral-600 dark:text-neutral-400">
           {description}
         </p>

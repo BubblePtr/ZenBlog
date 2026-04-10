@@ -55,14 +55,14 @@ export default function HomeProjectsSection({ projects, t }: HomeProjectsSection
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       className="mb-24 sm:mb-32"
-      >
+    >
       <div className="mb-10 max-w-3xl">
         <div className="flex items-baseline justify-between">
           <h2 className="text-2xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
             {translate('home.projects')}
           </h2>
         </div>
-        <p className="mt-4 max-w-4xl text-base font-light leading-8 text-[var(--color-text-primary)]">
+        <p className="mt-4 max-w-4xl text-base font-light leading-8 text-(--color-text-primary)">
           {translate('home.projects.description')}
         </p>
       </div>
@@ -162,9 +162,7 @@ export default function HomeProjectsSection({ projects, t }: HomeProjectsSection
                     {paragraphs.slice(1, 4).map((paragraph) => (
                       <p key={paragraph}>{paragraph}</p>
                     ))}
-                    {paragraphs.length <= 1 ? (
-                      <p>{project.data.description}</p>
-                    ) : null}
+                    {paragraphs.length <= 1 ? <p>{project.data.description}</p> : null}
                   </div>
                 </div>
 
