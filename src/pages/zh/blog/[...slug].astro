@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
 import BlogPostLayout from '@/features/blog/components/BlogPostLayout.astro';
 import { mdxComponents } from '@/components/mdx/components';
 import {
@@ -17,9 +18,9 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props as Props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 const currentSlug = extractBlogSlug(post.id, lang);
-const readTimeMinutes = getReadTime(post.body, lang);
+const readTimeMinutes = getReadTime(post.body ?? '', lang);
 ---
 
 <BlogPostLayout
