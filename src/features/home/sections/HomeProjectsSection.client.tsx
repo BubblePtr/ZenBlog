@@ -11,7 +11,7 @@ interface HomeProjectsSectionProps {
   t: TranslationDictionary;
 }
 
-export default function HomeProjectsSection({ projects, t }: HomeProjectsSectionProps) {
+export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsSectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
   const [activeSlug, setActiveSlug] = useState(projects[0]?.slug ?? '');
   const itemRefs = useRef<Array<HTMLElement | null>>([]);
@@ -58,7 +58,9 @@ export default function HomeProjectsSection({ projects, t }: HomeProjectsSection
     >
       <div className="mb-10 max-w-3xl">
         <div className="flex items-baseline justify-between">
-          <h2 className="text-2xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
+          <h2
+            className={`text-2xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl ${lang === 'zh' ? 'font-article-title' : 'font-serif-en'}`}
+          >
             {translate('home.projects')}
           </h2>
         </div>

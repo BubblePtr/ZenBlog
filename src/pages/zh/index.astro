@@ -1,7 +1,7 @@
 ---
 import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
 import { HomeLanding } from '@/features/home';
-import { getBlogListByLang, getBubbleDiarySummary } from '@/features/blog/server';
+import { getBlogListByLang } from '@/features/blog/server';
 import { getPhotographyForHome } from '@/features/photography/server/queries.server';
 import { getProjectsForHome } from '@/features/projects/server/queries.server';
 import PageShell from '@/shared/components/layout/PageShell.astro';
@@ -9,14 +9,13 @@ import { getTranslationDictionary } from '@/shared/i18n/types';
 
 const lang = 'zh' as const;
 const t = getTranslationDictionary(lang);
-const [homePosts, bubbleDiary, homePhotos, homeProjects] = await Promise.all([
+const [homePosts, homePhotos, homeProjects] = await Promise.all([
   getBlogListByLang(lang, { homeOnly: true, limit: 5 }),
-  getBubbleDiarySummary(),
-  getPhotographyForHome(lang, 6),
+  getPhotographyForHome(lang, 4),
   getProjectsForHome(4),
 ]);
 ---
 
 <PageShell lang={lang} title={SITE_TITLE} description={SITE_DESCRIPTION} currentPath="/zh">
-  <HomeLanding client:load posts={homePosts} bubbleDiary={bubbleDiary} photos={homePhotos} projects={homeProjects} lang={lang} t={t} />
+  <HomeLanding client:load posts={homePosts} photos={homePhotos} projects={homeProjects} lang={lang} t={t} />
 </PageShell>
