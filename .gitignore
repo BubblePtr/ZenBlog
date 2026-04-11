@@ -6,6 +6,7 @@ dist/
 .astro/
 .claude/
 .conductor/
+skills-lock.json
 
 # dependencies
 node_modules/
