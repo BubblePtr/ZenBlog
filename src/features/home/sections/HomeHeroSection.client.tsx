@@ -25,7 +25,7 @@ interface HomeHeroSectionProps {
   lang: Language;
 }
 
-const HERO_IMAGE_URL = '/images/home-hero.jpg';
+const AVATAR_URL = 'https://cdn.ninthbit.org/avatar.jpg';
 
 export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
@@ -33,94 +33,83 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
   const blogHref = lang === 'zh' ? '/zh/blog' : '/blog';
 
   return (
-    <section className="flex min-h-[calc(100svh-4rem-1px)] items-center py-8 sm:py-10">
-      <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(22rem,0.82fr)] lg:items-center">
-        <div className="max-w-3xl">
-          <motion.h1
-            custom={0}
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-            className="font-heading text-5xl leading-[0.95] tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-6xl lg:text-[5.5rem]"
-          >
-            {translate('home.hero.name')}
-          </motion.h1>
-          <motion.p
-            custom={1}
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-            className="mt-4 max-w-xl text-lg text-zinc-900 dark:text-zinc-100"
-          >
-            {translate('home.hero.tagline')}
-          </motion.p>
-          <motion.p
-            custom={2}
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-            className="mt-6 max-w-2xl text-base font-light leading-8 text-[var(--color-text-primary)]"
-          >
-            {translate('home.hero.intro')}
-          </motion.p>
-          <motion.div
-            custom={3}
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-            className="mt-8 flex flex-wrap items-center gap-3"
-          >
-            <a
-              href={blogHref}
-              className="inline-flex h-11 items-center gap-2 rounded-full bg-zinc-900 px-4 text-sm text-white no-underline transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-            >
-              <span>{translate('home.writing')}</span>
-              <RiArrowRightUpLine className="h-4 w-4 shrink-0" />
-            </a>
-            <a
-              href={photographyHref}
-              className="inline-flex h-11 items-center gap-2 rounded-full border border-zinc-300 px-4 text-sm text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
-            >
-              <RiSparklingLine className="h-4 w-4 shrink-0" />
-              <span>{translate('home.photography')}</span>
-            </a>
-            <RssPopoverButton lang={lang} />
-            <a
-              href="https://github.com/BubblePtr"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300 text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
-              aria-label="Open GitHub"
-            >
-              <RiGithubLine className="h-[18px] w-[18px] shrink-0" />
-            </a>
-            <a
-              href="https://x.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300 text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
-              aria-label="Open X"
-            >
-              <RiTwitterXLine className="h-[18px] w-[18px] shrink-0" />
-            </a>
-          </motion.div>
-        </div>
-
+    <section className="py-16 sm:py-24">
+      <div className="max-w-2xl">
+        <motion.div custom={0} initial="hidden" animate="visible" variants={fadeIn}>
+          <img
+            src={AVATAR_URL}
+            alt={translate('home.hero.name')}
+            loading="eager"
+            className="h-20 w-20 rounded-full object-cover"
+          />
+        </motion.div>
+        <motion.h1
+          custom={1}
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+          className="mt-6 font-heading text-3xl leading-tight tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-4xl"
+        >
+          {translate('home.hero.name')}
+        </motion.h1>
+        <motion.p
+          custom={2}
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+          className="mt-2 text-base text-zinc-500 dark:text-zinc-400"
+        >
+          {translate('home.hero.tagline')}
+        </motion.p>
+        <motion.p
+          custom={3}
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+          className="mt-5 text-base font-light leading-7 text-[var(--color-text-primary)]"
+        >
+          {translate('home.hero.intro')}
+        </motion.p>
         <motion.div
           custom={4}
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className="block"
+          className="mt-8 flex flex-wrap items-center gap-3"
         >
-          <div className="relative aspect-[4/5] overflow-hidden">
-            <img
-              src={HERO_IMAGE_URL}
-              alt={lang === 'zh' ? '抽象金属球体' : 'Abstract metallic sphere'}
-              loading="eager"
-              className="h-full w-full object-cover"
-            />
-          </div>
+          <a
+            href={blogHref}
+            className="inline-flex h-10 items-center gap-2 rounded-full bg-zinc-900 px-4 text-sm text-white no-underline transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          >
+            <span>{translate('home.writing')}</span>
+            <RiArrowRightUpLine className="h-4 w-4 shrink-0" />
+          </a>
+          <a
+            href={photographyHref}
+            className="inline-flex h-10 items-center gap-2 rounded-full border border-zinc-300 px-4 text-sm text-zinc-700 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+          >
+            <RiSparklingLine className="h-4 w-4 shrink-0" />
+            <span>{translate('home.photography')}</span>
+          </a>
+          <RssPopoverButton lang={lang} />
+          <a
+            href="https://github.com/BubblePtr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 text-zinc-500 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+            aria-label="Open GitHub"
+          >
+            <RiGithubLine className="h-[18px] w-[18px] shrink-0" />
+          </a>
+          <a
+            href="https://x.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 text-zinc-500 no-underline transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+            aria-label="Open X"
+          >
+            <RiTwitterXLine className="h-[18px] w-[18px] shrink-0" />
+          </a>
         </motion.div>
       </div>
     </section>
@@ -174,7 +163,7 @@ function RssPopoverButton({ lang }: { lang: Language }) {
           onClick={() => setOpen((value) => !value)}
           onMouseEnter={openNow}
           onMouseLeave={closeLater}
-          className="inline-flex h-11 items-center gap-2 rounded-full border border-zinc-300 px-4 text-sm text-zinc-700 outline-none transition-colors hover:border-zinc-900 hover:text-zinc-900 focus:outline-none focus-visible:outline-none dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+          className="inline-flex h-10 items-center gap-2 rounded-full border border-zinc-300 px-4 text-sm text-zinc-700 outline-none transition-colors hover:border-zinc-900 hover:text-zinc-900 focus:outline-none focus-visible:outline-none dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
         >
           <span className="inline-flex items-center gap-1 leading-none">
             <RiRssLine className="h-4 w-4 shrink-0" />
