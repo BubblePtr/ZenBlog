@@ -31,8 +31,7 @@ export default function BubbleDiarySpotlight({
   return (
     <motion.section
       initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={variant === 'home' ? 'mb-20 sm:mb-24' : 'my-20 sm:my-24'}
     >

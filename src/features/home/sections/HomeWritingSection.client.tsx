@@ -9,6 +9,10 @@ interface HomeWritingSectionProps {
   t: TranslationDictionary;
 }
 
+function blogVtName(slug: string): string {
+  return `bt-${slug.replace(/[^a-zA-Z0-9]/g, '-')}`;
+}
+
 export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
   const getBlogUrl = (slug: string) => (lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`);
@@ -61,7 +65,10 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
               className="group -mx-6 block px-6 py-8 no-underline transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-900/40 sm:py-9"
             >
               <div className="flex items-baseline justify-between gap-6">
-                <h3 className="text-base font-normal leading-snug text-zinc-900 transition-colors group-hover:text-zinc-500 dark:text-zinc-100 dark:group-hover:text-zinc-400">
+                <h3
+                  className="text-base font-normal leading-snug text-zinc-900 transition-colors group-hover:text-zinc-500 dark:text-zinc-100 dark:group-hover:text-zinc-400"
+                  style={{ viewTransitionName: blogVtName(post.slug) }}
+                >
                   {post.data.title}
                 </h3>
                 <time

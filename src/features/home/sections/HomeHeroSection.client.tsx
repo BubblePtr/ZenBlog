@@ -50,13 +50,18 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
       variants={container}
     >
       {/* 头像 */}
-      <motion.img
+      <motion.div
         variants={item}
-        src={AVATAR_URL}
-        alt={translate('home.hero.name')}
-        loading="eager"
-        className="mx-auto h-24 w-24 rounded-full object-cover sm:h-32 sm:w-32"
-      />
+        style={{ viewTransitionName: 'hero-avatar' }}
+        className="mx-auto h-24 w-24 overflow-hidden rounded-full sm:h-32 sm:w-32"
+      >
+        <img
+          src={AVATAR_URL}
+          alt={translate('home.hero.name')}
+          loading="eager"
+          className="h-full w-full object-cover"
+        />
+      </motion.div>
 
       {/* 名字 */}
       <motion.h1

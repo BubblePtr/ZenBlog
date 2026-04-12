@@ -427,9 +427,37 @@ body {
   }
 }
 
-/* View Transitions API 样式（主题切换动画） */
+/* ============================
+   View Transitions
+   ============================ */
+
+/* 根元素：重置，让主题切换圆形动画（ThemeToggle.client.tsx）正常工作 */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+}
+
+/* 头像变形：延长过渡时间，加入轻微弹性 */
+::view-transition-group(hero-avatar) {
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(hero-avatar),
+::view-transition-new(hero-avatar) {
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 博客标题变形：使用快速交叉以减少缩放模糊感 */
+/* 各个 bt-* 名称依赖默认 250ms 淡化行为 */
+
+/* 减少动效偏好：全部使用最短过渡 */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+  }
 }

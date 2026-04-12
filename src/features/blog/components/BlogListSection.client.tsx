@@ -125,9 +125,8 @@ export default function BlogListSection({ posts, bubbleDiary, lang, t }: BlogLis
               <motion.article
                 key={row.slug}
                 initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ delay: index * 0.04, duration: 0.35 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: Math.min(index * 0.04, 0.32), duration: 0.35 }}
                 className="border-b border-zinc-200 dark:border-zinc-800"
               >
                 <a
