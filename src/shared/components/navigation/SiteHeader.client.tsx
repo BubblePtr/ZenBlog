@@ -34,11 +34,20 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
     [t],
   );
 
-  const mobileItems = navItems.map((item) => ({
-    ...item,
-    href: getHref(item.key),
-    active: isActive(item.key),
-  }));
+  const homeHref = lang === 'zh' ? '/zh' : '/';
+  const mobileItems = [
+    {
+      key: 'home',
+      label: t['nav.home'] || 'HOME',
+      href: homeHref,
+      active: currentPath === homeHref,
+    },
+    ...navItems.map((item) => ({
+      ...item,
+      href: getHref(item.key),
+      active: isActive(item.key),
+    })),
+  ];
 
   return (
     <header className="relative z-40 w-full transition-all duration-300">
@@ -46,15 +55,24 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
 
       <div className="relative max-w-[84rem] mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <a
-            href={lang === 'zh' ? '/zh' : '/'}
-            className="font-heading font-normal text-xl tracking-tight flex items-center gap-2 no-underline text-zinc-900 dark:text-zinc-100 leading-none"
-          >
-            <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
-            NinthBit
-          </a>
-
           <nav className="hidden sm:flex items-center gap-6 text-sm font-normal text-zinc-500 dark:text-zinc-400">
+            <a
+              href={lang === 'zh' ? '/zh' : '/'}
+              className={`block px-2 py-2 transition-colors relative group no-underline ${
+                currentPath === '/' || currentPath === '/zh'
+                  ? 'text-zinc-900 dark:text-zinc-100'
+                  : 'hover:text-zinc-900 dark:hover:text-zinc-100'
+              }`}
+            >
+              {t['nav.home'] || 'HOME'}
+              <span
+                className={`absolute bottom-1 left-2 h-px bg-zinc-900 dark:bg-zinc-100 transition-all ${
+                  currentPath === '/' || currentPath === '/zh'
+                    ? 'w-[calc(100%-16px)]'
+                    : 'w-0 group-hover:w-[calc(100%-16px)] opacity-50'
+                }`}
+              />
+            </a>
             {navItems.map((item) => {
               const active = isActive(item.key);
               const href = getHref(item.key);

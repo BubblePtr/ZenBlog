@@ -10,12 +10,12 @@ type ResolvedBlogAuthor = {
 
 const DEFAULT_AUTHOR: Record<Language, ResolvedBlogAuthor> = {
   zh: {
-    name: '墨染',
+    name: 'Kieran Zhang',
     title: '天行健，君子以自强不息',
     avatar: 'https://cdn.ninthbit.org/avatar.jpg',
   },
   en: {
-    name: 'MoRan',
+    name: 'Kieran Zhang',
     title: '天行健，君子以自强不息',
     avatar: 'https://cdn.ninthbit.org/avatar.jpg',
   },

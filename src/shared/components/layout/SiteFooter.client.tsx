@@ -25,7 +25,7 @@ interface SiteFooterProps {
 }
 
 export default function SiteFooter({ lang, t }: SiteFooterProps) {
-  const brandName = 'NinthBit';
+  const brandName = 'Kieran Zhang';
 
   const getLocalizedPath = (path: string) => {
     return lang === 'zh' ? `/zh${path}` : path;
