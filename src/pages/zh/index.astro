@@ -10,7 +10,7 @@ import { getTranslationDictionary } from '@/shared/i18n/types';
 const lang = 'zh' as const;
 const t = getTranslationDictionary(lang);
 const [homePosts, homePhotos, homeProjects] = await Promise.all([
-  getBlogListByLang(lang, { homeOnly: true, limit: 5 }),
+  getBlogListByLang(lang, { homeOnly: true, limit: 10 }),
   getPhotographyForHome(lang, 4),
   getProjectsForHome(4),
 ]);

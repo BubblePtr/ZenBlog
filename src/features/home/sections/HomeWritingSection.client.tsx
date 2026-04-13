@@ -31,10 +31,40 @@ const ABSURD_ILLUSTRATIONS = [
   '/images/illustrations/absurd-34.png',
 ];
 
-function getIllustrationForSlug(slug: string): string {
-  // 用 slug 字符码之和取模，保证同一篇文章始终对应同一张插画
-  const hash = slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  return ABSURD_ILLUSTRATIONS[hash % ABSURD_ILLUSTRATIONS.length];
+function slugHash(slug: string): number {
+  return slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+}
+
+// 为当前列表里的每篇文章分配插画：
+// 1. 每篇文章按 slug hash 计算"首选"索引
+// 2. 按首选索引升序处理（首选小的优先占坑），同首选则按 slug 字典序
+// 3. 首选已被占时，顺移到下一张可用的
+// 效果：同一篇文章基本稳定对应同一张图；列表变化时 hash 分布也变，自然换图
+function assignIllustrations(posts: BlogListItem[]): string[] {
+  const n = ABSURD_ILLUSTRATIONS.length;
+  const preferred = posts.map((post) => slugHash(post.slug) % n);
+
+  const order = posts
+    .map((_, i) => i)
+    .sort((a, b) =>
+      preferred[a] !== preferred[b]
+        ? preferred[a] - preferred[b]
+        : posts[a].slug < posts[b].slug
+          ? -1
+          : 1,
+    );
+
+  const used = new Set<number>();
+  const result: string[] = Array.from({ length: posts.length });
+
+  for (const i of order) {
+    let idx = preferred[i];
+    while (used.has(idx)) idx = (idx + 1) % n;
+    used.add(idx);
+    result[i] = ABSURD_ILLUSTRATIONS[idx];
+  }
+
+  return result;
 }
 
 export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectionProps) {
@@ -82,9 +112,8 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
       {/* 内容区：双列卡片网格 */}
       <div className="-mx-6 rail-line-t px-6">
         <div className="grid grid-cols-1 gap-x-6 gap-y-8 pt-8 sm:grid-cols-2 sm:gap-y-10">
-          {posts.map((post) => {
-            const imageSrc = getIllustrationForSlug(post.slug);
-
+          {assignIllustrations(posts).map((imageSrc, index) => {
+            const post = posts[index];
             return (
               <a
                 key={post.slug}
