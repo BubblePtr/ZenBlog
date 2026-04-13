@@ -55,6 +55,18 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
               <p className="text-xs text-zinc-400">
                 © {new Date().getFullYear()} {brandName} · All rights reserved
               </p>
+              <p className="text-xs text-zinc-400">
+                Illustrations from{' '}
+                <a
+                  href="https://absurd.design/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+                >
+                  absurd.design
+                </a>{' '}
+                by Diana Valeanu
+              </p>
               <div className="flex items-center justify-center gap-1.5 md:justify-start">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />

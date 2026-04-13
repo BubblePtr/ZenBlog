@@ -13,6 +13,30 @@ function blogVtName(slug: string): string {
   return `bt-${slug.replace(/[^a-zA-Z0-9]/g, '-')}`;
 }
 
+const ABSURD_ILLUSTRATIONS = [
+  '/images/illustrations/absurd-01.png',
+  '/images/illustrations/absurd-02.png',
+  '/images/illustrations/absurd-03.png',
+  '/images/illustrations/absurd-04.png',
+  '/images/illustrations/absurd-05.png',
+  '/images/illustrations/absurd-06.png',
+  '/images/illustrations/absurd-07.png',
+  '/images/illustrations/absurd-08.png',
+  '/images/illustrations/absurd-09.png',
+  '/images/illustrations/absurd-10.png',
+  '/images/illustrations/absurd-11.png',
+  '/images/illustrations/absurd-31.png',
+  '/images/illustrations/absurd-32.png',
+  '/images/illustrations/absurd-33.png',
+  '/images/illustrations/absurd-34.png',
+];
+
+function getIllustrationForSlug(slug: string): string {
+  // 用 slug 字符码之和取模，保证同一篇文章始终对应同一张插画
+  const hash = slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  return ABSURD_ILLUSTRATIONS[hash % ABSURD_ILLUSTRATIONS.length];
+}
+
 export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
   const getBlogUrl = (slug: string) => (lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`);
@@ -34,7 +58,7 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
       transition={{ duration: 0.5 }}
       className="mb-24 sm:mb-32"
     >
-      {/* 区块标题：标题+View All 全宽，描述限宽 */}
+      {/* 区块标题 */}
       <div className="mb-10">
         <div className="flex items-baseline justify-between">
           <h2
@@ -55,36 +79,60 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
         </p>
       </div>
 
-      {/* 内容区：rail 分割线 + 条目间细线 */}
-      <div className="-mx-6 rail-line-t">
-        <div className="divide-y divide-zinc-100 px-6 dark:divide-zinc-800/60">
-          {posts.map((post) => (
-            <a
-              key={post.slug}
-              href={getBlogUrl(post.slug)}
-              className="group -mx-6 block px-6 py-8 no-underline transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-900/40 sm:py-9"
-            >
-              <div className="flex items-baseline justify-between gap-6">
-                <h3
-                  className="text-base font-normal leading-snug text-zinc-900 transition-colors group-hover:text-zinc-500 dark:text-zinc-100 dark:group-hover:text-zinc-400"
-                  style={{ viewTransitionName: blogVtName(post.slug) }}
-                >
-                  {post.data.title}
-                </h3>
-                <time
-                  dateTime={post.data.pubDate.toISOString()}
-                  className="shrink-0 text-xs tabular-nums text-zinc-400 dark:text-zinc-500"
-                >
-                  {formatDate(post.data.pubDate)}
-                </time>
-              </div>
-              {post.data.description && (
-                <p className="mt-2 max-w-xl text-sm font-light leading-6 text-[var(--color-text-secondary)]">
-                  {post.data.description}
-                </p>
-              )}
-            </a>
-          ))}
+      {/* 内容区：双列卡片网格 */}
+      <div className="-mx-6 rail-line-t px-6">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-8 pt-8 sm:grid-cols-2 sm:gap-y-10">
+          {posts.map((post) => {
+            const imageSrc = getIllustrationForSlug(post.slug);
+
+            return (
+              <a
+                key={post.slug}
+                href={getBlogUrl(post.slug)}
+                className="group flex flex-col no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-400/60 dark:focus-visible:outline-zinc-500/60"
+              >
+                {/* 上：插画区，固定高度居中展示 */}
+                <div className="flex h-44 items-center justify-center overflow-hidden rounded-sm">
+                  <img
+                    src={imageSrc}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-auto max-w-full object-contain transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                  />
+                </div>
+
+                {/* 下：文字区 */}
+                <div className="min-w-0 flex-1 pt-4">
+                  <div className="flex items-baseline gap-2">
+                    <h3
+                      className="text-base font-normal leading-snug text-zinc-900 dark:text-zinc-100"
+                      style={{ viewTransitionName: blogVtName(post.slug) }}
+                    >
+                      {post.data.title}
+                    </h3>
+                    {/* 指向箭头：hover 时从左 4px 处滑入 */}
+                    <span
+                      className="-translate-x-1 shrink-0 text-sm text-zinc-400 opacity-0 transition-[transform,opacity] duration-200 ease-out group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 dark:text-zinc-500"
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                  </div>
+                  <time
+                    dateTime={post.data.pubDate.toISOString()}
+                    className="mt-1.5 block text-xs tabular-nums text-zinc-400 dark:text-zinc-500"
+                  >
+                    {formatDate(post.data.pubDate)}
+                  </time>
+                  {post.data.description && (
+                    <p className="mt-2 text-sm font-light leading-6 text-[var(--color-text-secondary)]">
+                      {post.data.description}
+                    </p>
+                  )}
+                </div>
+              </a>
+            );
+          })}
         </div>
       </div>
     </motion.section>
