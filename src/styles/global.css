@@ -436,14 +436,24 @@ body {
    View Transitions
    ============================ */
 
-/* 根元素：重置，让主题切换圆形动画（ThemeToggle.client.tsx）正常工作 */
+/* ① 全局基准：crossfade 即时完成，消除新旧快照同时可见产生的鬼影。
+      CSS 不支持 bt-* 通配符前缀，用 * 覆盖全部，再对需要保留动画的名称单独恢复。
+      规则顺序很关键：* 必须在具体名称之前，同等优先级下后者覆盖前者。 */
+::view-transition-old(*) {
+  animation-duration: 0.01ms;
+}
+::view-transition-new(*) {
+  animation-duration: 0.01ms;
+}
+
+/* ② 根元素：完全重置，让主题切换圆形动画（ThemeToggle.client.tsx）正常工作 */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
 
-/* 头像变形：延长过渡时间，加入轻微弹性 */
+/* ③ 头像变形：延长过渡时间，加入轻微弹性 */
 ::view-transition-group(hero-avatar) {
   animation-duration: 500ms;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
@@ -454,10 +464,7 @@ body {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 博客标题变形：使用快速交叉以减少缩放模糊感 */
-/* 各个 bt-* 名称依赖默认 250ms 淡化行为 */
-
-/* 减少动效偏好：全部使用最短过渡 */
+/* ④ 减少动效偏好：全部使用最短过渡 */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),

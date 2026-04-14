@@ -11,7 +11,7 @@ const lang = 'zh' as const;
 const t = getTranslationDictionary(lang);
 const [homePosts, homePhotos, homeProjects] = await Promise.all([
   getBlogListByLang(lang, { homeOnly: true, limit: 10 }),
-  getPhotographyForHome(lang, 4),
+  getPhotographyForHome(lang, 6),
   getProjectsForHome(4),
 ]);
 ---

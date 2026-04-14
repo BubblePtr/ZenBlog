@@ -1,0 +1,27 @@
+# Cloudflare Pages HTTP 响应头配置
+# 带内容 hash 的静态资源（Astro 构建产物）：永久缓存
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 字体文件：长期缓存（1 年）
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 图片：中期缓存（1 天，内容可能更新）
+/images/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Logo / 图标：长期缓存
+/logos/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon.svg
+  Cache-Control: public, max-age=86400
+
+# OG 图片：中期缓存
+/og/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# HTML 页面：不缓存，确保始终获取最新内容
+/*
+  Cache-Control: public, max-age=0, must-revalidate

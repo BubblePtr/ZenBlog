@@ -57,10 +57,20 @@ const { title, description, image = "/og/site-og.png" } = Astro.props;
 <!-- 配置文件：src/styles/typography.css -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- CDN：头像、摄影图片 -->
+<link rel="preconnect" href="https://cdn.ninthbit.org" />
 <link
+  rel="preload"
   href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Shippori+Mincho:wght@400;600&display=swap"
-  rel="stylesheet"
+  as="style"
+  onload="this.onload=null;this.rel='stylesheet'"
 />
+<noscript>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Shippori+Mincho:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+</noscript>
 
 <!-- 2. 启用视图过渡路由 -->
 <ClientRouter />

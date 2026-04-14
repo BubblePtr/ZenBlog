@@ -59,6 +59,7 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
           src={AVATAR_URL}
           alt={translate('home.hero.name')}
           loading="eager"
+          fetchPriority="high"
           className="h-full w-full object-cover"
         />
       </motion.div>

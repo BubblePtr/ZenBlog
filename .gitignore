@@ -26,6 +26,10 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# 本地原始照片（已上传至 CDN，不入库）
+src/content/photography/my-photos/
+src/content/photography/pencil-samples/
+
 # jetbrains setting folder
 .idea/
 .gstack/

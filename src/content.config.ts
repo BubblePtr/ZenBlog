@@ -56,6 +56,8 @@ const photography = defineCollection({
         .optional(),
       shotDate: z.coerce.date(),
       image: z.union([image(), z.string().url()]),
+      imageWidth: z.number().int().positive().optional(),
+      imageHeight: z.number().int().positive().optional(),
       order: z.number().optional(),
       exif: z
         .object({

@@ -46,18 +46,18 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
 
       {/* 内容区：rail 分割线 + 横排预览条 */}
       <div className="-mx-6 rail-line-t px-6 pt-8 sm:pt-10">
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {photos.slice(0, 4).map((photo) => (
+        <div className="grid grid-cols-3 gap-2">
+          {photos.slice(0, 6).map((photo) => (
             <a
               key={photo.slug}
               href={getPhotographyUrl()}
-              className="group relative block h-44 overflow-hidden sm:h-52"
+              className="group relative block overflow-hidden"
             >
               <img
                 src={photo.data.imageSrc}
                 alt={photo.data.title}
                 loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                className="block w-full h-auto transition-transform duration-500 group-hover:scale-[1.04]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-3">

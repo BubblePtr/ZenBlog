@@ -38,8 +38,10 @@ export function mapPhotographyPhotoItem(
   lang: Language,
 ): PhotographyPhotoItem {
   const imageSrc = typeof entry.data.image === 'string' ? entry.data.image : entry.data.image.src;
-  const imageWidth = typeof entry.data.image === 'string' ? undefined : entry.data.image.width;
-  const imageHeight = typeof entry.data.image === 'string' ? undefined : entry.data.image.height;
+  const imageWidth =
+    typeof entry.data.image === 'string' ? entry.data.imageWidth : entry.data.image.width;
+  const imageHeight =
+    typeof entry.data.image === 'string' ? entry.data.imageHeight : entry.data.image.height;
 
   return {
     slug: entry.id,
