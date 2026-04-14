@@ -74,7 +74,7 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
       {/* Tagline */}
       <motion.p
         variants={item}
-        className={`mt-3 text-zinc-400 dark:text-zinc-500 ${isZh ? 'text-sm font-light' : 'text-xs tracking-[0.14em] uppercase'}`}
+        className={`mt-3 text-zinc-500 dark:text-zinc-400 ${isZh ? 'text-sm font-light' : 'text-xs tracking-[0.14em] uppercase'}`}
       >
         {translate('home.hero.tagline')}
       </motion.p>
@@ -95,14 +95,14 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
       >
         <a
           href={blogHref}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-800 no-underline transition-colors hover:text-zinc-500 dark:text-zinc-200 dark:hover:text-zinc-400"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-800 no-underline transition-colors hover:text-zinc-500 focus-ring dark:text-zinc-200 dark:hover:text-zinc-400"
         >
           {translate('home.writing')}
           <RiArrowRightUpLine className="h-3.5 w-3.5 shrink-0" />
         </a>
         <a
           href={photographyHref}
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 no-underline transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 no-underline transition-colors hover:text-zinc-900 focus-ring dark:text-zinc-400 dark:hover:text-zinc-100"
         >
           <RiSparklingLine className="h-3.5 w-3.5 shrink-0" />
           {translate('home.photography')}
@@ -112,7 +112,7 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
           href="https://github.com/BubblePtr"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-zinc-400 no-underline transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100"
+          className="text-zinc-400 no-underline transition-colors hover:text-zinc-900 focus-ring dark:text-zinc-500 dark:hover:text-zinc-100"
           aria-label="GitHub"
         >
           <RiGithubLine className="h-[18px] w-[18px]" />
@@ -121,7 +121,7 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
           href="https://x.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-zinc-400 no-underline transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100"
+          className="text-zinc-400 no-underline transition-colors hover:text-zinc-900 focus-ring dark:text-zinc-500 dark:hover:text-zinc-100"
           aria-label="X"
         >
           <RiTwitterXLine className="h-[18px] w-[18px]" />
@@ -243,7 +243,7 @@ function RssTooltipContent({
       <button
         type="button"
         onClick={handleCopy}
-        className="mt-3 inline-flex h-10 w-full items-center justify-center border-0 bg-zinc-900 px-3 font-ui text-sm font-semibold text-white outline-none transition-colors hover:bg-zinc-800 focus:outline-none dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="mt-3 inline-flex min-h-11 w-full items-center justify-center border-0 bg-zinc-900 px-3 font-ui text-sm font-semibold text-white outline-none transition-colors hover:bg-zinc-800 focus:outline-none dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
       >
         {copied ? copiedLabel : copyLabel}
       </button>

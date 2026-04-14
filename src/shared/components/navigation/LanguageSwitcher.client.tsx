@@ -29,7 +29,7 @@ export default function LanguageSwitcher({ currentLang, currentPath }: LanguageS
         className={`no-underline transition-colors ${
           currentLang === 'en'
             ? 'text-zinc-900 dark:text-zinc-100 font-normal'
-            : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400'
+            : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-400'
         }`}
       >
         EN
@@ -40,7 +40,7 @@ export default function LanguageSwitcher({ currentLang, currentPath }: LanguageS
         className={`no-underline transition-colors ${
           currentLang === 'zh'
             ? 'text-zinc-900 dark:text-zinc-100 font-normal'
-            : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400'
+            : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-400'
         }`}
       >
         ZH

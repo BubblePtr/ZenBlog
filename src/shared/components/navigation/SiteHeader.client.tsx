@@ -58,7 +58,7 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
           <nav className="hidden sm:flex items-center gap-6 text-sm font-normal text-zinc-500 dark:text-zinc-400">
             <a
               href={lang === 'zh' ? '/zh' : '/'}
-              className={`block px-2 py-2 transition-colors relative group no-underline ${
+              className={`block px-2 py-2 transition-colors relative group no-underline focus-ring ${
                 currentPath === '/' || currentPath === '/zh'
                   ? 'text-zinc-900 dark:text-zinc-100'
                   : 'hover:text-zinc-900 dark:hover:text-zinc-100'
@@ -81,7 +81,7 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
                 <a
                   key={item.key}
                   href={href}
-                  className={`block px-2 py-2 transition-colors relative group no-underline ${
+                  className={`block px-2 py-2 transition-colors relative group no-underline focus-ring ${
                     active
                       ? 'text-zinc-900 dark:text-zinc-100'
                       : 'hover:text-zinc-900 dark:hover:text-zinc-100'
@@ -104,13 +104,13 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
         <div className="flex items-center gap-3">
           <LanguageSwitcher currentLang={lang} currentPath={currentPath} />
           <ThemeToggle
-            className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+            className="hidden sm:flex items-center justify-center min-w-11 min-h-11 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
             aria-label="Toggle theme"
           />
 
           <button
             onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className="sm:hidden flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+            className="sm:hidden flex items-center justify-center min-w-11 min-h-11 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <RiCloseLine size={20} /> : <RiMenuLine size={20} />}
@@ -124,6 +124,7 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
             key="mobile-nav"
             items={mobileItems}
             onItemClick={() => setMobileMenuOpen(false)}
+            onClose={() => setMobileMenuOpen(false)}
           />
         )}
       </AnimatePresence>

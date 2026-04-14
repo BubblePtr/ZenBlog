@@ -98,7 +98,7 @@ function HomeSpotlight({ bubbleDiary, lang, translate }: HomeSpotlightProps) {
         href={latestEntry.url}
         className="block border border-zinc-200 px-5 py-5 no-underline dark:border-zinc-800"
       >
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400 dark:text-zinc-500">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500 dark:text-zinc-400">
           {bubbleDiary.totalEntries} {lang === 'zh' ? '篇公开记录' : 'entries live'}
         </p>
         <h3 className="mt-4 text-lg leading-7 text-zinc-900 dark:text-zinc-100">
@@ -107,7 +107,7 @@ function HomeSpotlight({ bubbleDiary, lang, translate }: HomeSpotlightProps) {
         <p className="mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
           {latestEntry.description}
         </p>
-        <p className="mt-4 text-sm text-zinc-400 dark:text-zinc-500">{latestDate}</p>
+        <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">{latestDate}</p>
       </a>
     </div>
   );
@@ -182,7 +182,7 @@ function BlogSpotlight({ bubbleDiary, lang, secondaryText, translate }: Spotligh
                     )}
                   </div>
                   <div className="pb-2.5">
-                    <p className="text-sm font-light leading-6 text-zinc-400 dark:text-zinc-500">
+                    <p className="text-sm font-light leading-6 text-zinc-500 dark:text-zinc-400">
                       {dateLabel}
                     </p>
                     <p

@@ -97,17 +97,29 @@ export default function BlogListSection({ posts, bubbleDiary, lang, t }: BlogLis
       <section className="mt-16">
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="block">
-            <span className="mb-2 block text-sm text-zinc-400 dark:text-zinc-500">
+            <label
+              htmlFor="year-filter"
+              className="mb-2 block text-sm text-zinc-500 dark:text-zinc-400"
+            >
               {translate('blog.grid.filters.year')}
-            </span>
-            <FilterDropdown value={selectedYear} options={yearOptions} onChange={setSelectedYear} />
+            </label>
+            <FilterDropdown
+              id="year-filter"
+              value={selectedYear}
+              options={yearOptions}
+              onChange={setSelectedYear}
+            />
           </div>
 
           <div className="block">
-            <span className="mb-2 block text-sm text-zinc-400 dark:text-zinc-500">
+            <label
+              htmlFor="author-filter"
+              className="mb-2 block text-sm text-zinc-500 dark:text-zinc-400"
+            >
               {translate('blog.grid.filters.author')}
-            </span>
+            </label>
             <FilterDropdown
+              id="author-filter"
               value={selectedAuthor}
               options={authorOptions}
               onChange={setSelectedAuthor}
@@ -134,7 +146,7 @@ export default function BlogListSection({ posts, bubbleDiary, lang, t }: BlogLis
                   className="group block py-5 no-underline transition-colors focus:outline-none"
                 >
                   <div className="md:hidden">
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-zinc-400 dark:text-zinc-500">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-zinc-500 dark:text-zinc-400">
                       <span>{row.publishedLabel}</span>
                       <span>{row.authorName}</span>
                     </div>
@@ -180,10 +192,12 @@ function formatGridDate(date: Date, lang: Language) {
 }
 
 function FilterDropdown({
+  id,
   value,
   options,
   onChange,
 }: {
+  id?: string;
   value: string;
   options: FilterOption[];
   onChange: (value: string) => void;
@@ -191,6 +205,52 @@ function FilterDropdown({
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const selectedOption = options.find((option) => option.value === value) ?? options[0];
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (!open) {
+      // 打开下拉菜单
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        setOpen(true);
+      }
+      return;
+    }
+
+    // 下拉菜单已打开时的键盘导航
+    const currentIndex = options.findIndex((opt) => opt.value === value);
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        if (currentIndex < options.length - 1) {
+          onChange(options[currentIndex + 1].value);
+        }
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        if (currentIndex > 0) {
+          onChange(options[currentIndex - 1].value);
+        }
+        break;
+      case 'Home':
+        event.preventDefault();
+        onChange(options[0].value);
+        break;
+      case 'End':
+        event.preventDefault();
+        onChange(options[options.length - 1].value);
+        break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        setOpen(false);
+        break;
+      case 'Escape':
+        event.preventDefault();
+        setOpen(false);
+        break;
+    }
+  };
 
   useEffect(() => {
     if (!open) {
@@ -221,9 +281,13 @@ function FilterDropdown({
   return (
     <div ref={containerRef} className="relative">
       <button
+        id={id}
         type="button"
         aria-expanded={open}
+        aria-haspopup="listbox"
+        aria-label={`Filter: ${selectedOption?.label}`}
         onClick={() => setOpen((current) => !current)}
+        onKeyDown={handleKeyDown}
         className="flex h-12 w-full items-center justify-between border border-zinc-200 bg-transparent pl-4 pr-4 text-left text-base text-zinc-700 transition-colors hover:border-zinc-300 focus:outline-none focus-visible:border-zinc-900 dark:border-zinc-800 dark:text-zinc-200 dark:hover:border-zinc-700 dark:focus-visible:border-zinc-100"
       >
         <span>{selectedOption?.label}</span>
@@ -239,6 +303,7 @@ function FilterDropdown({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: -4 }}
             transition={{ duration: 0.14, ease: 'easeOut' }}
+            role="listbox"
             className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 border border-zinc-200 bg-white py-1 shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:border-zinc-800 dark:bg-zinc-950"
           >
             {options.map((option) => {
@@ -248,6 +313,8 @@ function FilterDropdown({
                 <button
                   key={option.value}
                   type="button"
+                  role="option"
+                  aria-selected={active}
                   onClick={() => {
                     onChange(option.value);
                     setOpen(false);

@@ -366,6 +366,11 @@ body {
     @apply bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100;
   }
 
+  /* 统一焦点指示器样式 */
+  .focus-ring {
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-400 dark:focus-visible:outline-zinc-500;
+  }
+
   /* 内容导轨横向分隔线，与竖向导轨保持一致的实线风格 */
   .section-rule {
     height: 1px;

@@ -81,14 +81,14 @@ export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsS
                   <a
                     key={project.slug}
                     href={`#project-${project.slug}`}
-                    className={`flex items-center gap-3 border-l pl-4 no-underline ${
+                    className={`flex items-center gap-3 border-l pl-4 no-underline focus-ring ${
                       isActive
                         ? 'border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100'
                         : 'border-zinc-200 text-zinc-400 dark:border-zinc-800 dark:text-zinc-500'
                     }`}
                   >
                     <span
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[11px] font-medium uppercase tracking-[0.12em] ${
+                      className={`flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full border text-[11px] font-medium uppercase tracking-[0.12em] ${
                         isActive
                           ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
                           : 'border-zinc-300 text-zinc-500 dark:border-zinc-700 dark:text-zinc-500'
@@ -121,7 +121,7 @@ export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsS
                 }`}
               >
                 <div className="px-6 py-8 lg:rail-line-r lg:px-10 lg:py-10">
-                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400 dark:text-zinc-500">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500 dark:text-zinc-400">
                     {String(index + 1).padStart(2, '0')}
                   </p>
                   <h3 className="mt-4 max-w-xl text-3xl tracking-tight text-zinc-900 dark:text-zinc-100">
@@ -130,7 +130,7 @@ export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsS
                   <p className="mt-4 max-w-xl text-base leading-8 text-zinc-600 dark:text-zinc-400">
                     {project.data.description}
                   </p>
-                  <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs uppercase tracking-[0.16em] text-zinc-400 dark:text-zinc-500">
+                  <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
                     {project.data.stack.slice(0, 5).map((tech) => (
                       <span key={tech}>{tech}</span>
                     ))}
@@ -141,7 +141,7 @@ export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsS
                         href={project.data.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-colors hover:bg-zinc-200 hover:text-zinc-900 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-100"
+                        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-colors hover:bg-zinc-200 hover:text-zinc-900 focus-ring dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-100"
                         aria-label={`Open ${project.data.title} on GitHub`}
                       >
                         <RiGithubFill size={16} />
@@ -152,7 +152,7 @@ export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsS
                         href={project.data.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-colors hover:bg-zinc-200 hover:text-zinc-900 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-100"
+                        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-colors hover:bg-zinc-200 hover:text-zinc-900 focus-ring dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-100"
                         aria-label={`Open ${project.data.title} demo`}
                       >
                         <RiExternalLinkLine size={16} />

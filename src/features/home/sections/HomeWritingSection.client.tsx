@@ -118,7 +118,7 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
               <a
                 key={post.slug}
                 href={getBlogUrl(post.slug)}
-                className="group flex flex-col no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-400/60 dark:focus-visible:outline-zinc-500/60"
+                className="group flex flex-col no-underline focus-ring"
               >
                 {/* 上：插画区，固定高度居中展示 */}
                 <div className="flex h-44 items-center justify-center overflow-hidden rounded-sm">
@@ -149,7 +149,7 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
                   </div>
                   <time
                     dateTime={post.data.pubDate.toISOString()}
-                    className="mt-1.5 block text-xs tabular-nums text-zinc-400 dark:text-zinc-500"
+                    className="mt-1.5 block text-xs tabular-nums text-zinc-500 dark:text-zinc-400"
                   >
                     {formatDate(post.data.pubDate)}
                   </time>

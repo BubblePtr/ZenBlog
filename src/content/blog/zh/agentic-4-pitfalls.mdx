@@ -36,6 +36,8 @@ tags: ['agentic', 'llm', 'engineering']
 
 在批量跑测试集时，这个消耗会成倍放大。如果无法观察到问题出在哪里，那就是白白消耗了 token。下图是我跑测试集的截图，我用了 LangSmith 去观察流程中 Agent 的行为。
 
+![LangSmith 测试集运行记录，可以看到大量 RuntimeError 和高延迟的 trace](./agentic-4-pitfalls-langsmith.jpg)
+
 ## 4 不要只做监督者，要深度思考
 
 有些你没有亲自跑通过的路，AI 也不会知道正确的方向。
