@@ -10,8 +10,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概览
 
-ZenBlog 是一个基于 Astro 5 + React 19 + Tailwind CSS 4 的个人博客与作品集网站，采用纯静态输出（SSG），部署在 Cloudflare Pages 上。
+ZenBlog 是一个基于 Astro 6 + React 19 + Tailwind CSS 4 的个人博客与作品集网站，采用纯静态输出（SSG），部署在 Cloudflare Pages 上。
 
+**站点标题：** Kieran Zhang
 **网站域名：** https://ninthbit.org
 **图片 CDN：** https://cdn.ninthbit.org（Cloudflare R2）
 
@@ -25,6 +26,10 @@ bun run preview                # 预览构建结果
 bun run new:post "标题"         # 创建新博客文章
 bun run new:project "标题"      # 创建新项目
 bun run check:arch             # 架构边界检查（features 间禁止交叉依赖）
+bun run lint                   # 检查代码（oxlint）
+bun run lint:fix               # 自动修复 lint 问题
+bun run fmt                    # 格式化代码（oxfmt）
+bun run fmt:check              # 检查格式是否符合规范
 bun run photos:sync-exif       # 从本地图片读取 EXIF 写入 frontmatter
 bun run r2:images:upload       # 扫描 content 中外部图片上传到 R2
 bun run r2:images:replace      # 批量替换 content 中的图片宿主域名
@@ -109,6 +114,18 @@ OG 图片使用静态资源（`/public/og/` 或同类静态路径），不再动
 ### MDX 自定义插件
 
 `src/remark/strip-leading-heading-one.mjs` — Remark 插件，自动剥离 MDX 文章开头与 frontmatter `title` 重复的 H1 标题，避免页面上出现重复标题。
+
+### View Transitions API
+
+启用了浏览器原生页面过渡动画（`PageShell.astro` 中开启 `<ViewTransitions />`）：
+- 首页头像 → 关于页头像：形态变换（morphing）
+- 博客列表标题 → 文章详情标题：动态 `view-transition-name`（`bt-{slug}`）
+- 过渡时序配置在 `src/styles/global.css`，支持 `prefers-reduced-motion`
+
+### 代码规范
+
+- Linter：**oxlint**（`bun run lint`）
+- Formatter：**oxfmt**（`bun run fmt`）
 
 ### 路径别名
 
