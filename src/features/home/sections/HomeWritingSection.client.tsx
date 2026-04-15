@@ -126,7 +126,7 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
                     src={imageSrc}
                     alt=""
                     loading="lazy"
-                    className="h-full w-auto max-w-full object-contain transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                    className="h-full w-auto max-w-full object-contain transition-transform duration-300 ease-out group-hover:scale-[1.03] dark:invert"
                   />
                 </div>
 
