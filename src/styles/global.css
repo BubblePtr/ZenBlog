@@ -1,6 +1,29 @@
 @import './typography.css';
 @import './_variables.scss';
 @import './_keyframe-animations.scss';
+@import 'katex/dist/katex.min.css';
+
+/* KaTeX 暗色模式覆盖：覆盖导入的默认黑色文字 */
+.dark .katex,
+.dark .katex-display,
+.dark .katex .katex-html,
+.dark .katex .base {
+  color: #e5e7eb !important;
+}
+
+.dark .katex .frac-line,
+.dark .katex .overline-line,
+.dark .katex .underline-line,
+.dark .katex .hline,
+.dark .katex .hdashline,
+.dark .katex .rule {
+  border-color: #71717a !important;
+}
+
+.dark .katex .box {
+  background-color: transparent !important;
+  border-color: #52525b !important;
+}
 
 @import 'tailwindcss';
 

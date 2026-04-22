@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贝叶斯更新 × Polymarket</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f0f6fc;
+    letter-spacing: -0.3px;
+  }
+  .header p {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #7d8590;
+  }
+  .tag {
+    display: inline-block;
+    background: #1f2937;
+    border: 1px solid #30363d;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 11px;
+    color: #58a6ff;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Question card */
+  .question-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .polymarket-badge {
+    background: #0052ff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: white;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+  .question-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f0f6fc;
+    flex: 1;
+  }
+  .market-price-badge {
+    background: #1a2332;
+    border: 1px solid #2d4a6e;
+    border-radius: 8px;
+    padding: 8px 16px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .market-price-badge .label { font-size: 10px; color: #7d8590; }
+  .market-price-badge .value { font-size: 20px; font-weight: 800; color: #58a6ff; }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 20px; }
+
+  .step-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .step-card.active { border-color: #388bfd; }
+  .step-card.completed { border-color: #2ea043; }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .step-number {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+    background: #21262d;
+    border: 2px solid #30363d;
+    color: #7d8590;
+    transition: all 0.3s;
+  }
+  .step-card.active .step-number {
+    background: #1f3a5f;
+    border-color: #388bfd;
+    color: #58a6ff;
+  }
+  .step-card.completed .step-number {
+    background: #1a3326;
+    border-color: #2ea043;
+    color: #3fb950;
+  }
+  .step-title { font-size: 14px; font-weight: 600; color: #f0f6fc; flex: 1; }
+  .step-subtitle { font-size: 12px; color: #7d8590; }
+  .chevron {
+    color: #7d8590;
+    font-size: 12px;
+    transition: transform 0.3s;
+  }
+  .step-card.open .chevron { transform: rotate(180deg); }
+
+  .step-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid #21262d;
+  }
+  .step-card.open .step-body { display: block; }
+
+  /* Prior visualization */
+  .prob-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .prob-label {
+    width: 80px;
+    font-size: 12px;
+    color: #8b949e;
+    flex-shrink: 0;
+  }
+  .prob-bar-bg {
+    flex: 1;
+    height: 10px;
+    background: #21262d;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .prob-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .fill-blue { background: linear-gradient(90deg, #1f6feb, #58a6ff); }
+  .fill-gray { background: linear-gradient(90deg, #373e47, #8b949e); }
+  .fill-green { background: linear-gradient(90deg, #1a7f37, #3fb950); }
+  .prob-value {
+    width: 44px;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .val-blue { color: #58a6ff; }
+  .val-gray { color: #8b949e; }
+  .val-green { color: #3fb950; }
+
+  /* Likelihood grid */
+  .likelihood-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .likelihood-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .likelihood-card .lc-title {
+    font-size: 11px;
+    color: #7d8590;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .likelihood-card .lc-scenario {
+    font-size: 12px;
+    color: #8b949e;
+    margin-bottom: 4px;
+  }
+  .likelihood-card .lc-value {
+    font-size: 22px;
+    font-weight: 800;
+  }
+  .lc-value-blue { color: #58a6ff; }
+  .lc-value-orange { color: #f78166; }
+
+  /* Formula block */
+  .formula-block {
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 14px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: #e6edf3;
+    line-height: 2;
+  }
+  .formula-block .comment { color: #7d8590; font-size: 11px; }
+  .formula-block .highlight { color: #3fb950; font-weight: 700; }
+  .formula-block .num { color: #79c0ff; }
+
+  /* Update button */
+  .update-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    background: #1f6feb;
+    color: white;
+  }
+  .update-btn:hover { background: #388bfd; transform: translateY(-1px); }
+  .update-btn:disabled { background: #21262d; color: #7d8590; cursor: not-allowed; transform: none; }
+
+  /* Edge table */
+  .edge-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 13px;
+  }
+  .edge-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: #0d1117;
+    color: #7d8590;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .edge-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #21262d;
+  }
+  .edge-table tr:last-child td { border-bottom: none; }
+  .edge-table .highlight-row td { background: #1a3326; }
+  .edge-badge {
+    display: inline-block;
+    background: #1a3326;
+    border: 1px solid #2ea043;
+    color: #3fb950;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  /* Signal pills */
+  .signal-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #1a2332;
+    border: 1px solid #2d4a6e;
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: #79c0ff;
+    margin: 4px 4px 4px 0;
+  }
+  .signal-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #58a6ff;
+  }
+
+  /* Flow arrow */
+  .flow-connector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    color: #30363d;
+    font-size: 18px;
+  }
+
+  /* Final verdict */
+  .verdict-card {
+    background: linear-gradient(135deg, #1a3326 0%, #162032 100%);
+    border: 1px solid #2ea043;
+    border-radius: 14px;
+    padding: 24px;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .verdict-card .v-label { font-size: 12px; color: #7d8590; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .verdict-card .v-main { font-size: 32px; font-weight: 900; color: #3fb950; margin-bottom: 4px; }
+  .verdict-card .v-sub { font-size: 13px; color: #8b949e; }
+  .verdict-card .v-action {
+    margin-top: 16px;
+    display: inline-block;
+    background: #2ea043;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .step-body p {
+    font-size: 13px;
+    color: #8b949e;
+    line-height: 1.7;
+    margin-top: 12px;
+  }
+
+  .divider { height: 1px; background: #21262d; margin: 14px 0; }
+
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 8px 0;
+    font-size: 13px;
+    color: #8b949e;
+  }
+  .info-row .icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="tag">Bayesian × Prediction Market</div>
+    <h1>美联储9月 FOMC 是否降息25bp？</h1>
+    <p>用贝叶斯公式逐步更新概率，识别 Polymarket 定价偏差</p>
+  </div>
+
+  <!-- Question card -->
+  <div class="question-card">
+    <div class="polymarket-badge">POLYMARKET</div>
+    <div class="question-text">Will the Fed cut rates by 25bps at the Sep FOMC meeting?</div>
+    <div class="market-price-badge">
+      <div class="label">市场定价</div>
+      <div class="value">65¢</div>
+    </div>
+  </div>
+
+  <div class="steps" id="steps">
+
+    <!-- Step 1: Prior -->
+    <div class="step-card active open" id="step1">
+      <div class="step-header" onclick="toggleStep('step1')">
+        <div class="step-number">1</div>
+        <div>
+          <div class="step-title">设定先验</div>
+          <div class="step-subtitle">将市场价格作为初始概率</div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="step-body">
+        <p>Polymarket 当前定价 <strong style="color:#58a6ff">65%</strong>，这是数千名交易者博弈后的共识。我们将其直接作为贝叶斯更新的起点——先验。</p>
+
+        <div class="prob-row" style="margin-top:18px">
+          <div class="prob-label">降息</div>
+          <div class="prob-bar-bg"><div class="prob-bar-fill fill-blue" style="width:65%"></div></div>
+          <div class="prob-value val-blue">65%</div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-label">不降息</div>
+          <div class="prob-bar-bg"><div class="prob-bar-fill fill-gray" style="width:35%"></div></div>
+          <div class="prob-value val-gray">35%</div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="info-row"><span class="icon">💡</span><span>先验代表"看到任何新信息之前"的判断。市场共识是一个合理的起点，但不一定正确。</span></div>
+      </div>
+    </div>
+
+    <div class="flow-connector">↓</div>
+
+    <!-- Step 2: Signal 1 -->
+    <div class="step-card" id="step2">
+      <div class="step-header" onclick="toggleStep('step2')">
+        <div class="step-number">2</div>
+        <div>
+          <div class="step-title">信号一：CPI 超预期下行</div>
+          <div class="step-subtitle">计算似然，执行第一次贝叶斯更新</div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="step-body">
+        <div class="signal-pill"><span class="dot"></span>新信号：CPI 数据超预期下行，通胀降温</div>
+
+        <div class="likelihood-grid">
+          <div class="likelihood-card">
+            <div class="lc-title">P(CPI超预期 | 降息)</div>
+            <div class="lc-scenario">如果最终降息，出现这种 CPI 的概率</div>
+            <div class="lc-value lc-value-blue">80%</div>
+          </div>
+          <div class="likelihood-card">
+            <div class="lc-title">P(CPI超预期 | 不降息)</div>
+            <div class="lc-scenario">如果最终不降息，出现这种 CPI 的概率</div>
+            <div class="lc-value lc-value-orange">30%</div>
+          </div>
+        </div>
+
+        <div class="formula-block">
+          <span class="comment">// 贝叶斯公式</span><br>
+          P(降息|CPI) = <span class="num">0.80</span> × <span class="num">0.65</span> / (<span class="num">0.80</span>×<span class="num">0.65</span> + <span class="num">0.30</span>×<span class="num">0.35</span>)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span class="num">0.520</span> / <span class="num">0.625</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span class="highlight">83.2%</span>
+        </div>
+
+        <button class="update-btn" id="btn2" onclick="runUpdate1()">▶ 执行第一次更新</button>
+
+        <div id="result2" style="display:none; margin-top:16px">
+          <div class="prob-row">
+            <div class="prob-label">降息</div>
+            <div class="prob-bar-bg"><div class="prob-bar-fill fill-blue" id="bar2-yes" style="width:65%"></div></div>
+            <div class="prob-value val-blue" id="val2-yes">65%</div>
+          </div>
+          <div class="prob-row">
+            <div class="prob-label">不降息</div>
+            <div class="prob-bar-bg"><div class="prob-bar-fill fill-gray" id="bar2-no" style="width:35%"></div></div>
+            <div class="prob-value val-gray" id="val2-no">35%</div>
+          </div>
+          <div class="info-row" style="margin-top:10px">
+            <span class="icon">📈</span>
+            <span>先验 65% → 后验 <strong style="color:#3fb950">83.2%</strong>，市场仍在 65%，<strong style="color:#f78166">偏差 +18.2%</strong> 已出现。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-connector">↓</div>
+
+    <!-- Step 3: Signal 2 -->
+    <div class="step-card" id="step3">
+      <div class="step-header" onclick="toggleStep('step3')">
+        <div class="step-number">3</div>
+        <div>
+          <div class="step-title">信号二：FOMC 委员发表鸽派讲话</div>
+          <div class="step-subtitle">以上一步后验为新先验，继续更新</div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="step-body">
+        <div class="signal-pill"><span class="dot"></span>新信号：一位 FOMC 委员公开表态，倾向于宽松</div>
+
+        <div class="likelihood-grid">
+          <div class="likelihood-card">
+            <div class="lc-title">P(鸽派讲话 | 降息)</div>
+            <div class="lc-scenario">历史上降息前一周鸽派讲话的频率</div>
+            <div class="lc-value lc-value-blue">70%</div>
+          </div>
+          <div class="likelihood-card">
+            <div class="lc-title">P(鸽派讲话 | 不降息)</div>
+            <div class="lc-scenario">历史上不降息前一周鸽派讲话的频率</div>
+            <div class="lc-value lc-value-orange">20%</div>
+          </div>
+        </div>
+
+        <div class="formula-block">
+          <span class="comment">// 以 83.2% 为新的先验继续更新</span><br>
+          P(降息|鸽派) = <span class="num">0.70</span> × <span class="num">0.832</span> / (<span class="num">0.70</span>×<span class="num">0.832</span> + <span class="num">0.20</span>×<span class="num">0.168</span>)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span class="num">0.5824</span> / <span class="num">0.6160</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span class="highlight">94.5%</span>
+        </div>
+
+        <button class="update-btn" id="btn3" onclick="runUpdate2()" disabled>▶ 执行第二次更新</button>
+
+        <div id="result3" style="display:none; margin-top:16px">
+          <div class="prob-row">
+            <div class="prob-label">降息</div>
+            <div class="prob-bar-bg"><div class="prob-bar-fill fill-green" id="bar3-yes" style="width:83%"></div></div>
+            <div class="prob-value val-green" id="val3-yes">83.2%</div>
+          </div>
+          <div class="prob-row">
+            <div class="prob-label">不降息</div>
+            <div class="prob-bar-bg"><div class="prob-bar-fill fill-gray" id="bar3-no" style="width:17%"></div></div>
+            <div class="prob-value val-gray" id="val3-no">16.8%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-connector">↓</div>
+
+    <!-- Step 4: Edge -->
+    <div class="step-card" id="step4">
+      <div class="step-header" onclick="toggleStep('step4')">
+        <div class="step-number">4</div>
+        <div>
+          <div class="step-title">决策：计算 Edge</div>
+          <div class="step-subtitle">你的模型 vs 市场定价</div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="step-body">
+        <table class="edge-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>降息概率</th>
+              <th>期望收益</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:#8b949e">市场定价</td>
+              <td style="color:#58a6ff; font-weight:700">65%</td>
+              <td style="color:#8b949e">—</td>
+            </tr>
+            <tr>
+              <td style="color:#8b949e">贝叶斯模型</td>
+              <td style="color:#3fb950; font-weight:700">94.5%</td>
+              <td style="color:#8b949e">—</td>
+            </tr>
+            <tr class="highlight-row">
+              <td style="color:#f0f6fc; font-weight:600">定价偏差 (Edge)</td>
+              <td><span class="edge-badge">+29.5%</span></td>
+              <td style="color:#3fb950; font-weight:700">≈ +45%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="formula-block" style="margin-top:14px">
+          <span class="comment">// 期望收益率计算</span><br>
+          期望收益 = (模型概率 - 市场价格) / 市场价格<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= (<span class="num">0.945</span> - <span class="num">0.65</span>) / <span class="num">0.65</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span class="highlight">≈ 45%</span>
+        </div>
+
+        <div class="info-row" style="margin-top:14px">
+          <span class="icon">⚠️</span>
+          <span style="color:#d29922">前提：你的似然估计（历史条件概率）足够可信。如果样本量不足，这个 edge 可能是噪声。</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Verdict -->
+  <div class="verdict-card" id="verdict" style="display:none">
+    <div class="v-label">最终判断</div>
+    <div class="v-main">94.5%</div>
+    <div class="v-sub">你的贝叶斯模型估计降息概率，vs 市场 65%</div>
+    <div class="v-action">以 0.65 买入，期望收益 +45%</div>
+  </div>
+
+  <!-- Show verdict button -->
+  <div style="text-align:center; margin-top:24px">
+    <button class="update-btn" id="btnVerdict" onclick="showVerdict()" disabled style="font-size:14px; padding:12px 28px;">
+      ✦ 显示最终结论
+    </button>
+  </div>
+
+</div>
+
+<script>
+  let step2Done = false;
+  let step3Done = false;
+
+  function toggleStep(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
+
+  function runUpdate1() {
+    const btn = document.getElementById('btn2');
+    btn.disabled = true;
+    btn.textContent = '✓ 已更新';
+
+    const result = document.getElementById('result2');
+    result.style.display = 'block';
+
+    setTimeout(() => {
+      document.getElementById('bar2-yes').style.width = '83.2%';
+      document.getElementById('val2-yes').textContent = '83.2%';
+      document.getElementById('bar2-no').style.width = '16.8%';
+      document.getElementById('val2-no').textContent = '16.8%';
+    }, 100);
+
+    // Mark step 2 completed, open step 3
+    document.getElementById('step2').classList.add('completed');
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step3').classList.add('active');
+    document.getElementById('step3').classList.add('open');
+    document.getElementById('btn3').disabled = false;
+
+    step2Done = true;
+  }
+
+  function runUpdate2() {
+    const btn = document.getElementById('btn3');
+    btn.disabled = true;
+    btn.textContent = '✓ 已更新';
+
+    const result = document.getElementById('result3');
+    result.style.display = 'block';
+
+    setTimeout(() => {
+      document.getElementById('bar3-yes').style.width = '94.5%';
+      document.getElementById('val3-yes').textContent = '94.5%';
+      document.getElementById('bar3-no').style.width = '5.5%';
+      document.getElementById('val3-no').textContent = '5.5%';
+    }, 100);
+
+    document.getElementById('step3').classList.add('completed');
+    document.getElementById('step3').classList.remove('active');
+    document.getElementById('step4').classList.add('active');
+    document.getElementById('step4').classList.add('open');
+    document.getElementById('btnVerdict').disabled = false;
+
+    step3Done = true;
+  }
+
+  function showVerdict() {
+    document.getElementById('verdict').style.display = 'block';
+    document.getElementById('btnVerdict').style.display = 'none';
+    document.getElementById('step4').classList.add('completed');
+    document.getElementById('verdict').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+</script>
+</body>
+</html>

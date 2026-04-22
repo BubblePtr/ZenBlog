@@ -52,6 +52,8 @@
     "react-dom": "^19.2.1",
     "react-dropzone": "^14.3.8",
     "react-hotkeys-hook": "^5.2.1",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
     "tailwind-merge": "^3.4.0",
     "turndown": "^7.2.2",
     "typescript": "^5.9.3"
