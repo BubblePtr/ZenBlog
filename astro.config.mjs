@@ -6,6 +6,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { stripLeadingHeadingOne } from './src/remark/strip-leading-heading-one.mjs';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -26,7 +28,8 @@ export default defineConfig({
   },
   integrations: [
     mdx({
-      remarkPlugins: [stripLeadingHeadingOne],
+      remarkPlugins: [stripLeadingHeadingOne, remarkMath],
+      rehypePlugins: [rehypeKatex],
     }),
     sitemap(),
     react()
