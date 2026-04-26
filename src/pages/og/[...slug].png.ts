@@ -12,16 +12,17 @@ import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import satori from 'satori';
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
-import resvgWasmUrl from '@resvg/resvg-wasm/index_bg.wasm?url';
 import { readFileSync } from 'fs';
 import path from 'path';
+import { createRequire } from 'node:module';
 
 // ─── WASM init ───────────────────────────────────────────────────────────────
+const wasmPath = createRequire(import.meta.url).resolve('@resvg/resvg-wasm/index_bg.wasm');
+
 let wasmReady: Promise<void> | false = false;
 function ensureWasm() {
   if (!wasmReady) {
     wasmReady = (async () => {
-      const wasmPath = path.join(process.cwd(), 'dist', resvgWasmUrl);
       try {
         await initWasm(readFileSync(wasmPath));
       } catch (e) {
