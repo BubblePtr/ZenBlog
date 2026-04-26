@@ -15,6 +15,7 @@ import { RiCalendarLine, RiTimeLine } from '@remixicon/react';
 
 type Props = CollectionEntry<'blog'>['data'] & {
   slug?: string;
+  ogSlug?: string;
   readTimeMinutes?: number;
 };
 
@@ -26,6 +27,7 @@ const {
   author,
   source,
   slug,
+  ogSlug,
   readTimeMinutes,
 } = Astro.props;
 
@@ -57,7 +59,7 @@ const resolvedAuthor = resolveBlogAuthor(author, source, lang);
 
 <html lang={lang}>
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} slug={ogSlug} />
   </head>
 
   <body class="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-500 antialiased font-sans">
