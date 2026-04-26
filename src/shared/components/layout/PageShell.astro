@@ -11,7 +11,7 @@ interface Props {
   title: string;
   description: string;
   currentPath: string;
-  image?: string;
+  slug?: string;
   mainClass?: string;
   bodyClass?: string;
   showFooter?: boolean;
@@ -22,7 +22,7 @@ const {
   title,
   description,
   currentPath,
-  image,
+  slug,
   mainClass = 'relative z-10',
   bodyClass = 'bg-[oklch(98%_0.006_60)] dark:bg-zinc-950 transition-colors duration-500',
   showFooter = true,
@@ -34,7 +34,7 @@ const t = getTranslationDictionary(lang);
 <!doctype html>
 <html lang={lang}>
   <head>
-    <BaseHead title={title} description={description} image={image} />
+    <BaseHead title={title} description={description} slug={slug} />
   </head>
   <body class={bodyClass}>
     <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} />
