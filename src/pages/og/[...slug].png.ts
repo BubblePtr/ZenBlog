@@ -24,30 +24,22 @@ function ensureWasm() {
       const wasmPath = path.join(process.cwd(), 'dist', resvgWasmUrl);
       try {
         await initWasm(readFileSync(wasmPath));
-      } catch {
-        // initWasm already called by another chunk (e.g. brand.png)
+      } catch (e) {
+        // initWasm is globally singular — another chunk may have already initialized it
+        if (!(e instanceof Error) || !e.message.includes('Already initialized')) throw e;
       }
     })();
   }
   return wasmReady;
 }
 
-// ─── Font cache ──────────────────────────────────────────────────────────────
-const fontCache: Record<string, ArrayBuffer> = {};
-async function loadFont(url: string): Promise<ArrayBuffer> {
-  if (fontCache[url]) return fontCache[url];
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Font fetch failed: ${url}`);
-  fontCache[url] = await res.arrayBuffer();
-  return fontCache[url];
-}
+// ─── Local fonts ──────────────────────────────────────────────────────────────
+const FONT_DIR = path.join(process.cwd(), 'src', 'fonts');
 
-// Google Fonts URLs — pinned to current CDN paths
-const FONT_URLS = {
-  shippori: 'https://fonts.gstatic.com/s/shipporimincho/v17/VdGGAZweH5EbgHY6YExcZfDoj0BA2w.ttf',
-  notoSerifSC:
-    'https://fonts.gstatic.com/s/notoserifsc/v35/H4cyBXePl9DZ0Xe7gG9cyOj7uK2-n-D2rd4FY7SCqyWv.ttf',
-};
+function loadFont(filename: string): ArrayBuffer {
+  const buf = readFileSync(path.join(FONT_DIR, filename));
+  return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+}
 
 // ─── Design tokens ───────────────────────────────────────────────────────────
 const BG = '#09090b';
@@ -99,13 +91,15 @@ export const GET: APIRoute = async ({ props, params }) => {
   const zh = isZH(slug);
   const title: string = post.data.title;
   const description: string = post.data.description ?? '';
-  const tag: string = post.data.category ?? (zh ? '写作' : 'Writing');
+  const tag: string = post.data.tags?.[0] ?? (zh ? '写作' : 'Writing');
   const date = post.data.pubDate ? formatDate(new Date(post.data.pubDate), zh) : '';
   const author = 'Kieran Zhang';
   const url = 'ninthbit.org';
 
-  // Load fonts based on language
-  const titleFont = await (zh ? loadFont(FONT_URLS.notoSerifSC) : loadFont(FONT_URLS.shippori));
+  // Load font based on language
+  const titleFont = zh
+    ? loadFont('NotoSerifSC-Regular.ttf')
+    : loadFont('ShipporiMincho-Regular.ttf');
 
   const titleFontName = zh ? 'Noto Serif SC' : 'Shippori Mincho';
 

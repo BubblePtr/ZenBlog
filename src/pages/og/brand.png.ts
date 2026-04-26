@@ -23,20 +23,21 @@ function ensureWasm() {
       const wasmPath = path.join(process.cwd(), 'dist', resvgWasmUrl);
       try {
         await initWasm(readFileSync(wasmPath));
-      } catch {
-        // initWasm already called by another chunk (e.g. [...slug] endpoint)
+      } catch (e) {
+        // initWasm is globally singular — another chunk may have already initialized it
+        if (!(e instanceof Error) || !e.message.includes('Already initialized')) throw e;
       }
     })();
   }
   return wasmReady;
 }
 
-// ─── Font loading ────────────────────────────────────────────────────────────
-// Fetched once; cached by the edge runtime between requests.
-async function loadFont(url: string): Promise<ArrayBuffer> {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Font fetch failed: ${url}`);
-  return res.arrayBuffer();
+// ─── Local fonts ──────────────────────────────────────────────────────────────
+const FONT_DIR = path.join(process.cwd(), 'src', 'fonts');
+
+function loadFont(filename: string): ArrayBuffer {
+  const buf = readFileSync(path.join(FONT_DIR, filename));
+  return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
 }
 
 // ─── Colors (ZenBlog tokens) ─────────────────────────────────────────────────
@@ -51,9 +52,7 @@ const RAIL = 'rgba(255,255,255,0.14)';
 export const GET: APIRoute = async () => {
   await ensureWasm();
 
-  const shippori = await loadFont(
-    'https://fonts.gstatic.com/s/shipporimincho/v17/VdGGAZweH5EbgHY6YExcZfDoj0BA2w.ttf',
-  );
+  const shippori = loadFont('ShipporiMincho-Regular.ttf');
 
   const svg = await satori(
     {
