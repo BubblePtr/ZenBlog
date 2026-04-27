@@ -4,7 +4,7 @@ description: 'A minimalist yet interactive blog theme built for developers. Feat
 order: 1
 stack: ['Astro', 'React', 'Tailwind', 'Framer Motion']
 github: 'https://github.com/BubblePtr/ZenBlog'
-demo: 'https://ninthbit.org'
+demo: 'https://kieranzhang.dev'
 ---
 
 Here is a detailed breakdown of how I built this theme...

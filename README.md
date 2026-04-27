@@ -27,7 +27,7 @@
 3. 输出目录设置为 `dist`。
 4. 在 Pages 中确保启用 Bun（默认会根据 `bun.lock` 自动识别）。
 5. 首次部署后，先在 `*.pages.dev` 地址验证页面可用。
-6. 绑定自定义域名（如 `ninthbit.org` 与 `www.ninthbit.org`），并配置一个方向的 301 重定向避免重复收录。
+6. 绑定自定义域名（如 `kieranzhang.dev` 与 `www.kieranzhang.dev`），并配置一个方向的 301 重定向避免重复收录。
 7. 在 Cloudflare 打开 `Always Use HTTPS` 与 `Auto Minify (HTML/CSS/JS)`。
 
 ### 手动构建

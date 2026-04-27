@@ -23,7 +23,7 @@
 
 ```javascript
 export default defineConfig({
-  site: 'https://ninthbit.org',
+  site: 'https://kieranzhang.dev',
   output: 'static',
   adapter: cloudflare(),
   i18n: {

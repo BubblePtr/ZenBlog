@@ -39,7 +39,7 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
       'background:#18181b;color:#f4f4f5;font-size:13px;font-weight:600;padding:3px 8px;border-radius:3px;',
     );
     console.log(
-      '%c Curious enough to open DevTools? Built with Astro 5 + React 19.  ninthbit.org/about',
+      '%c Curious enough to open DevTools? Built with Astro 5 + React 19.  kieranzhang.dev/about',
       'color:#71717a;font-size:11px;',
     );
   }, [brandName]);

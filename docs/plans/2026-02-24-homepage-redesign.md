@@ -194,7 +194,7 @@ export default function HomeHeroSection({ t }: HomeHeroSectionProps) {
           className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
           <RiTwitterXFill size={18} />
         </a>
-        <a href="mailto:contact@ninthbit.org"
+        <a href="mailto:contact@kieranzhang.dev"
           className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
           <RiMailLine size={18} />
         </a>

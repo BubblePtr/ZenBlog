@@ -13,7 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ZenBlog 是一个基于 Astro 6 + React 19 + Tailwind CSS 4 的个人博客与作品集网站，采用纯静态输出（SSG），部署在 Cloudflare Pages 上。
 
 **站点标题：** Kieran Zhang
-**网站域名：** https://ninthbit.org
+**网站域名：** https://kieranzhang.dev
 **图片 CDN：** https://cdn.ninthbit.org（Cloudflare R2）
 
 ## 常用命令

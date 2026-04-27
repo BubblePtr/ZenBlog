@@ -13,7 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://ninthbit.org',
+  site: 'https://kieranzhang.dev',
   // 纯静态输出，可直接部署到 Cloudflare Pages
   output: 'static',
   i18n: {

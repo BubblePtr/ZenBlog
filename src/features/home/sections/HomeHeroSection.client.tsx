@@ -225,7 +225,7 @@ function RssTooltipContent({
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText('https://ninthbit.org/rss.xml');
+      await navigator.clipboard.writeText('https://kieranzhang.dev/rss.xml');
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
