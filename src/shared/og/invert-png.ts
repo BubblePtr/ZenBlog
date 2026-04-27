@@ -56,10 +56,8 @@ function crc32(buf: Buffer): number {
 }
 
 const BPP_BY_COLOR_TYPE: Record<number, number> = {
-  0: 1, // Grayscale
   2: 3, // RGB
-  3: 1, // Indexed
-  4: 2, // Grayscale + Alpha
+  3: 1, // Indexed (palette-based, handled separately)
   6: 4, // RGBA
 };
 
@@ -94,7 +92,14 @@ export function loadAndInvertPng(filePath: string): string {
 
   const width = ihdrData.readUInt32BE(0);
   const height = ihdrData.readUInt32BE(4);
+  const bitDepth = ihdrData.readUInt8(8);
   const colorType = ihdrData.readUInt8(9);
+  const interlace = ihdrData.readUInt8(12);
+
+  if (bitDepth !== 8)
+    throw new Error(`Unsupported PNG bit depth: ${bitDepth} (only 8-bit supported)`);
+  if (interlace !== 0) throw new Error('Interlaced PNG not supported');
+
   const bpp = BPP_BY_COLOR_TYPE[colorType];
   if (bpp === undefined) throw new Error(`Unsupported PNG color type: ${colorType}`);
 
