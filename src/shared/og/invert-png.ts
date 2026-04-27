@@ -151,6 +151,9 @@ export function loadAndInvertPng(filePath: string): string {
 
     unfilterRow(currRow, prevRow, bpp, filter);
 
+    // Save unfiltered row for the next row's Up/Average/Paeth reference
+    currRow.copy(prevRow);
+
     for (let i = 0; i < stride; i += bpp) {
       currRow[i] = 255 - currRow[i];
       currRow[i + 1] = 255 - currRow[i + 1];
@@ -160,7 +163,6 @@ export function loadAndInvertPng(filePath: string): string {
     out[dstPos++] = 0; // filter None
     currRow.copy(out, dstPos, 0, stride);
     dstPos += stride;
-    currRow.copy(prevRow);
   }
 
   const newIdat = pngChunk('IDAT', deflateSync(out));
