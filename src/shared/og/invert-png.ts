@@ -138,6 +138,12 @@ export function loadAndInvertPng(filePath: string): string {
   // Decompress, unfilter, invert RGB, re-filter
   const raw = inflateSync(Buffer.concat(idatParts));
   const stride = width * bpp;
+  const expectedLen = height * (stride + 1);
+  if (raw.length !== expectedLen) {
+    throw new Error(
+      `Inflate output mismatch: got ${raw.length} bytes, expected ${expectedLen} (${height} rows × ${stride + 1})`,
+    );
+  }
   const out = Buffer.alloc(raw.length);
   const prevRow = Buffer.alloc(stride);
   const currRow = Buffer.alloc(stride);

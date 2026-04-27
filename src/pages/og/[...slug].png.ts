@@ -108,6 +108,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 // ─── Route handler ───────────────────────────────────────────────────────────
+let avatarCache: string | null | undefined;
+
 export const GET: APIRoute = async ({ props, params }) => {
   const slug = params.slug;
   if (!slug) return new Response('Not Found', { status: 404 });
@@ -133,16 +135,24 @@ export const GET: APIRoute = async ({ props, params }) => {
   const illustrationSrc = loadAndInvertPng(path.join(ILLUSTRATION_DIR, illustrationFile));
 
   // Load author avatar
-  let avatarSrc: string | null = null;
-  try {
-    const avatarResp = await fetch('https://cdn.ninthbit.org/avatar.jpg');
-    if (avatarResp.ok) {
-      const avatarBuf = Buffer.from(await avatarResp.arrayBuffer());
-      const mime = avatarBuf[0] === 0x89 && avatarBuf[1] === 0x50 ? 'image/png' : 'image/jpeg';
-      avatarSrc = `data:${mime};base64,${avatarBuf.toString('base64')}`;
+  let avatarSrc: string | null = avatarCache;
+  if (avatarSrc === undefined) {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 5000);
+      const avatarResp = await fetch('https://cdn.ninthbit.org/avatar.jpg', {
+        signal: ctrl.signal,
+      });
+      clearTimeout(t);
+      if (avatarResp.ok) {
+        const avatarBuf = Buffer.from(await avatarResp.arrayBuffer());
+        const mime = avatarBuf[0] === 0x89 && avatarBuf[1] === 0x50 ? 'image/png' : 'image/jpeg';
+        avatarSrc = `data:${mime};base64,${avatarBuf.toString('base64')}`;
+      }
+    } catch {
+      avatarSrc = null;
     }
-  } catch {
-    // Avatar fetch failed — skip the image, keep text-only author row
+    avatarCache = avatarSrc;
   }
 
   const titleFontName = zh ? 'Noto Serif SC' : 'Shippori Mincho';
