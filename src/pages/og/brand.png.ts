@@ -11,16 +11,18 @@
 import type { APIRoute } from 'astro';
 import satori from 'satori';
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
-import resvgWasmUrl from '@resvg/resvg-wasm/index_bg.wasm?url';
 import { readFileSync } from 'fs';
 import path from 'path';
+import { createRequire } from 'node:module';
+import { loadAndInvertPng } from '@/shared/og/invert-png';
 
 // ─── WASM init (runs once per cold start) ───────────────────────────────────
+const wasmPath = createRequire(import.meta.url).resolve('@resvg/resvg-wasm/index_bg.wasm');
+
 let wasmReady: Promise<void> | false = false;
 function ensureWasm() {
   if (!wasmReady) {
     wasmReady = (async () => {
-      const wasmPath = path.join(process.cwd(), 'dist', resvgWasmUrl);
       try {
         await initWasm(readFileSync(wasmPath));
       } catch (e) {
@@ -45,7 +47,6 @@ const BG = '#09090b'; // zinc-950
 const FG = 'rgba(255,255,255,0.87)';
 const FG2 = '#a1a1aa'; // zinc-400
 const PURPLE = '#6229FF';
-const PURPLE_L = '#C3BDFF'; // brand-200
 const RAIL = 'rgba(255,255,255,0.14)';
 
 // ─── Route handler ───────────────────────────────────────────────────────────
@@ -168,7 +169,7 @@ export const GET: APIRoute = async () => {
                                   color: FG2,
                                   fontFamily: 'sans-serif',
                                 },
-                                children: 'ninthbit.org',
+                                children: 'kieranzhang.dev',
                               },
                             },
                           ],
@@ -222,7 +223,7 @@ export const GET: APIRoute = async () => {
                     ],
                   },
                 },
-                // Right — accent circle placeholder
+                // Right — illustration
                 {
                   type: 'div',
                   props: {
@@ -231,34 +232,25 @@ export const GET: APIRoute = async () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      position: 'relative',
                     },
                     children: [
                       {
-                        type: 'div',
+                        type: 'img',
                         props: {
+                          src: loadAndInvertPng(
+                            path.join(
+                              process.cwd(),
+                              'public',
+                              'images',
+                              'illustrations',
+                              'absurd-01.png',
+                            ),
+                          ),
                           style: {
-                            width: 320,
-                            height: 320,
-                            borderRadius: '50%',
-                            background: 'rgba(98,41,255,0.12)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
+                            width: 360,
+                            height: 360,
+                            objectFit: 'contain',
                           },
-                          children: [
-                            {
-                              type: 'div',
-                              props: {
-                                style: {
-                                  width: 120,
-                                  height: 4,
-                                  background: PURPLE_L,
-                                  borderRadius: 2,
-                                },
-                              },
-                            },
-                          ],
                         },
                       },
                     ],

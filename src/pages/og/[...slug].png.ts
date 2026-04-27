@@ -12,16 +12,18 @@ import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import satori from 'satori';
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
-import resvgWasmUrl from '@resvg/resvg-wasm/index_bg.wasm?url';
 import { readFileSync } from 'fs';
 import path from 'path';
+import { createRequire } from 'node:module';
+import { loadAndInvertPng } from '@/shared/og/invert-png';
 
 // ─── WASM init ───────────────────────────────────────────────────────────────
+const wasmPath = createRequire(import.meta.url).resolve('@resvg/resvg-wasm/index_bg.wasm');
+
 let wasmReady: Promise<void> | false = false;
 function ensureWasm() {
   if (!wasmReady) {
     wasmReady = (async () => {
-      const wasmPath = path.join(process.cwd(), 'dist', resvgWasmUrl);
       try {
         await initWasm(readFileSync(wasmPath));
       } catch (e) {
@@ -39,6 +41,31 @@ const FONT_DIR = path.join(process.cwd(), 'src', 'fonts');
 function loadFont(filename: string): ArrayBuffer {
   const buf = readFileSync(path.join(FONT_DIR, filename));
   return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+}
+
+// ─── Illustration pool (same as homepage writing section) ────────────────────
+const ILLUSTRATIONS = [
+  'absurd-01.png',
+  'absurd-02.png',
+  'absurd-03.png',
+  'absurd-04.png',
+  'absurd-05.png',
+  'absurd-06.png',
+  'absurd-07.png',
+  'absurd-08.png',
+  'absurd-09.png',
+  'absurd-10.png',
+  'absurd-11.png',
+  'absurd-31.png',
+  'absurd-32.png',
+  'absurd-33.png',
+  'absurd-34.png',
+];
+const ILLUSTRATION_DIR = path.join(process.cwd(), 'public', 'images', 'illustrations');
+
+function pickIllustration(slug: string): string {
+  const hash = slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  return ILLUSTRATIONS[hash % ILLUSTRATIONS.length];
 }
 
 // ─── Design tokens ───────────────────────────────────────────────────────────
@@ -94,12 +121,29 @@ export const GET: APIRoute = async ({ props, params }) => {
   const tag: string = post.data.tags?.[0] ?? (zh ? '写作' : 'Writing');
   const date = post.data.pubDate ? formatDate(new Date(post.data.pubDate), zh) : '';
   const author = 'Kieran Zhang';
-  const url = 'ninthbit.org';
+  const url = 'kieranzhang.dev';
 
   // Load font based on language
   const titleFont = zh
     ? loadFont('NotoSerifSC-Regular.ttf')
     : loadFont('ShipporiMincho-Regular.ttf');
+
+  // Load illustration for this post (inverted for dark background)
+  const illustrationFile = pickIllustration(slug);
+  const illustrationSrc = loadAndInvertPng(path.join(ILLUSTRATION_DIR, illustrationFile));
+
+  // Load author avatar
+  let avatarSrc: string | null = null;
+  try {
+    const avatarResp = await fetch('https://cdn.ninthbit.org/avatar.jpg');
+    if (avatarResp.ok) {
+      const avatarBuf = Buffer.from(await avatarResp.arrayBuffer());
+      const mime = avatarBuf[0] === 0x89 && avatarBuf[1] === 0x50 ? 'image/png' : 'image/jpeg';
+      avatarSrc = `data:${mime};base64,${avatarBuf.toString('base64')}`;
+    }
+  } catch {
+    // Avatar fetch failed — skip the image, keep text-only author row
+  }
 
   const titleFontName = zh ? 'Noto Serif SC' : 'Shippori Mincho';
 
@@ -249,6 +293,21 @@ export const GET: APIRoute = async ({ props, params }) => {
                   props: {
                     style: { display: 'flex', alignItems: 'center', gap: 8 },
                     children: [
+                      ...(avatarSrc
+                        ? [
+                            {
+                              type: 'img' as const,
+                              props: {
+                                src: avatarSrc,
+                                style: {
+                                  width: 20,
+                                  height: 20,
+                                  borderRadius: '50%',
+                                },
+                              },
+                            },
+                          ]
+                        : []),
                       {
                         type: 'span',
                         props: {
@@ -298,49 +357,15 @@ export const GET: APIRoute = async ({ props, params }) => {
                 justifyContent: 'center',
               },
               children: [
-                // Accent glow circle
                 {
-                  type: 'div',
+                  type: 'img',
                   props: {
+                    src: illustrationSrc,
                     style: {
-                      width: 300,
-                      height: 300,
-                      borderRadius: '50%',
-                      background: 'rgba(98,41,255,0.10)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      width: 420,
+                      height: 420,
+                      objectFit: 'contain',
                     },
-                    children: [
-                      // Inner purple ring
-                      {
-                        type: 'div',
-                        props: {
-                          style: {
-                            width: 120,
-                            height: 120,
-                            borderRadius: '50%',
-                            border: `2px solid rgba(157,138,255,0.3)`,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          },
-                          children: [
-                            {
-                              type: 'div',
-                              props: {
-                                style: {
-                                  width: 40,
-                                  height: 40,
-                                  borderRadius: '50%',
-                                  background: 'rgba(98,41,255,0.4)',
-                                },
-                              },
-                            },
-                          ],
-                        },
-                      },
-                    ],
                   },
                 },
               ],
