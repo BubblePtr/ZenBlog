@@ -2,12 +2,6 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 语言要求
-
-- 交流过程中请使用中文
-- 文档使用中文撰写，存放在 `docs/` 目录下
-- 代码注释使用中文
-
 ## 项目概览
 
 ZenBlog 是一个基于 Astro 6 + React 19 + Tailwind CSS 4 的个人博客与作品集网站，采用纯静态输出（SSG），部署在 Cloudflare Pages 上。
