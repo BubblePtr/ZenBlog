@@ -18,7 +18,7 @@ const { timeline } = getAboutContent(lang);
 <div class="max-w-[60rem] mx-auto px-6 sm:px-8 relative z-10">
   <IdentityBand t={t} lang={lang} />
 
-  <LifeTimeline client:visible t={t} entries={timeline} />
+  <LifeTimeline client:visible t={t} lang={lang} entries={timeline} />
 
   <PersonalDetails t={t} lang={lang} />
 </div>

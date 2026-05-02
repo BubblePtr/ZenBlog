@@ -1,9 +1,11 @@
 import { useId, useState } from 'react';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
+import type { Language } from '@/i18n/config';
 import type { TimelineEntry, TimelineEntryType } from '@/features/about/content';
 
 interface Props {
   t: TranslationDictionary;
+  lang: Language;
   entries: TimelineEntry[];
 }
 
@@ -18,15 +20,23 @@ type TimelineItem =
   | { kind: 'decade'; key: string; label: string }
   | { kind: 'entry'; key: string; entry: TimelineEntry };
 
+// Decade labels are translated via dedicated keys when present (e.g. about.timeline.decade.2020s);
+// future decades without a translation fall back to a locale-agnostic `${decade}s` so a content
+// addition for 2030+ does not silently inherit the wrong label.
+const DECADE_KEYS: Record<number, TranslationKey> = {
+  2010: 'about.timeline.decade.2010s',
+  2020: 'about.timeline.decade.2020s',
+};
+
 function buildItems(entries: TimelineEntry[], t: TranslationDictionary): TimelineItem[] {
   const out: TimelineItem[] = [];
   let lastDecade: number | null = null;
   for (const entry of entries) {
     const decade = Math.floor(entry.year / 10) * 10;
     if (decade !== lastDecade) {
-      const labelKey: TranslationKey =
-        decade === 2010 ? 'about.timeline.decade.2010s' : 'about.timeline.decade.2020s';
-      out.push({ kind: 'decade', key: `decade-${decade}`, label: t[labelKey] });
+      const labelKey = DECADE_KEYS[decade];
+      const label = labelKey ? t[labelKey] : `${decade}s`;
+      out.push({ kind: 'decade', key: `decade-${decade}`, label });
       lastDecade = decade;
     }
     out.push({ kind: 'entry', key: entry.id, entry });
@@ -34,9 +44,14 @@ function buildItems(entries: TimelineEntry[], t: TranslationDictionary): Timelin
   return out;
 }
 
-export default function LifeTimeline({ t, entries }: Props) {
+export default function LifeTimeline({ t, lang, entries }: Props) {
   const [open, setOpen] = useState<Set<string>>(new Set());
   const baseId = useId();
+  const isZh = lang === 'zh';
+  // Small-caps tracking (uppercase + wide letter-spacing) is an English-typography idiom;
+  // applying 0.2em+ tracking to CJK characters spaces them so wide the label reads as broken.
+  const decadeLabelClass = isZh ? 'tracking-[0.12em]' : 'uppercase tracking-[0.28em]';
+  const badgeLabelClass = isZh ? 'tracking-[0.08em]' : 'uppercase tracking-[0.2em]';
 
   const toggle = (id: string) => {
     setOpen((prev) => {
@@ -63,7 +78,9 @@ export default function LifeTimeline({ t, entries }: Props) {
             return (
               <li key={item.key} className="pt-14 pb-3 first:pt-2" aria-hidden="true">
                 <div className="flex items-baseline gap-5">
-                  <span className="tabular-nums text-[0.6875rem] uppercase tracking-[0.28em] text-[var(--color-text-secondary)]/70">
+                  <span
+                    className={`tabular-nums text-[0.6875rem] text-[var(--color-text-secondary)]/70 ${decadeLabelClass}`}
+                  >
                     {item.label}
                   </span>
                   <span className="flex-1 section-rule" />
@@ -93,7 +110,9 @@ export default function LifeTimeline({ t, entries }: Props) {
                     {entry.year}
                   </span>
                   <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-secondary)]/60">
+                    <span
+                      className={`text-[10px] text-[var(--color-text-secondary)]/60 ${badgeLabelClass}`}
+                    >
                       {badgeLabel}
                     </span>
                     <span className="text-[1.0625rem] font-light text-[var(--color-text-primary)] transition-colors group-hover:text-[var(--color-text-emphasis)]">
@@ -112,6 +131,8 @@ export default function LifeTimeline({ t, entries }: Props) {
                 id={panelId}
                 role="region"
                 aria-labelledby={buttonId}
+                aria-hidden={!isOpen}
+                inert={!isOpen}
                 className="grid motion-safe:transition-[grid-template-rows] motion-safe:duration-[260ms] motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
                 style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
               >
