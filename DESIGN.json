@@ -1,0 +1,342 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-02T00:00:00.000Z",
+  "title": "Design System: Kieran Zhang",
+  "extensions": {
+    "colorMeta": {
+      "surface-cream": {
+        "role": "neutral",
+        "displayName": "Surface Cream",
+        "canonical": "oklch(98% 0.006 60)",
+        "tonalRamp": [
+          "oklch(0.15 0.006 60)",
+          "oklch(0.26 0.006 60)",
+          "oklch(0.38 0.006 60)",
+          "oklch(0.49 0.006 60)",
+          "oklch(0.61 0.006 60)",
+          "oklch(0.72 0.006 60)",
+          "oklch(0.84 0.006 60)",
+          "oklch(0.98 0.006 60)"
+        ]
+      },
+      "surface-ink": {
+        "role": "neutral",
+        "displayName": "Surface Ink",
+        "canonical": "oklch(0.13 0 0)",
+        "tonalRamp": [
+          "oklch(0.13 0 0)",
+          "oklch(0.20 0 0)",
+          "oklch(0.30 0 0)",
+          "oklch(0.40 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.70 0 0)",
+          "oklch(0.85 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "ink-primary-light": {
+        "role": "neutral",
+        "displayName": "Ink Primary (Light)",
+        "canonical": "rgba(0, 0, 0, 0.87)",
+        "tonalRamp": [
+          "rgba(0,0,0,0.98)",
+          "rgba(0,0,0,0.92)",
+          "rgba(0,0,0,0.87)",
+          "rgba(0,0,0,0.6)",
+          "rgba(0,0,0,0.38)",
+          "rgba(0,0,0,0.22)",
+          "rgba(0,0,0,0.10)",
+          "rgba(0,0,0,0.04)"
+        ]
+      },
+      "ink-primary-dark": {
+        "role": "neutral",
+        "displayName": "Ink Primary (Dark)",
+        "canonical": "rgba(255, 255, 255, 0.87)",
+        "tonalRamp": [
+          "rgba(255,255,255,0.05)",
+          "rgba(255,255,255,0.10)",
+          "rgba(255,255,255,0.22)",
+          "rgba(255,255,255,0.38)",
+          "rgba(255,255,255,0.50)",
+          "rgba(255,255,255,0.65)",
+          "rgba(255,255,255,0.78)",
+          "rgba(255,255,255,0.92)"
+        ]
+      },
+      "ink-secondary-light": {
+        "role": "neutral",
+        "displayName": "Ink Secondary (Light)",
+        "canonical": "rgba(0, 0, 0, 0.6)"
+      },
+      "ink-secondary-dark": {
+        "role": "neutral",
+        "displayName": "Ink Secondary (Dark)",
+        "canonical": "#a1a1aa"
+      },
+      "ink-tertiary-light": {
+        "role": "neutral",
+        "displayName": "Ink Tertiary (Light)",
+        "canonical": "rgba(0, 0, 0, 0.38)"
+      },
+      "ink-tertiary-dark": {
+        "role": "neutral",
+        "displayName": "Ink Tertiary (Dark)",
+        "canonical": "rgba(255, 255, 255, 0.38)"
+      },
+      "rail-light": {
+        "role": "neutral",
+        "displayName": "Rail (Light)",
+        "canonical": "rgba(0, 0, 0, 0.14)"
+      },
+      "rail-dark": {
+        "role": "neutral",
+        "displayName": "Rail (Dark)",
+        "canonical": "rgba(255, 255, 255, 0.14)"
+      },
+      "zinc-50": {
+        "role": "neutral",
+        "displayName": "Zinc 50",
+        "canonical": "#fafafa",
+        "tonalRamp": [
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#52525b",
+          "#71717a",
+          "#a1a1aa",
+          "#d4d4d8",
+          "#fafafa"
+        ]
+      },
+      "zinc-100": { "role": "neutral", "displayName": "Zinc 100", "canonical": "#f4f4f5" },
+      "zinc-200": { "role": "neutral", "displayName": "Zinc 200", "canonical": "#e4e4e7" },
+      "zinc-300": { "role": "neutral", "displayName": "Zinc 300", "canonical": "#d4d4d8" },
+      "zinc-700": { "role": "neutral", "displayName": "Zinc 700", "canonical": "#3f3f46" },
+      "zinc-800": { "role": "neutral", "displayName": "Zinc 800", "canonical": "#27272a" },
+      "zinc-900": { "role": "neutral", "displayName": "Zinc 900", "canonical": "#18181b" }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display (English)",
+        "purpose": "Hero name on home page and article titles in English contexts. Uses Shippori Mincho serif for an editorial, archival feel."
+      },
+      "display-zh": {
+        "displayName": "Display (Chinese)",
+        "purpose": "Hero name on home page and article titles in Chinese contexts. Uses Noto Serif SC for stable, classical character forms."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section H2 inside articles, region titles on home page. Stays in system sans for rhythm with body."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Navigation items, button text, list-item titles. Workhorse UI label."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All long-form prose. 17px / 1.75 line-height / weight 300 — the key to the system's reading comfort."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Hero tagline (English only — uppercase + tracked), form labels, weakest metadata. Uppercase NEVER applied in Chinese contexts."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Inline code, code blocks, tabular-nums dates. SF Mono on Apple, falls back through standard mono stack."
+      }
+    },
+    "shadows": [
+      {
+        "name": "code-block-hint",
+        "value": "0 1px 2px rgba(0, 0, 0, 0.05)",
+        "purpose": "Near-invisible lift for <pre> code blocks. Hints content has popped out of prose flow without breaking the flat-by-default rule."
+      },
+      {
+        "name": "popover-diffuse",
+        "value": "0 10px 30px rgba(0, 0, 0, 0.08)",
+        "purpose": "Soft ambient lift for true popovers / tooltips (RSS bubble, mobile menu). The only place real shadows are allowed."
+      },
+      {
+        "name": "popover-diffuse-dark",
+        "value": "0 16px 48px rgba(0, 0, 0, 0.5), 0 12px 24px rgba(0, 0, 0, 0.24), 0 6px 8px rgba(0, 0, 0, 0.22), 0 2px 3px rgba(0, 0, 0, 0.12)",
+        "purpose": "Stacked shadow for popovers in dark mode — dark backgrounds eat single-layer shadows, so multi-layer is required to preserve perceived lift."
+      }
+    ],
+    "motion": [
+      {
+        "name": "duration-short",
+        "value": "100ms",
+        "purpose": "Micro-interactions — link color fade, icon hover."
+      },
+      {
+        "name": "duration-default",
+        "value": "200ms",
+        "purpose": "Default state transition — button hover, nav underline, theme color shift."
+      },
+      {
+        "name": "duration-medium",
+        "value": "300ms",
+        "purpose": "Body background color crossfade between light/dark themes."
+      },
+      {
+        "name": "duration-long",
+        "value": "500ms",
+        "purpose": "View Transitions — hero avatar morphing between home and about pages."
+      },
+      {
+        "name": "ease-default",
+        "value": "cubic-bezier(0.46, 0.03, 0.52, 0.96)",
+        "purpose": "Default easing — smooth, no bounce."
+      },
+      {
+        "name": "ease-out-quart",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Strong ease-out for view-transition-group on hero avatar."
+      },
+      {
+        "name": "ease-out-soft",
+        "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+        "purpose": "Framer Motion entrance — used in stagger animations on home hero."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "2xl", "value": "1536px" },
+      { "name": "rails-cutoff", "value": "768px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Filled, rectangular, weight-bearing primary action. The visual heaviest element — mandatory when an action needs to read as primary because the system has no accent color to do that work.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Subscribe</button>",
+      "css": ".ds-btn-primary { background: #18181b; color: #fafafa; padding: 0.75rem 1.25rem; min-height: 44px; border: none; border-radius: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; font-size: 1rem; font-weight: 500; line-height: 1.4; cursor: pointer; transition: background-color 200ms cubic-bezier(0.46, 0.03, 0.52, 0.96); } .ds-btn-primary:hover { background: #27272a; } .ds-btn-primary:focus-visible { outline: 2px solid #a1a1aa; outline-offset: 2px; }"
+    },
+    {
+      "name": "Nav Item",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Text + bottom 1px underline. Active = full-width underline + ink-primary text. Hover = animated underline expansion. No button shape, no background fill.",
+      "html": "<a href=\"#\" class=\"ds-nav-item\"><span>BLOG</span><span class=\"ds-nav-item__rule\" aria-hidden=\"true\"></span></a>",
+      "css": ".ds-nav-item { position: relative; display: inline-block; padding: 0.5rem 0.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; font-size: 0.875rem; font-weight: 400; color: rgba(0,0,0,0.6); text-decoration: none; transition: color 200ms cubic-bezier(0.46, 0.03, 0.52, 0.96); } .ds-nav-item__rule { position: absolute; left: 0.5rem; bottom: 0.25rem; height: 1px; width: 0; background: rgba(0,0,0,0.87); opacity: 0.5; transition: width 200ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav-item:hover { color: rgba(0,0,0,0.87); } .ds-nav-item:hover .ds-nav-item__rule { width: calc(100% - 1rem); }"
+    },
+    {
+      "name": "Avatar",
+      "kind": "custom",
+      "refersTo": "avatar",
+      "description": "Hero / about avatar. Always rounded-full, always loading=eager + fetchpriority=high on the home page (it's the first paint anchor). On about page it morphs from this position via View Transitions.",
+      "html": "<div class=\"ds-avatar\"><img src=\"https://cdn.ninthbit.org/avatar.jpg\" alt=\"Avatar\" /></div>",
+      "css": ".ds-avatar { width: 8rem; height: 8rem; border-radius: 9999px; overflow: hidden; margin: 0 auto; } .ds-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; } @media (max-width: 640px) { .ds-avatar { width: 6rem; height: 6rem; } }"
+    },
+    {
+      "name": "Code Block",
+      "kind": "custom",
+      "refersTo": "code-block",
+      "description": "Signature article element. zinc-50/zinc-900 background, rounded-xl, 1px border, near-invisible shadow, 'Mac window' red/yellow/green dots in the top-left via ::before. Allowed because dots serve the 'this is code' semantic.",
+      "html": "<pre class=\"ds-code-block\"><code>const fetchPosts = async () =&gt; {\n  const response = await fetch('/api/posts');\n  return response.json();\n};</code></pre>",
+      "css": ".ds-code-block { position: relative; padding: 3rem 1rem 1rem 1rem; background: #fafafa; border: 1px solid #e4e4e7; border-radius: 0.75rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); overflow-x: auto; font-family: ui-monospace, 'SF Mono', Monaco, 'Cascadia Code', Consolas, monospace; font-size: 0.875rem; line-height: 1.5; color: rgba(0,0,0,0.87); margin: 1.5rem 0; } .ds-code-block::before { content: ''; position: absolute; top: 1rem; left: 1rem; width: 0.75rem; height: 0.75rem; border-radius: 9999px; background: #f87171; box-shadow: 1.25rem 0 0 #facc15, 2.5rem 0 0 #4ade80; } .ds-code-block code { display: block; white-space: pre; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Underline-only input. No background, no border on three sides, only a 1px bottom rule that goes from zinc-300 to ink-primary on focus. No blue focus glow — the No-Accent Rule applies to focus states too.",
+      "html": "<label class=\"ds-input-label\"><span>EMAIL</span><input class=\"ds-input-field\" type=\"email\" placeholder=\"you@example.com\" /></label>",
+      "css": ".ds-input-label { display: flex; flex-direction: column; gap: 0.25rem; } .ds-input-label span { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.14em; color: rgba(0,0,0,0.6); } .ds-input-field { background: transparent; border: none; border-bottom: 1px solid #d4d4d8; border-radius: 0; padding: 0.625rem 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; font-size: 1.0625rem; font-weight: 300; line-height: 1.5; color: rgba(0,0,0,0.87); transition: border-color 200ms cubic-bezier(0.46, 0.03, 0.52, 0.96); outline: none; } .ds-input-field::placeholder { color: rgba(0,0,0,0.38); } .ds-input-field:focus { border-bottom-color: rgba(0,0,0,0.87); }"
+    },
+    {
+      "name": "Article Card (Writing Section)",
+      "kind": "card",
+      "refersTo": "card-content",
+      "description": "Home-page writing section card: top illustration (44px tall fixed bin, contained image), bottom title + date + description. No background, no border, no shadow — separation comes from grid spacing and rails. Hover scales illustration 1.03 and reveals a → arrow next to the title.",
+      "html": "<a href=\"#\" class=\"ds-article-card\"><div class=\"ds-article-card__media\"><img src=\"/images/illustrations/absurd-01.png\" alt=\"\" /></div><div class=\"ds-article-card__body\"><div class=\"ds-article-card__title-row\"><h3>动态 OG 图片生成</h3><span class=\"ds-article-card__arrow\" aria-hidden=\"true\">→</span></div><time>2026-04-12</time><p>用 satori + resvg 在 Cloudflare Pages 上替换静态 OG 图。</p></div></a>",
+      "css": ".ds-article-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; } .ds-article-card__media { display: flex; align-items: center; justify-content: center; height: 11rem; overflow: hidden; border-radius: 0.125rem; } .ds-article-card__media img { height: 100%; width: auto; max-width: 100%; object-fit: contain; transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-article-card:hover .ds-article-card__media img { transform: scale(1.03); } .ds-article-card__body { padding-top: 1rem; min-width: 0; flex: 1; } .ds-article-card__title-row { display: flex; align-items: baseline; gap: 0.5rem; } .ds-article-card__title-row h3 { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; font-size: 1rem; font-weight: 400; line-height: 1.4; color: rgba(0,0,0,0.87); } .ds-article-card__arrow { flex-shrink: 0; transform: translateX(-0.25rem); opacity: 0; font-size: 0.875rem; color: rgba(0,0,0,0.38); transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-article-card:hover .ds-article-card__arrow, .ds-article-card:focus-visible .ds-article-card__arrow { transform: translateX(0); opacity: 1; } .ds-article-card time { display: block; margin-top: 0.375rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: rgba(0,0,0,0.6); } .ds-article-card p { margin-top: 0.5rem; font-size: 0.875rem; font-weight: 300; line-height: 1.5; color: rgba(0,0,0,0.6); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Technical Portfolio",
+    "overview": "这个系统的精神范本是一份装帧讲究的工程档案——不是杂志，不是博客模板，不是 SaaS 落地页。每一篇文章、每一张照片、每一个项目卡片都按照同一种'档案条目'的格律存放。米白色纸面、贯穿全站的两条 1px 导轨线、衬线大标题与无衬线正文之间的章法——所有元素都暗示这是一个会被反复检索、长期更新的索引，而不是一次性传播品。视觉上的'有想象力'来自结构而非装饰：靠字体成对、节奏、签名导轨线、以及克制到近乎挑衅的色彩——除了米白与墨黑、十一阶 zinc 灰之外，这个系统不使用任何彩色强调色。这是声音的来源。明确拒绝的方向：不是 Linear / Vercel / Stripe 那种 SaaS 模板，不是赛博霓虹与 glassmorphism，不是'图标 + 标题 + 描述'的卡片网格。本站不卖任何东西，所以没有 CTA 按钮的视觉重量、没有社会认同区、没有营销徽章。",
+    "keyCharacteristics": [
+      "米白纸面（#faf7f2）+ 墨黑文字，不使用 #fff / #000",
+      "双导轨：两条 1px 垂直线沿正文列宽贯穿整个页面（≥ 768px 时显示）",
+      "中英异体大标题：中文 Noto Serif SC，英文 Shippori Mincho，正文统一 Apple 系统 sans",
+      "17px 正文，行高 1.75，字重 300",
+      "圆角分布两极：rounded-full（头像、图标 hover 区）+ rounded-none / rounded-sm（卡片、按钮、代码块）",
+      "阴影几乎不存在；深度通过排版和对比建立",
+      "无彩色强调色——zinc 阶梯加重量是唯一的'声音'"
+    ],
+    "rules": [
+      {
+        "name": "The No-Accent Rule",
+        "body": "这个系统没有彩色强调色。本站不区分'主行动 CTA'与'次行动'，也不用色相做层级。强调通过字重（300 → 400）、字号、和深灰之间的对比建立。如果一个新组件让你想加蓝/橙/紫，它的层级问题没有用色彩之外的办法解决——回去用排版解决。唯一例外是状态色（错误/成功/警告）和渲染必需的色彩（KaTeX 公式、代码高亮、用户上传的照片）。文章正文里历史遗留的 orange 链接色是已知偏差，应替换为 ink-primary + 下划线。",
+        "section": "colors"
+      },
+      {
+        "name": "The Cream-Not-White Rule",
+        "body": "浅色模式背景必须是 oklch(98% 0.006 60)（暖米白）。#fff 在视觉系统里禁用——它会把页面变成医疗手册。同理，#000 禁用，深色背景用 zinc-950。",
+        "section": "colors"
+      },
+      {
+        "name": "The Reading Width Rule",
+        "body": "正文行长锁定 65–75ch（约 32–40 个汉字 / 65–75 个英文字符）。窄于 65ch 是密度过高，宽于 75ch 是阅读疲劳。max-w-3xl / max-w-4xl 对应这一区间，但每个新页面都要回头确认实际字符数。",
+        "section": "typography"
+      },
+      {
+        "name": "The Light-Body Rule",
+        "body": "正文字重默认 300。400 是粗体，500/600/700 仅给文章大标题和强调。如果一个段落看起来'太轻读不清'，先检查行高（应是 1.75）和对比度（应是 ink-primary，不是 ink-secondary），不要本能地加字重。",
+        "section": "typography"
+      },
+      {
+        "name": "The Bilingual Title Rule",
+        "body": "任何大标题都要按当前页面 lang 切换衡体：zh → Noto Serif SC，en → Shippori Mincho。Hero 名字、文章标题、首页区块大标题都按这条走。系统已通过 font-article-title / font-serif-en Tailwind 类暴露——不要绕开它写自定义字体栈。",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "任何新组件默认无阴影。卡片不需要阴影来'看起来是卡片'——把它从背景里区分开的应该是 padding、内部排版、或一条 1px 的 rail 线。如果你正在为一个组件加 shadow-md 或更重的阴影，先问自己：能不能用 border 或 bg-zinc-50 解决？多数情况下能。",
+        "section": "elevation"
+      },
+      {
+        "name": "The Rail Rule",
+        "body": "每一个新增页面、每一个新增主区块都要与 rails 对齐。容器宽度统一使用 max-w-[84rem]，左右 padding 统一 px-6。任何'全屏出血'或'超过 rail 范围'的内容必须有明确语义理由（如照片画廊的横向滚动）——并且要在视觉上明确'突破'，而不是'溢出'。新增横向分隔线一律走 .section-rule 或 .rail-line-*，不要用 <hr> 或 border-t-zinc-200。",
+        "section": "components"
+      },
+      {
+        "name": "The Tactile Button Rule",
+        "body": "Primary 按钮必须是 filled、矩形、≥ 44px 高、无圆角。这是与'无彩色'的对偶——既然不靠色相分层级，就必须靠重量分层级。半透明 ghost 按钮和'友善圆角' filled 按钮会让所有动作看起来一样重要。",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do 用 oklch(98% 0.006 60) 作浅色背景。",
+      "Do 用 zinc-950 作深色背景。",
+      "Do 用 font-article-title（中文）/ font-serif-en（英文）类切换中英文衡体大标题。",
+      "Do 让所有正文走 max-w-3xl ~ max-w-4xl，行高 leading-7 或 leading-8，字重 font-light。",
+      "Do 用 .focus-ring utility 作所有可聚焦元素的焦点环。",
+      "Do 让所有页面容器走 max-w-[84rem] mx-auto px-6 与 rails 对齐。",
+      "Do 用 .section-rule 或 .rail-line-* 作横向分隔——不要 <hr>，不要 border-t-zinc-200。",
+      "Do Primary 按钮用 zinc-900 实底 + 白文字，矩形，无圆角，最小 44×44。",
+      "Do 在 prefers-reduced-motion: reduce 下把所有 view-transition 时长压到 0.01ms（已由 global.css 处理，新增动画必须延续）。"
+    ],
+    "donts": [
+      "Don't 使用任何彩色强调色。No blue links, no purple buttons, no green tags. 唯一允许的色相是状态色（红/绿/黄），且必须有语义理由。文章正文目前残留的 orange-600 / orange-400 链接色是已知偏差，新建组件不要复制。",
+      "Don't 使用 #fff 或 #000。它们已被显式禁用。",
+      "Don't 使用 border-left: 4px 或任何彩色 side-stripe 边框作为卡片/列表项/告警的强调。这是绝对禁令。",
+      "Don't 使用 background-clip: text 渐变文字。任何渐变文字。",
+      "Don't 把 glassmorphism / backdrop-blur 当默认。仅站头（已实现 backdrop-blur-md）和必要的 popover 例外。",
+      "Don't 用'图标 + 大标题 + 描述'三栏卡片网格。这是 AI 生成感最强的反射动作。",
+      "Don't 用 hero 大数字 + 小标签 + 渐变紫蓝的 SaaS 落地页模板。本站不是 SaaS。",
+      "Don't 用 rounded-2xl 或更大圆角作卡片/按钮。圆角分布走两极——rounded-none / rounded-sm / rounded-full，中间地带留给 popover (rounded-xl) 和代码块 (rounded-xl)。",
+      "Don't 给卡片加 shadow-md 或更重的阴影。深度靠 padding 和 rails，不靠阴影。",
+      "Don't 在新组件里写营销文案——CTA 按钮、'Join 10,000+ developers'、'限时'、'现在开始'。这个站不卖东西。",
+      "Don't 用 em dash（—）。用逗号、冒号、分号、句号或括号。",
+      "Don't 在中文上下文里给 letter-spacing 加 0.14em——uppercase letter-spacing 仅给英文 label 用。"
+    ]
+  }
+}
