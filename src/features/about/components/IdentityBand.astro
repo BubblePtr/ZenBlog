@@ -1,0 +1,84 @@
+---
+import type { TranslationDictionary } from '@/shared/i18n/types';
+import type { Language } from '@/i18n/config';
+
+interface Props {
+  t: TranslationDictionary;
+  lang: Language;
+}
+
+const { t, lang } = Astro.props;
+const isZh = lang === 'zh';
+
+const AVATAR_URL = 'https://cdn.ninthbit.org/avatar.jpg';
+const EMAIL_HREF = 'mailto:oldmeatovo@gmail.com';
+const GITHUB_HREF = 'https://github.com/BubblePtr';
+const RSS_HREF = '/rss.xml';
+---
+
+<section
+  class="pt-[clamp(3rem,7vw,5.5rem)] pb-[clamp(2.5rem,5vw,4rem)]"
+>
+  <div
+    class="grid grid-cols-1 gap-y-7 sm:grid-cols-[7rem_minmax(0,1fr)] sm:items-start sm:gap-x-10 md:grid-cols-[8rem_minmax(0,1fr)] md:gap-x-14"
+  >
+    <div
+      class="h-24 w-24 overflow-hidden rounded-full bg-zinc-100 sm:h-28 sm:w-28 sm:mt-1 md:h-32 md:w-32 dark:bg-zinc-800"
+      style="view-transition-name: hero-avatar"
+    >
+      <img
+        src={AVATAR_URL}
+        alt={t['about.name']}
+        loading="eager"
+        fetchPriority="high"
+        class="h-full w-full object-cover"
+      />
+    </div>
+
+    <div class="flex flex-col gap-y-6 sm:gap-y-7">
+      <h1
+        class={`text-[clamp(2.25rem,4.4vw,3.25rem)] tracking-tight leading-[1.02] text-[var(--color-text-emphasis)] ${
+          isZh ? 'font-article-title' : 'font-serif-en'
+        }`}
+      >
+        {t['about.name']}
+      </h1>
+
+      <p
+        class="max-w-[58ch] whitespace-pre-line text-[1.0625rem] leading-[1.85] font-light text-[var(--color-text-primary)]"
+      >
+        {t['about.identity.statement']}
+      </p>
+
+      <div
+        class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-[var(--color-text-secondary)]"
+        aria-label={isZh ? '联系方式' : 'Contact and metadata'}
+      >
+        <span>{t['about.location']}</span>
+        <span class="opacity-40" aria-hidden="true">·</span>
+        <span>{t['about.identity.role']}</span>
+        <span class="opacity-40" aria-hidden="true">·</span>
+        <a
+          href={EMAIL_HREF}
+          class="underline underline-offset-4 decoration-[var(--color-text-secondary)]/40 transition-colors hover:text-[var(--color-text-primary)] hover:decoration-[var(--color-text-primary)]/60 focus-ring"
+        >
+          {t['about.identity.contact.email']}
+        </a>
+        <a
+          href={GITHUB_HREF}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline underline-offset-4 decoration-[var(--color-text-secondary)]/40 transition-colors hover:text-[var(--color-text-primary)] hover:decoration-[var(--color-text-primary)]/60 focus-ring"
+        >
+          {t['about.identity.contact.github']}
+        </a>
+        <a
+          href={RSS_HREF}
+          class="underline underline-offset-4 decoration-[var(--color-text-secondary)]/40 transition-colors hover:text-[var(--color-text-primary)] hover:decoration-[var(--color-text-primary)]/60 focus-ring"
+        >
+          {t['about.identity.contact.rss']}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

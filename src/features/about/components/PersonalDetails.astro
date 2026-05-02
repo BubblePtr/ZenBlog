@@ -1,0 +1,102 @@
+---
+import type { TranslationDictionary } from '@/shared/i18n/types';
+import type { Language } from '@/i18n/config';
+import { getAboutContent } from '@/features/about/content';
+
+interface Props {
+  t: TranslationDictionary;
+  lang: Language;
+}
+
+const { t, lang } = Astro.props;
+const isZh = lang === 'zh';
+
+const { reading, working } = getAboutContent(lang);
+---
+
+<section
+  class="pt-[clamp(3rem,6vw,5.5rem)] pb-[clamp(4rem,8vw,7rem)]"
+  aria-label={isZh ? '日常细节' : 'Personal details'}
+>
+  <div class="flex flex-col">
+    <div>
+      <header class="flex items-baseline gap-5">
+        <h2
+          class="tabular-nums text-xs uppercase tracking-[0.22em] text-[var(--color-text-secondary)]"
+        >
+          {t['about.reading.title']}
+        </h2>
+        <span class="flex-1 section-rule" aria-hidden="true"></span>
+      </header>
+      <ul class="mt-7 flex max-w-[58ch] flex-col gap-y-5">
+        {
+          reading.map((item) => (
+            <li class="text-[0.9375rem] leading-[1.7]">
+              <span class="font-normal text-[var(--color-text-emphasis)]">
+                {item.href ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="underline underline-offset-4 decoration-[var(--color-text-secondary)]/40 transition-colors hover:decoration-[var(--color-text-primary)]/60 focus-ring"
+                  >
+                    {item.title}
+                  </a>
+                ) : (
+                  item.title
+                )}
+              </span>
+              <span class="opacity-40 mx-1.5" aria-hidden="true">
+                ·
+              </span>
+              <span class="font-light text-[var(--color-text-primary)]">{item.author}</span>
+              <span class="mt-0.5 block text-[0.875rem] font-light text-[var(--color-text-secondary)]">
+                {item.note}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="mt-[clamp(2.75rem,5vw,4rem)]">
+      <header class="flex items-baseline gap-5">
+        <h2
+          class="tabular-nums text-xs uppercase tracking-[0.22em] text-[var(--color-text-secondary)]"
+        >
+          {t['about.working.title']}
+        </h2>
+      </header>
+      <dl class="mt-5 flex max-w-[58ch] flex-col gap-y-2.5">
+        {
+          working.map((group) => (
+            <div class="flex flex-wrap items-baseline gap-x-4 gap-y-0.5 text-[0.9375rem]">
+              <dt class="min-w-[5rem] text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-secondary)]/70">
+                {group.label}
+              </dt>
+              <dd class="font-light leading-[1.65] text-[var(--color-text-primary)]">
+                {group.description}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <div class="mt-[clamp(3rem,6vw,5rem)]">
+      <header class="flex items-baseline gap-5">
+        <h2
+          class="tabular-nums text-xs uppercase tracking-[0.22em] text-[var(--color-text-secondary)]"
+        >
+          {t['about.around.title']}
+        </h2>
+        <span class="flex-1 section-rule" aria-hidden="true"></span>
+      </header>
+      <p
+        class="mt-7 max-w-[58ch] text-[1.0625rem] font-light leading-[1.85] text-[var(--color-text-primary)]"
+      >
+        {t['about.around.body']}
+      </p>
+    </div>
+  </div>
+</section>
