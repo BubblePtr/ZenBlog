@@ -93,27 +93,27 @@ The name Bubble feels light and dreamlike — I love it. But it's also fragile, 
   // About
   'about.title': 'About Me',
   'about.name': 'Kieran Zhang',
-  'about.motto':
-    'The universe operates with ceaseless vitality; a noble person should constantly strive to strengthen himself',
-  'about.career': 'Career Path',
-  'about.gear': 'Gear & Tools',
   'about.location': 'Shanghai, China',
-  'about.intro.title': "Hello, I'm Kieran Zhang",
-  'about.intro.p1': 'A software engineer, indie developer, and the curator of this space.',
-  'about.intro.p2':
-    'Coming from a finance background, I\'ve been immersed in the world of code for over five years. This journey began with a fascination for low-level technologies, from C/C++ to the compiler of the domestic programming language "Cangjie", and then to the multi-threaded architecture of high-performance backend services. I enjoy unraveling complex systems and pinpointing issues. My experience at Huawei gave me the opportunity to build language services for platforms like VS Code and LeetCode, and to dive deep into the HarmonyOS ecosystem, using AI and expert knowledge to "troubleshoot" for leading apps like Feishu and Douyin.',
-  'about.intro.p3':
-    "Outside of work, I'm an explorer who can't stop. When the AI wave arrived, I dove headfirst into the world of AI Native and Agents as an indie developer. From modifying Zhipu's AutoGLM to exploring the future of automated testing based on Alibaba's MAIUI, I'm fascinated by turning \"wild ideas\" into reality with code. This process has transformed me from a pure backend developer into a full-stack engineer capable of mastering React and Next.js.",
-  'about.intro.p4':
-    'I believe in pragmatism, convinced that technology should ultimately create "useful" things; at the same time, I can\'t tolerate rough products and have an almost obsessive pursuit of "beautiful" and "usable". This contradictory combination is perhaps my unique label as an engineer.',
-  'about.intro.p6':
-    'In this space, I\'ll share my technical thoughts, project practices, and various insights about AI and the future. I also have a strong interest in traditional thoughts like Confucianism, Buddhism, Taoism, and Wang Yangming\'s philosophy of mind, so you might occasionally see some "not-so-technical" writings here.',
-  'about.intro.p7':
-    "I believe in the power of language, whether it's code or words. For me, sharing and expression are the best ways to grow.",
-  'about.intro.quote': '「Growing through sharing and expression」',
-  'about.gear.editor': 'Editor',
-  'about.gear.terminal': 'Terminal',
-  'about.gear.hardware': 'Hardware',
+  'about.identity.role': 'Software engineer · Indie developer',
+  'about.identity.statement':
+    'A software engineer who came through finance.\nWorked on compilers and AI diagnostic tooling at Huawei. Now independent, building agents that help people think instead of replacing them.\nPragmatic by training, obsessive about craft.\nThis space keeps what I learn, so a future me has somewhere to come back to.',
+  'about.identity.contact.email': 'Email',
+  'about.identity.contact.github': 'GitHub',
+  'about.identity.contact.rss': 'RSS',
+  'about.timeline.title': 'Timeline',
+  'about.timeline.expand': 'Expand',
+  'about.timeline.collapse': 'Collapse',
+  'about.timeline.badge.role': 'Role',
+  'about.timeline.badge.education': 'Education',
+  'about.timeline.badge.making': 'Making',
+  'about.timeline.badge.life': 'Life',
+  'about.timeline.decade.2010s': '2010s',
+  'about.timeline.decade.2020s': '2020s',
+  'about.reading.title': 'Reading lately',
+  'about.working.title': 'Working with',
+  'about.around.title': 'Around me',
+  'about.around.body':
+    'Based in Shanghai, around Xuhui. Walks down Wukang Road after work; weekends usually mean a quiet café, or a camera and the older lilong alleys before they disappear.',
 
   // Projects
   'projects.title': 'Projects',
