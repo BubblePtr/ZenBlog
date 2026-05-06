@@ -29,9 +29,10 @@ const { title, description, slug } = Astro.props;
 <OGMeta title={title} description={description} slug={slug} />
 
 <script
-  defer
-  src="https://cloud.umami.is/script.js"
-  data-website-id="d7c290cc-3033-4ef1-8df1-f1a6484d9a08"></script>
+  is:inline
+  async
+  src="https://analytics.ahrefs.com/analytics.js"
+  data-key="Z6zThzutxHmhhyZGniD2mw"></script>
 
 <!-- 字体系统 -->
 <!-- Noto Serif SC 用于中文文章标题 -->
