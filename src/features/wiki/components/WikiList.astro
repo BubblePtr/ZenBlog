@@ -1,0 +1,82 @@
+---
+import type { WikiEntry } from '../server/queries.server';
+import { extractSlug, getWikiUrl } from '../server/queries.server';
+
+interface Props {
+  entries: WikiEntry[];
+}
+
+const { entries } = Astro.props;
+
+const typeLabels: Record<string, { zh: string; en: string }> = {
+  entity: { zh: '实体', en: 'Entity' },
+  concept: { zh: '概念', en: 'Concept' },
+  comparison: { zh: '对比', en: 'Comparison' },
+  query: { zh: '查询', en: 'Query' },
+};
+
+const typeColors: Record<string, string> = {
+  entity: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+  concept: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+  comparison: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
+  query: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
+};
+
+// Group by type
+const groups: Record<string, WikiEntry[]> = {};
+for (const entry of entries) {
+  const type = entry.data.type;
+  if (!groups[type]) groups[type] = [];
+  groups[type].push(entry);
+}
+const orderedTypes = ['entity', 'concept', 'comparison', 'query'];
+---
+
+<div class="space-y-12">
+  {
+    orderedTypes.map((type) => {
+      const items = groups[type];
+      if (!items || items.length === 0) return null;
+      const label = typeLabels[type];
+      return (
+        <section>
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4 font-serif">
+            {label.zh}
+            <span class="text-sm font-normal text-zinc-400 ml-2">{items.length}</span>
+          </h2>
+          <div class="grid gap-3 sm:grid-cols-2">
+            {items.map((entry) => {
+              const slug = extractSlug(entry.id);
+              const url = getWikiUrl(slug, 'zh');
+              return (
+                <a
+                  href={url}
+                  class="group block p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors no-underline"
+                >
+                  <div class="flex items-start justify-between gap-2 mb-1">
+                    <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {entry.data.title}
+                    </h3>
+                    <span class={`text-[10px] font-medium px-1.5 py-0.5 rounded ${typeColors[type]} shrink-0`}>
+                      {label.zh}
+                    </span>
+                  </div>
+                  {entry.data.tags && entry.data.tags.length > 0 && (
+                    <div class="flex flex-wrap gap-1 mt-2">
+                      {entry.data.tags.slice(0, 4).map((tag) => (
+                        <span class="text-[10px] text-zinc-400 dark:text-zinc-500">#{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                  <p class="text-xs text-zinc-400 dark:text-zinc-500 mt-2">
+                    更新于 {entry.data.updated}
+                  </p>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      );
+    })
+  }
+</div>

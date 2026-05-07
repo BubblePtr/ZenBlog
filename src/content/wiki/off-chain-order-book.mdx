@@ -1,0 +1,37 @@
+---
+title: 'Off-chain Order Book（链下订单簿 / CLOB）'
+created: '2026-05-06'
+updated: '2026-05-06'
+type: 'concept'
+tags: ['prediction-market', 'polymarket', 'order-book', 'infrastructure']
+---
+
+# Off-chain Order Book（链下订单簿 / CLOB）
+
+Polymarket 的中央限价订单簿，运行在链下服务器上而非区块链上。
+
+## 工作原理
+
+1. 用户用私钥对 <WikiLink slug="implicit-pricing" /> 的 EIP-712 结构化数据签名
+2. 签名数据发送到 Polymarket 服务器，存入 CLOB 数据库
+3. 此时区块链上什么都没发生，钱还在用户钱包里
+4. <WikiLink slug="operator" /> 的匹配引擎在 CLOB 中寻找可匹配的订单
+5. 匹配结果被打包成链上交易提交
+
+## 优势
+
+- **极速**：Maker 下单仅 ~25ms（一次数据库写入）
+- **免 Gas**：链下操作不消耗区块链资源
+- **消除 MEV**：订单不进入 Mempool，机器人无法抢跑
+
+## 代价
+
+- **中心化**：匹配和排序由 <WikiLink slug="operator" /> 控制
+- **状态割裂**：链下撮合状态和链上资金状态存在时间差，这是 <WikiLink slug="ghost-fill" /> 的根源
+- **信任假设**：用户信任 Operator 不会恶意排序
+
+## 相关
+
+- 执行者：<WikiLink slug="operator" />
+- 延迟特性：<WikiLink slug="polymarket-latency" />
+- 合约架构：<WikiLink slug="ctf-exchange-v2" />

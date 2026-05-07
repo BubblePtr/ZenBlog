@@ -1,0 +1,37 @@
+---
+title: 'Relayer（中继器）'
+created: '2026-05-06'
+updated: '2026-05-06'
+type: 'concept'
+tags: ['prediction-market', 'polymarket', 'infrastructure']
+---
+
+# Relayer（中继器）
+
+Polymarket 实现"免 Gas"用户体验的核心基础设施。
+
+## 机制
+
+Polymarket 部署了 Relayer Client（relayer-v2.polymarket.com）。流程：
+
+1. 用户对操作签名（如 Approve、Redeem）
+2. 签名发送给 Relayer
+3. Relayer 作为"交易赞助商"，用自己的资金池垫付 Gas 费，将交易提交到 Polygon
+
+早期架构依赖 OpenZeppelin Defender Relay，通过签名器池（Signer Pool）解决高并发下的 nonce 冲突。
+
+## 经济学
+
+V2 架构中 Polymarket 全额买单：部署钱包、授权代币、Split/Merge/Redeem 全部免 Gas，不收隐性操作费。
+
+为什么愿意亏本：Polygon Gas 极低（几美分），免 Gas 带来的丝滑体验能吸引海量 Web2 用户入场。只要用户产生微小的 <WikiLink slug="polymarket-fee-structure" label="Taker 手续费" />，足以覆盖成本。
+
+## 隐性成本
+
+延迟。通过 Relayer 的操作需要经过验证、Gas 估算、队列分配，增加了 <WikiLink slug="polymarket-latency" label="交易延迟" />。
+
+## 相关
+
+- 平台：<WikiLink slug="polymarket" />
+- 合约架构：<WikiLink slug="ctf-exchange-v2" />
+- 速度影响：<WikiLink slug="polymarket-latency" />

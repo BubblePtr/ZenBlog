@@ -13,6 +13,8 @@ const NAV_LINKS = [
   { href: '/photography', labelKey: 'nav.photography' as const },
 ] as const;
 
+const QUANT_LINKS = [{ href: '/zh/wiki/', label: 'LLM-WIKI' }] as const;
+
 const SOCIAL_LINKS = [
   { icon: RiGithubFill, href: 'https://github.com/BubblePtr', label: 'GitHub' },
   { icon: RiTwitterXFill, href: 'https://twitter.com/ninthbit_ai', label: 'Twitter' },
@@ -79,7 +81,22 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
           </div>
 
           {/* 右侧：导航 + 社交 */}
-          <div className="flex flex-col items-center gap-12 sm:flex-row sm:gap-40 md:items-start">
+          <div className="flex flex-col items-center gap-12 sm:flex-row sm:gap-16 lg:gap-28 md:items-start">
+            <div className="text-center md:text-left">
+              <h3 className="text-xs uppercase tracking-wider text-zinc-400 mb-3">Quant</h3>
+              <nav className="flex flex-col items-center space-y-2 md:items-start">
+                {QUANT_LINKS.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="inline-block text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:translate-x-0.5 transition-all duration-200"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
             {/* 导航区 */}
             <div className="text-center md:text-left">
               <h3 className="text-xs uppercase tracking-wider text-zinc-400 mb-3">

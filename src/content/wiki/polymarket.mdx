@@ -1,0 +1,83 @@
+---
+title: 'Polymarket'
+created: '2026-04-08'
+updated: '2026-05-06'
+type: 'entity'
+tags: ['prediction-market', 'polymarket', 'platform', 'tool']
+---
+
+# Polymarket
+
+## 概述
+
+Polymarket 是一个基于 Polygon 区块链的去中心化预测市场平台。用户可以对各种事件的结果进行交易，价格即概率。
+
+## 核心特点
+
+- **二元结果合约**：每个市场都是 Yes/No 的二元结局
+- **价格即概率**：价格 0.65 = 市场认为 65% 可能发生
+- **USDC 结算**：所有交易以 USDC 计价
+- **无需 KYC**：基于加密钱包的去中心化交易
+
+## 为什么是学习量化的最佳载体
+
+Polymarket 把所有量化金融核心概念完美融合：
+
+- <WikiLink slug="probability-theory" label="概率论" /> — 事件概率计算
+- <WikiLink slug="bayesian-updating" label="贝叶斯更新" /> — 根据新闻实时更新价格
+- <WikiLink slug="conditional-probability" label="条件概率" /> — 基于信息调整概率
+- 凸优化 — 投资组合优化
+- 整数规划 — 最优仓位配置
+
+## 底层架构
+
+基于 <WikiLink slug="ctf-exchange-v2" /> 智能合约的混合去中心化设计：
+
+- **<WikiLink slug="operator" />**：链下撮合的唯一执行者，消灭 MEV
+- **<WikiLink slug="off-chain-order-book" />**：链下 CLOB，Maker ~25ms，Taker ~250ms
+- **<WikiLink slug="relayer" />**：垫付 Gas，实现免 Gas 体验
+- **<WikiLink slug="implicit-pricing" />**：订单无价格字段，由金额比值隐式表达
+
+### 三种匹配路径
+
+1. <WikiLink slug="complementary-matching" />
+   ：传统二手交易（BUY vs SELL）
+2. <WikiLink slug="mint-matching" />
+   ：两个买家凭空铸造代币（BUY vs BUY，出价和 ≥ $1）
+3. <WikiLink slug="merge-matching" />
+   ：两个卖家销毁代币换回资金（SELL vs SELL）
+
+### 原子操作
+
+<WikiLink slug="split-merge-redeem" label="Split / Merge / Redeem" />
+：非交易性质的资产转换。
+
+### V2 升级（2026.05）
+
+- **<WikiLink slug="deposit-wallet" />**：终结 <WikiLink slug="ghost-fill" />，从 30% 降到 0.17%
+- **pUSD**：替代 USDC.e，4% 年化
+- **<WikiLink slug="polymarket-fee-structure" />**：p(1-p) 完美公式
+- **<WikiLink slug="negrisk-adapter" />**：多结果市场转换工具
+- **<WikiLink slug="polymarket-latency" />**：移除 500ms 人为延迟
+
+## 三大 API
+
+1. **Gamma API** — 发现、搜索、浏览市场
+2. **CLOB API** — 实时价格、订单簿
+3. **Data API** — 交易记录、持仓数据
+
+## 相关实体
+
+- <WikiLink slug="jane-street" /> — 顶级做市商可能参与的市场
+- <WikiLink slug="citadel" /> — 顶级对冲基金可能参与的市场
+
+## 相关概念
+
+- <WikiLink slug="quantitative-trading-overview" label="量化交易概览" /> — Polymarket
+  是学习量化的实践平台
+- <WikiLink slug="trading-vs-gambling" label="交易 vs 赌博" /> — 在 Polymarket 上如何避免赌博心态
+
+## 外部链接
+
+- 官网：https://polymarket.com
+- 文档：https://docs.polymarket.com

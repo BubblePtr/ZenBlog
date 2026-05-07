@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import { render } from 'astro:content';
+import { SITE_TITLE } from '@/consts';
+import { WikiPage, WikiLink } from '@/features/wiki';
+import {
+  getWikiStaticPaths,
+  extractSlug,
+} from '@/features/wiki/server/queries.server';
+import PageShell from '@/shared/components/layout/PageShell.astro';
+import { getTranslationDictionary } from '@/shared/i18n/types';
+
+export async function getStaticPaths() {
+  return getWikiStaticPaths();
+}
+
+const lang = 'zh' as const;
+const t = getTranslationDictionary(lang);
+const entry = Astro.props;
+const slug = extractSlug(entry.id);
+const localizedPaths = { zh: `/zh/wiki/${slug}/` };
+
+const allEntries = await getCollection('wiki');
+const backlinks: Array<{ slug: string; title: string }> = [];
+for (const other of allEntries) {
+  if (other.id === entry.id) continue;
+  const linkRe = new RegExp(`<WikiLink\\s+slug="${slug}"`, 'g');
+  if (linkRe.test(other.body)) {
+    backlinks.push({ slug: extractSlug(other.id), title: other.data.title });
+  }
+}
+
+const { Content } = await render(entry);
+---
+
+<PageShell
+  lang={lang}
+  title={`${entry.data.title} | ${t['nav.wiki']}`}
+  description={`${entry.data.title} — 量化交易知识库`}
+  currentPath="/zh/wiki"
+  localizedPaths={localizedPaths}
+  mainClass="max-w-3xl mx-auto px-6 py-12 sm:py-20 relative z-10"
+>
+  <WikiPage entry={entry} backlinks={backlinks} lang={lang}>
+    <Content components={{ WikiLink }} />
+  </WikiPage>
+</PageShell>

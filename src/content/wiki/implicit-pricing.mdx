@@ -1,0 +1,39 @@
+---
+title: 'Implicit Pricing（隐式定价）'
+created: '2026-05-06'
+updated: '2026-05-06'
+type: 'concept'
+tags: ['prediction-market', 'polymarket', 'protocol']
+---
+
+# Implicit Pricing（隐式定价）
+
+Polymarket 底层设计中一个反直觉的特性：订单签名数据中没有"价格"字段。
+
+## 原理
+
+价格由 `makerAmount` 和 `takerAmount` 的比值隐式表达：
+
+**买入 YES：**
+
+- 隐含价格 = makerAmount / takerAmount
+- 例：付出 $60，得到 100 个 YES → 价格 $0.60
+
+**卖出 YES：**
+
+- 隐含价格 = takerAmount / makerAmount
+- 例：付出 100 个 YES，得到 $60 → 价格 $0.60
+
+## 设计动机
+
+智能合约不需要理解什么是"价格"，只需要处理"资产 A 换资产 B"的逻辑。这大大简化了链上计算，降低了 Gas 消耗。
+
+## SDK 层面
+
+最新的 V2 SDK 允许开发者直接传入 `price` 和 `size`，但底层签名时仍会转换为 `makerAmount` 和 `takerAmount`。价格只是人类友好的表层抽象。
+
+## 相关
+
+- 订单结构：<WikiLink slug="ctf-exchange-v2" />
+- 手续费计算：<WikiLink slug="polymarket-fee-structure" />
+- 订单存储：<WikiLink slug="off-chain-order-book" />

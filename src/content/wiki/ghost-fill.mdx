@@ -1,0 +1,44 @@
+---
+title: 'Ghost Fill（幽灵成交）'
+created: '2026-05-06'
+updated: '2026-05-06'
+type: 'concept'
+tags: ['prediction-market', 'polymarket', 'infrastructure', 'controversy']
+---
+
+# Ghost Fill（幽灵成交）
+
+Polymarket V2 升级前最臭名昭著的 Bug：订单簿显示成交，区块链却说没发生。
+
+## 根因
+
+<WikiLink slug="off-chain-order-book" label="链下撮合" /> +
+链上结算的混合架构存在时间差。在这个时间差里，用户的钱包状态可能改变。
+
+## 两种攻击路径
+
+### 1. incrementNonce 攻击（V1 时代）
+
+恶意玩家在链下挂假单 → 有人咬钩显示匹配 → 攻击者抢在 <WikiLink slug="operator" /> 上链前调用 `incrementNonce` → 几美分 Gas 让该地址所有旧 nonce 订单失效 → 匹配交易 Revert。
+
+### 2. 僵尸订单（V2 早期）
+
+充值 $1000 → 签 $10000 挂单到 CLOB → 立刻转走余额 → 订单离线签名合法但余额为 $0 → `TransferFrom` 报错（错误码 `0x7939f424`） → 交易 Revert。
+
+## 为什么币安和 Uniswap 没有这个问题？
+
+- **币安**：纯中心化，撮合和扣款原子性同时发生
+- **Uniswap**：纯链上，同一笔交易内完成
+- **Polymarket**：混合架构 + 自托管钱包 = 状态割裂永远存在
+
+只要撮合两端的资金状态与用户自托管钱包挂钩，"状态割裂"就永远存在。
+
+## 终极解决方案
+
+2026 年 5 月 4 日引入 <WikiLink slug="deposit-wallet" label="关联金库" />，Ghost Fill 从 30% 降到 0.17%，趋近于零。
+
+## 相关
+
+- 解决方案：<WikiLink slug="deposit-wallet" />
+- 架构原因：<WikiLink slug="ctf-exchange-v2" />
+- 链下订单簿：<WikiLink slug="off-chain-order-book" />

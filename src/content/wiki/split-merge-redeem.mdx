@@ -1,0 +1,44 @@
+---
+title: 'Split / Merge / Redeem（原子操作）'
+created: '2026-05-06'
+updated: '2026-05-06'
+type: 'concept'
+tags: ['prediction-market', 'polymarket', 'protocol']
+---
+
+# Split / Merge / Redeem（原子操作）
+
+Polymarket 的三个原子级资产转换操作。它们不是"交易"——不经过 <WikiLink slug="off-chain-order-book" />，不收取 <WikiLink slug="polymarket-fee-structure" label="手续费" />。
+
+## Split（拆分）
+
+给合约 $1 pUSD → 获得 1 个 YES + 1 个 NO。成本永远精确 $1。
+
+**最大用户：做市商。** 他们需要在两边同时挂单，但不想去市场上买代币（会被收手续费）。直接 Split 资金即可。
+
+## Merge（合并）
+
+给合约 1 个 YES + 1 个 NO → 获得 $1 pUSD。收益永远精确 $1。
+
+**最大用户：套利者。** 当 YES $0.40 + NO $0.55 = $0.95 < $1 时，无脑买入并 Merge，净赚 $0.05。
+
+套利条件：Price(YES) + Price(NO) < 1 - 手续费
+
+## Redeem（赎回）
+
+市场决出胜负后：
+
+- 赢的代币 → 换回 $1 pUSD
+- 输的代币 → 清零
+
+## PnL 陷阱
+
+这三个操作是 <WikiLink slug="polymarket-pnl-calculation" label="PnL 计算错误" />的根源。大多数工具只看"交易"记录，完全忽略了 Split 的成本和卖出互补代币的收益。
+
+正确公式：总盈亏 = Σ(卖出收入) + Σ(Merge 收入) + Σ(Redeem 收入) - Σ(买入支出) - Σ(Split 支出) + 当前持仓市值
+
+## 相关
+
+- PnL 计算：<WikiLink slug="polymarket-pnl-calculation" />
+- 合约架构：<WikiLink slug="ctf-exchange-v2" />
+- 套利工具：<WikiLink slug="negrisk-adapter" />

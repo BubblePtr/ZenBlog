@@ -1,0 +1,32 @@
+---
+interface Props {
+  slug: string;
+  label?: string;
+}
+
+const { slug, label } = Astro.props;
+const href = `/wiki/${slug}`;
+const displayText = label || slug.replace(/-/g, ' ');
+---
+
+<a href={href} class="wiki-link" data-wiki-slug={slug}>{displayText}</a>
+
+<style>
+  .wiki-link {
+    color: oklch(0.55 0.15 260);
+    text-decoration: none;
+    border-bottom: 1px solid oklch(0.55 0.15 260 / 0.3);
+    transition: border-color 0.2s, color 0.2s;
+    padding-bottom: 1px;
+  }
+  .wiki-link:hover {
+    border-bottom-color: oklch(0.55 0.15 260);
+  }
+  :global(.dark) .wiki-link {
+    color: oklch(0.7 0.12 260);
+    border-bottom-color: oklch(0.7 0.12 260 / 0.3);
+  }
+  :global(.dark) .wiki-link:hover {
+    border-bottom-color: oklch(0.7 0.12 260);
+  }
+</style>

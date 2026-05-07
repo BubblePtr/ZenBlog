@@ -13,6 +13,7 @@ interface Props {
   description: string;
   currentPath: string;
   slug?: string;
+  localizedPaths?: Partial<Record<Language, string>>;
   mainClass?: string;
   bodyClass?: string;
   showFooter?: boolean;
@@ -24,6 +25,7 @@ const {
   description,
   currentPath,
   slug,
+  localizedPaths,
   mainClass = 'relative z-10',
   bodyClass = 'bg-[oklch(98%_0.006_60)] dark:bg-zinc-950 transition-colors duration-500',
   showFooter = true,
@@ -39,7 +41,7 @@ const normalizedCurrentPath = withTrailingSlash(currentPath);
     <BaseHead title={title} description={description} slug={slug} />
   </head>
   <body class={bodyClass}>
-    <SiteHeader client:load currentPath={normalizedCurrentPath} lang={lang} t={t} />
+    <SiteHeader client:load currentPath={normalizedCurrentPath} lang={lang} t={t} localizedPaths={localizedPaths} />
     <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
       <div class="-mx-6 section-rule"></div>
     </div>
