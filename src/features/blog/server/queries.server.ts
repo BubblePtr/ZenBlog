@@ -1,6 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { resolveBlogAuthor } from '@/features/blog/authors';
 import type { Language } from '@/i18n/config';
+import { withTrailingSlash } from '@/shared/urls';
 import type { BlogListItem, BubbleDiarySummary } from '@/types/content';
 
 export type BlogEntry = CollectionEntry<'blog'>;
@@ -19,7 +20,36 @@ function getEntryLang(post: BlogEntry): Language {
 }
 
 function buildBlogUrl(slug: string, lang: Language): string {
-  return lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`;
+  return withTrailingSlash(lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`);
+}
+
+export async function getBlogLocalizedPaths(
+  post: BlogEntry,
+): Promise<Partial<Record<Language, string>>> {
+  const lang = getEntryLang(post);
+  const slug = extractBlogSlug(post.id, lang);
+  const allPosts = await getCollection('blog');
+  const localizedPaths: Partial<Record<Language, string>> = {};
+
+  for (const targetLang of ['en', 'zh'] as const) {
+    const match = allPosts.find((candidate) => {
+      if (!candidate.id.startsWith(`${targetLang}/`)) {
+        return false;
+      }
+
+      const candidateSlug = extractBlogSlug(candidate.id, targetLang);
+      return (
+        candidateSlug === slug ||
+        (post.data.externalId !== undefined && candidate.data.externalId === post.data.externalId)
+      );
+    });
+
+    if (match) {
+      localizedPaths[targetLang] = buildBlogUrl(extractBlogSlug(match.id, targetLang), targetLang);
+    }
+  }
+
+  return localizedPaths;
 }
 
 export function mapBlogListItem(post: BlogEntry, lang: Language): BlogListItem {

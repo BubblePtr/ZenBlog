@@ -34,16 +34,22 @@ const ogImage = slug
   : `${siteUrl}/og/brand.png`;
 
 const pageTitle = slug ? `${title} — Kieran Zhang` : title;
+const descriptionText = description.trim();
+const descriptionSuffix = /[\u3400-\u9fff]/.test(descriptionText)
+  ? ' 在 Kieran Zhang 的个人网站继续阅读关于软件工程、AI 产品、独立项目实践、摄影记录、工具方法、公开幕后复盘与长期思考的双语笔记。'
+  : ' Read more essays, project notes, photography, and practical engineering reflections from Kieran Zhang.';
+const metaDescription =
+  [...descriptionText].length >= 80 ? descriptionText : `${descriptionText}${descriptionSuffix}`;
 ---
 
 <!-- Primary -->
 <title>{pageTitle}</title>
-<meta name="description" content={description} />
+<meta name="description" content={metaDescription} />
 
 <!-- Open Graph -->
 <meta property="og:type" content={type} />
 <meta property="og:title" content={pageTitle} />
-<meta property="og:description" content={description} />
+<meta property="og:description" content={metaDescription} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:width" content="1200" />
@@ -55,5 +61,5 @@ const pageTitle = slug ? `${title} — Kieran Zhang` : title;
 <meta name="twitter:site" content="@ninthbit_ai" />
 <meta name="twitter:creator" content="@ninthbit_ai" />
 <meta name="twitter:title" content={pageTitle} />
-<meta name="twitter:description" content={description} />
+<meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImage} />

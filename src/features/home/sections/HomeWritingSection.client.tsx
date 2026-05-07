@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import type { BlogListItem } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
+import { withTrailingSlash } from '@/shared/urls';
 
 interface HomeWritingSectionProps {
   posts: BlogListItem[];
@@ -69,8 +70,9 @@ function assignIllustrations(posts: BlogListItem[]): string[] {
 
 export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
-  const getBlogUrl = (slug: string) => (lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`);
-  const getBlogListUrl = () => (lang === 'zh' ? '/zh/blog' : '/blog');
+  const getBlogUrl = (slug: string) =>
+    withTrailingSlash(lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`);
+  const getBlogListUrl = () => (lang === 'zh' ? '/zh/blog/' : '/blog/');
   const isZh = lang === 'zh';
 
   const formatDate = (date: Date) =>

@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import type { PhotographyPhotoItem } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
+import { withTrailingSlash } from '@/shared/urls';
 
 interface HomePhotographySectionProps {
   photos: PhotographyPhotoItem[];
@@ -11,7 +12,8 @@ interface HomePhotographySectionProps {
 
 export default function HomePhotographySection({ photos, lang, t }: HomePhotographySectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
-  const getPhotographyUrl = () => (lang === 'zh' ? '/zh/photography' : '/photography');
+  const getPhotographyUrl = () =>
+    withTrailingSlash(lang === 'zh' ? '/zh/photography' : '/photography');
 
   if (photos.length === 0) return null;
 

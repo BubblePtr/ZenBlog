@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { RiGithubFill, RiTwitterXFill, RiMailLine, RiRssLine } from '@remixicon/react';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary } from '@/shared/i18n/types';
+import { withTrailingSlash } from '@/shared/urls';
 
 // TODO: 考虑将导航数据提取到 src/shared/constants/navigation.ts
 // 以便与 SiteHeader 共享，避免重复定义
@@ -28,7 +29,7 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
   const brandName = 'Kieran Zhang';
 
   const getLocalizedPath = (path: string) => {
-    return lang === 'zh' ? `/zh${path}` : path;
+    return withTrailingSlash(lang === 'zh' ? `/zh${path === '/' ? '' : path}` : path);
   };
 
   const formatFooterLabel = (label: string) => label.toUpperCase();

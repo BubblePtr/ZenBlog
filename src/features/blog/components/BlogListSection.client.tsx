@@ -5,6 +5,7 @@ import BubbleDiarySpotlight from '@/features/blog/components/BubbleDiarySpotligh
 import type { BlogListItem, BubbleDiarySummary } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
+import { withTrailingSlash } from '@/shared/urls';
 
 interface BlogListSectionProps {
   posts: BlogListItem[];
@@ -79,7 +80,8 @@ export default function BlogListSection({ posts, bubbleDiary, lang, t }: BlogLis
     });
   }, [rows, selectedYear, selectedAuthor]);
 
-  const getBlogUrl = (slug: string) => (lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`);
+  const getBlogUrl = (slug: string) =>
+    withTrailingSlash(lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`);
 
   return (
     <div className="w-full">

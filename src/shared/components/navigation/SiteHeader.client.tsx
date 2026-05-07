@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary } from '@/shared/i18n/types';
+import { withTrailingSlash } from '@/shared/urls';
 import LanguageSwitcher from './LanguageSwitcher.client';
 import ThemeToggle from '@/shared/components/theme/ThemeToggle.client';
 import MobileNavMenu from './MobileNavMenu.client';
@@ -11,18 +12,21 @@ interface SiteHeaderProps {
   currentPath: string;
   lang: Language;
   t: TranslationDictionary;
+  localizedPaths?: Partial<Record<Language, string>>;
 }
 
 type NavItemKey = 'blog' | 'photography' | 'about';
 
-export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
+export default function SiteHeader({ currentPath, lang, t, localizedPaths }: SiteHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const getHref = (item: NavItemKey) => (lang === 'zh' ? `/zh/${item}` : `/${item}`);
+  const normalizedCurrentPath = withTrailingSlash(currentPath);
+  const getHref = (item: NavItemKey) =>
+    withTrailingSlash(lang === 'zh' ? `/zh/${item}` : `/${item}`);
 
   const isActive = (item: NavItemKey) => {
-    const path = currentPath.toLowerCase();
-    const itemPath = lang === 'zh' ? `/zh/${item}` : `/${item}`;
-    return path === itemPath || path.startsWith(`${itemPath}/`);
+    const path = normalizedCurrentPath.toLowerCase();
+    const itemPath = getHref(item);
+    return path === itemPath || path.startsWith(itemPath);
   };
 
   const navItems = useMemo(
@@ -34,13 +38,13 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
     [t],
   );
 
-  const homeHref = lang === 'zh' ? '/zh' : '/';
+  const homeHref = lang === 'zh' ? '/zh/' : '/';
   const mobileItems = [
     {
       key: 'home',
       label: t['nav.home'] || 'HOME',
       href: homeHref,
-      active: currentPath === homeHref,
+      active: normalizedCurrentPath === homeHref,
     },
     ...navItems.map((item) => ({
       ...item,
@@ -57,9 +61,9 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
         <div className="flex items-center gap-8">
           <nav className="hidden sm:flex items-center gap-6 text-sm font-normal text-zinc-500 dark:text-zinc-400">
             <a
-              href={lang === 'zh' ? '/zh' : '/'}
+              href={homeHref}
               className={`block px-2 py-2 transition-colors relative group no-underline focus-ring ${
-                currentPath === '/' || currentPath === '/zh'
+                normalizedCurrentPath === '/' || normalizedCurrentPath === '/zh/'
                   ? 'text-zinc-900 dark:text-zinc-100'
                   : 'hover:text-zinc-900 dark:hover:text-zinc-100'
               }`}
@@ -67,7 +71,7 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
               {t['nav.home'] || 'HOME'}
               <span
                 className={`absolute bottom-1 left-2 h-px bg-zinc-900 dark:bg-zinc-100 transition-all ${
-                  currentPath === '/' || currentPath === '/zh'
+                  normalizedCurrentPath === '/' || normalizedCurrentPath === '/zh/'
                     ? 'w-[calc(100%-16px)]'
                     : 'w-0 group-hover:w-[calc(100%-16px)] opacity-50'
                 }`}
@@ -102,7 +106,11 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <LanguageSwitcher currentLang={lang} currentPath={currentPath} />
+          <LanguageSwitcher
+            currentLang={lang}
+            currentPath={normalizedCurrentPath}
+            localizedPaths={localizedPaths}
+          />
           <ThemeToggle
             className="hidden sm:flex items-center justify-center min-w-11 min-h-11 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
             aria-label="Toggle theme"
