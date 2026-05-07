@@ -6,6 +6,8 @@ export const zh = {
   'nav.projects': '项目',
   'nav.about': '关于我',
 
+  'nav.wiki': '知识库',
+
   // 首页
   'home.title': 'Kieran Zhang',
   'home.description': '欢迎来到我的数字花园！',

@@ -1,0 +1,63 @@
+---
+title: "做市"
+created: "2026-04-08"
+updated: "2026-04-08"
+type: "concept"
+tags: ["market-making", "liquidity", "spread", "strategy"]
+---
+
+
+# 做市
+
+## 定义
+
+做市（Market Making）是指同时向市场提供买入和卖出报价，通过买卖价差（Spread）获利的交易策略。做市商是市场的流动性提供者。
+
+## 核心逻辑
+
+做市商同时挂买单和卖单：
+- 买入价 < 卖出价
+- 差价就是做市商的利润
+- 风险：持有了可能贬值的库存
+
+## 做市 vs 方向交易
+
+| 维度 | 做市 | 方向交易 |
+|------|------|----------|
+| 核心能力 | 估计波动率 | 预测方向 |
+| 利润来源 | 买卖价差 | 价格变动 |
+| 风险来源 | 库存风险、知情交易者 | 方向判断错误 |
+| 信息优势 | 统计/数据优势 | 信息/分析优势 |
+
+**关键洞察**：做市商不需要预测方向，只需要估计市场的不确定性有多大（波动率）。为"不确定性"定价，而不是为"方向"定价。
+
+## Polymarket 做市
+
+### 现状
+- 月交易量突破 $130 亿（2025年）
+- 做市激励金超过 $10M
+- 但做市商主要靠直觉定价差
+
+### 核心挑战
+1. 价差该开多紧？太宽拿不到奖励，太窄被知情交易者狙击
+2. 相关市场之间的联动怎么对冲？
+3. 新闻冲击来了，价差该怎么调？
+
+### 解决方案
+- <WikiLink slug="black-scholes-model" label="Black-Scholes 模型" />适配到预测市场
+- <WikiLink slug="logit-transformation" label="Logit 变换" />处理概率的 0-1 边界
+- <WikiLink slug="jump-diffusion-model" label="跳跃扩散模型" />捕捉突发新闻
+
+## 做市的风险
+
+1. **库存风险** — 持有的合约可能贬值
+2. **知情交易者风险** — 被拥有内幕信息的人狙击
+3. **波动率风险** — 市场波动突然增大，价差来不及调整
+4. **流动性风险** — 无法及时平仓
+
+## 相关概念
+
+- <WikiLink slug="black-scholes-model" label="Black-Scholes 模型" /> — 做市的定价基础
+- <WikiLink slug="implied-volatility" label="隐含波动率" /> — 做市商定价差的核心参数
+- <WikiLink slug="quantitative-trading-overview" label="量化交易概览" /> — 做市是量化策略的一种
+- <WikiLink slug="polymarket" label="Polymarket" /> — 预测市场做市的实践平台

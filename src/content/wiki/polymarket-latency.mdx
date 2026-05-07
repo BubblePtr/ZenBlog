@@ -1,0 +1,43 @@
+---
+title: "Polymarket Latency（延迟机制）"
+created: "2026-05-06"
+updated: "2026-05-06"
+type: "concept"
+tags: ["prediction-market", "polymarket", "infrastructure", "latency"]
+---
+
+
+# Polymarket Latency（延迟机制）
+
+Polymarket 交易中最残酷的维度：结构性的速度不平等。
+
+## Maker vs Taker
+
+- **Maker（挂单）**：签名 → 服务器验证 → 塞入 <WikiLink slug="off-chain-order-book" label="CLOB" /> → ACK。**~25ms**
+- **Taker（吃单）**：匹配 → 决定路径 → 构造链上数据 → <WikiLink slug="relayer" /> → Gas 估算 → Nonce 分配 → 广播 → 等确认。**~250-300ms**
+
+Taker 的 250ms 跨越多个微服务甚至触及区块链边缘。
+
+## 策略影响
+
+1. **难以抢跑**：所有 Taker 单都必须排队等 <WikiLink slug="operator" /> 处理，无法通过提高 Gas 插队
+2. **Maker 策略绝对优势**：撤单只要 25ms。突发新闻时，做市商可以在 Taker 结算前撤掉挂单（规避逆向选择 / Adverse Selection）
+3. **250ms 时间差**：做市商有 250ms 的窗口来应对市场变化
+
+## 每周 90 秒停机
+
+每周二美东 7:00，匹配引擎重启约 90 秒，停止处理匹配，API 返回 HTTP 425。
+
+Heartbeat（心跳）机制：10 秒内无心跳即自动取消所有开仓订单。重启 90 秒内做市商心跳中断，订单被集体清空。
+
+这 90 秒是系统中的"流动性真空"。对期权定价模型来说，这 90 秒的 Theta（时间衰减）如何计价，以及第 91 秒如何抢占盘口，是顶级平台的终极谜题。
+
+## V2 变化
+
+V1 时代硬编码了 500ms 的人为 Taker 延迟保护做市商。2026 年 2 月底移除，宣告 Polymarket 进入微秒级 HFT（高频交易）肉搏战。
+
+## 相关
+
+- 基础设施：<WikiLink slug="relayer" />, <WikiLink slug="operator" />
+- 订单簿：<WikiLink slug="off-chain-order-book" />
+- 合约架构：<WikiLink slug="ctf-exchange-v2" />

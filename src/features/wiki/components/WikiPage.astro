@@ -1,0 +1,75 @@
+---
+import type { WikiEntry } from '../server/queries.server';
+import { extractSlug, getWikiUrl } from '../server/queries.server';
+
+interface Props {
+  entry: WikiEntry;
+  backlinks: Array<{ slug: string; title: string }>;
+}
+
+const { entry, backlinks } = Astro.props;
+
+const typeLabels: Record<string, string> = {
+  entity: '实体',
+  concept: '概念',
+  comparison: '对比',
+  query: '查询',
+};
+
+const typeColors: Record<string, string> = {
+  entity: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+  concept: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+  comparison: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
+  query: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
+};
+
+const slug = extractSlug(entry.id);
+---
+
+<article>
+  <header class="mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class={`text-xs font-medium px-2 py-0.5 rounded ${typeColors[entry.data.type]}`}>
+        {typeLabels[entry.data.type]}
+      </span>
+      <span class="text-xs text-zinc-400 dark:text-zinc-500">
+        更新于 {entry.data.updated}
+      </span>
+    </div>
+    <h1
+      class="text-3xl sm:text-4xl font-semibold text-zinc-900 dark:text-zinc-100 leading-tight mb-4"
+      style="font-family: var(--font-serif)"
+    >
+      {entry.data.title}
+    </h1>
+    {entry.data.tags && entry.data.tags.length > 0 && (
+      <div class="flex flex-wrap gap-2">
+        {entry.data.tags.map((tag) => (
+          <span class="text-xs text-zinc-400 dark:text-zinc-500">#{tag}</span>
+        ))}
+      </div>
+    )}
+  </header>
+
+  <div class="prose max-w-none">
+    <slot />
+  </div>
+
+  {backlinks.length > 0 && (
+    <footer class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+      <h3 class="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-4">
+        被引用
+      </h3>
+      <div class="flex flex-wrap gap-2">
+        {backlinks.map((bl) => (
+          <a
+            href={getWikiUrl(bl.slug, 'zh')}
+            class="text-sm px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-500 transition-colors no-underline"
+          >
+            {bl.title}
+          </a>
+        ))}
+      </div>
+    </footer>
+  )}
+</article>
