@@ -13,7 +13,7 @@ interface SiteHeaderProps {
   t: TranslationDictionary;
 }
 
-type NavItemKey = 'blog' | 'photography' | 'about' | 'wiki';
+type NavItemKey = 'blog' | 'photography' | 'about';
 
 export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -28,7 +28,6 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
   const navItems = useMemo(
     () => [
       { key: 'blog' as const, label: t['nav.blog'] || 'nav.blog' },
-      { key: 'wiki' as const, label: t['nav.wiki'] || 'nav.wiki' },
       { key: 'photography' as const, label: t['nav.photography'] || 'nav.photography' },
       { key: 'about' as const, label: t['nav.about'] || 'nav.about' },
     ],

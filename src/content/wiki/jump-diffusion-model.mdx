@@ -1,11 +1,10 @@
 ---
-title: "跳跃扩散模型"
-created: "2026-04-08"
-updated: "2026-04-08"
-type: "concept"
-tags: ["option-pricing", "volatility", "statistics"]
+title: '跳跃扩散模型'
+created: '2026-04-08'
+updated: '2026-04-08'
+type: 'concept'
+tags: ['option-pricing', 'volatility', 'statistics']
 ---
-
 
 # 跳跃扩散模型
 
@@ -20,16 +19,19 @@ tags: ["option-pricing", "volatility", "statistics"]
 三个组成部分：
 
 ### 1. 扩散项（σ_b dW）
+
 - **信念波动率** — 概率在没有重大新闻的情况下，因持续信息流（民调更新、分析师评论、社交媒体情绪）而缓慢变化的速度
 - 类比：水面上的波纹，持续但温和
 - 这就是预测市场的"隐含波动率"
 
 ### 2. 跳跃项
+
 - **突发新闻**导致的概率突变
 - 辩论中的关键失误、意外的政策声明、突然的退选
 - 类比：一块石头砸进水里
 
 ### 3. 漂移项（μ）
+
 - 概率随时间的"自然趋势"
 - **关键**：漂移被完全锁定
 
@@ -46,6 +48,7 @@ tags: ["option-pricing", "volatility", "statistics"]
 传统 Black-Scholes 只有扩散（波纹），没有跳跃（石头）。
 
 预测市场的新闻冲击远比股票市场更频繁、更剧烈：
+
 - 选举辩论中的失误
 - 突发政策声明
 - 候选人退选
@@ -55,6 +58,7 @@ tags: ["option-pricing", "volatility", "statistics"]
 ## 直观理解
 
 想象你在看一场选举的民调：
+
 - **大多数时候**：支持率每天变化 0.1-0.3 个百分点（扩散）
 - **某天晚上**：候选人在辩论中说了一句灾难性的话，支持率一夜之间从 55% 跌到 42%（跳跃）
 

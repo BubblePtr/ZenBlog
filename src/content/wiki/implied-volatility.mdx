@@ -1,11 +1,10 @@
 ---
-title: "隐含波动率"
-created: "2026-04-08"
-updated: "2026-04-08"
-type: "concept"
-tags: ["option-pricing", "volatility", "risk-management"]
+title: '隐含波动率'
+created: '2026-04-08'
+updated: '2026-04-08'
+type: 'concept'
+tags: ['option-pricing', 'volatility', 'risk-management']
 ---
-
 
 # 隐含波动率
 
@@ -38,18 +37,19 @@ Black-Scholes 说：期权价格只取决于波动率。
 
 隐含波动率让风险可以被精确分解：
 
-| Greek | 含义 | 风险类型 |
-|-------|------|----------|
-| Delta | 价格对标的资产的敏感度 | 方向风险 |
-| Gamma | Delta 的变化率 | 加速度风险 |
-| Vega | 价格对波动率的敏感度 | 波动率风险 |
-| Theta | 价格随时间的衰减 | 时间风险 |
+| Greek | 含义                   | 风险类型   |
+| ----- | ---------------------- | ---------- |
+| Delta | 价格对标的资产的敏感度 | 方向风险   |
+| Gamma | Delta 的变化率         | 加速度风险 |
+| Vega  | 价格对波动率的敏感度   | 波动率风险 |
+| Theta | 价格随时间的衰减       | 时间风险   |
 
 做市商可以精确地对冲每一个维度的风险。
 
 ## 与做市的关系
 
 做市商的核心工作：
+
 1. 估计市场的信念波动率
 2. 根据波动率设定合理的价差
 3. 用 Greeks 管理多维度风险

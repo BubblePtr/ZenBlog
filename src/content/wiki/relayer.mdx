@@ -1,11 +1,10 @@
 ---
-title: "Relayer（中继器）"
-created: "2026-05-06"
-updated: "2026-05-06"
-type: "concept"
-tags: ["prediction-market", "polymarket", "infrastructure"]
+title: 'Relayer（中继器）'
+created: '2026-05-06'
+updated: '2026-05-06'
+type: 'concept'
+tags: ['prediction-market', 'polymarket', 'infrastructure']
 ---
-
 
 # Relayer（中继器）
 
@@ -14,6 +13,7 @@ Polymarket 实现"免 Gas"用户体验的核心基础设施。
 ## 机制
 
 Polymarket 部署了 Relayer Client（relayer-v2.polymarket.com）。流程：
+
 1. 用户对操作签名（如 Approve、Redeem）
 2. 签名发送给 Relayer
 3. Relayer 作为"交易赞助商"，用自己的资金池垫付 Gas 费，将交易提交到 Polygon

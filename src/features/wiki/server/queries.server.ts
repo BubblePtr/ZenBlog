@@ -34,17 +34,6 @@ export function groupByType(entries: WikiEntry[]) {
   return groups;
 }
 
-// Extract wikilink slugs from a page's raw body
-function extractOutboundLinks(body: string): string[] {
-  const re = /\[\[([^\]|]+)/g;
-  const slugs: string[] = [];
-  let m;
-  while ((m = re.exec(body)) !== null) {
-    slugs.push(m[1].trim());
-  }
-  return slugs;
-}
-
 // Parse <WikiLink slug="..." /> components from MDX body
 function extractComponentLinks(body: string): string[] {
   const re = /<WikiLink\s+slug="([^"]+)"/g;

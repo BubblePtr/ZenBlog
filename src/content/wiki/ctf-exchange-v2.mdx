@@ -1,11 +1,10 @@
 ---
-title: "ctf-exchange-v2"
-created: "2026-05-06"
-updated: "2026-05-06"
-type: "concept"
-tags: ["prediction-market", "polymarket", "infrastructure", "protocol"]
+title: 'ctf-exchange-v2'
+created: '2026-05-06'
+updated: '2026-05-06'
+type: 'concept'
+tags: ['prediction-market', 'polymarket', 'infrastructure', 'protocol']
 ---
-
 
 # ctf-exchange-v2
 
@@ -14,6 +13,7 @@ Polymarket 的核心智能合约，管理所有条件代币的创建、交易和
 ## 架构
 
 混合去中心化设计：
+
 - **撮合**：中心化，由 <WikiLink slug="operator" /> 在链下完成
 - **结算**：去中心化，由智能合约在 Polygon 链上执行
 
@@ -22,22 +22,31 @@ Polymarket 的核心智能合约，管理所有条件代币的创建、交易和
 ## 三种匹配路径
 
 合约根据订单的买卖方向，自动路由到三种结算路径：
-1. <WikiLink slug="complementary-matching" />：传统二手交易，代币直接转移
-2. <WikiLink slug="mint-matching" />：两个买家凭空铸造代币
-3. <WikiLink slug="merge-matching" />：两个卖家销毁代币换回资金
+
+1. <WikiLink slug="complementary-matching" />
+   ：传统二手交易，代币直接转移
+2. <WikiLink slug="mint-matching" />
+   ：两个买家凭空铸造代币
+3. <WikiLink slug="merge-matching" />
+   ：两个卖家销毁代币换回资金
 
 路由由订单方向严格决定，不是 Operator 主观选择。
 
 ## 原子级操作
 
 非交易性质的资产转换（不经过 <WikiLink slug="off-chain-order-book" />，不收手续费）：
-- <WikiLink slug="split-operation" />：pUSD → YES + NO
-- <WikiLink slug="merge-operation" />：YES + NO → pUSD
-- <WikiLink slug="redeem-operation" />：赢的代币 → $1 pUSD
+
+- <WikiLink slug="split-operation" />
+  ：pUSD → YES + NO
+- <WikiLink slug="merge-operation" />
+  ：YES + NO → pUSD
+- <WikiLink slug="redeem-operation" />
+  ：赢的代币 → $1 pUSD
 
 ## V2 升级
 
 2026 年 2-5 月的 V2 重构：
+
 - 引入 <WikiLink slug="deposit-wallet" /> 终结 <WikiLink slug="ghost-fill" />
 - pUSD 替代 USDC.e 作为底层抵押物（4% 年化）
 - 手续费公式升级为 p(1-p)，见 <WikiLink slug="polymarket-fee-structure" />

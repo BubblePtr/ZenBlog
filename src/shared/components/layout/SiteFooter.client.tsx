@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: '/', labelKey: 'nav.home' as const },
   { href: '/about', labelKey: 'nav.about' as const },
   { href: '/blog', labelKey: 'nav.blog' as const },
+  { href: '/wiki', labelKey: 'nav.wiki' as const },
   { href: '/photography', labelKey: 'nav.photography' as const },
 ] as const;
 

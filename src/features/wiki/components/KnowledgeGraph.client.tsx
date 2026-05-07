@@ -156,8 +156,7 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
         const b = nodeMap.get(edge.target);
         if (!a || !b) continue;
 
-        const isHighlighted =
-          hoveredId && (edge.source === hoveredId || edge.target === hoveredId);
+        const isHighlighted = hoveredId && (edge.source === hoveredId || edge.target === hoveredId);
 
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
