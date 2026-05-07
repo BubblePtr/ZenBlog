@@ -4,6 +4,7 @@ import type { Language } from '@/i18n/config';
 import SiteHeader from '@/shared/components/navigation/SiteHeader.client';
 import SiteFooter from '@/shared/components/layout/SiteFooter.client';
 import { getTranslationDictionary } from '@/shared/i18n/types';
+import { withTrailingSlash } from '@/shared/urls';
 
 
 interface Props {
@@ -29,6 +30,7 @@ const {
 } = Astro.props;
 
 const t = getTranslationDictionary(lang);
+const normalizedCurrentPath = withTrailingSlash(currentPath);
 ---
 
 <!doctype html>
@@ -37,7 +39,7 @@ const t = getTranslationDictionary(lang);
     <BaseHead title={title} description={description} slug={slug} />
   </head>
   <body class={bodyClass}>
-    <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} />
+    <SiteHeader client:load currentPath={normalizedCurrentPath} lang={lang} t={t} />
     <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
       <div class="-mx-6 section-rule"></div>
     </div>

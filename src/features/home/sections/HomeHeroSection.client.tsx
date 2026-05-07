@@ -10,6 +10,7 @@ import {
 } from '@remixicon/react';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
+import { withTrailingSlash } from '@/shared/urls';
 
 const container = {
   hidden: {},
@@ -38,8 +39,8 @@ const AVATAR_URL = 'https://cdn.ninthbit.org/avatar.jpg';
 
 export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
-  const photographyHref = lang === 'zh' ? '/zh/photography' : '/photography';
-  const blogHref = lang === 'zh' ? '/zh/blog' : '/blog';
+  const photographyHref = withTrailingSlash(lang === 'zh' ? '/zh/photography' : '/photography');
+  const blogHref = withTrailingSlash(lang === 'zh' ? '/zh/blog' : '/blog');
   const isZh = lang === 'zh';
 
   return (

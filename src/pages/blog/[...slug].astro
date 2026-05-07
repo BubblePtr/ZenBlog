@@ -5,6 +5,7 @@ import BlogPostLayout from '@/features/blog/components/BlogPostLayout.astro';
 import { mdxComponents } from '@/components/mdx/components';
 import {
   extractBlogSlug,
+  getBlogLocalizedPaths,
   getBlogStaticPathsByLang,
   getReadTime,
 } from '@/features/blog/server';
@@ -22,6 +23,7 @@ const { Content } = await render(post);
 const currentSlug = extractBlogSlug(post.id, lang);
 const ogSlug = post.id.replace(/\.[^/.]+$/, '');
 const readTimeMinutes = getReadTime(post.body ?? '', lang);
+const localizedPaths = await getBlogLocalizedPaths(post);
 ---
 
 <BlogPostLayout
@@ -29,6 +31,7 @@ const readTimeMinutes = getReadTime(post.body ?? '', lang);
   slug={currentSlug}
   ogSlug={ogSlug}
   readTimeMinutes={readTimeMinutes}
+  localizedPaths={localizedPaths}
 >
   <Content components={mdxComponents} />
 </BlogPostLayout>

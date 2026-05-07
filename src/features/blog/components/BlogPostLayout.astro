@@ -11,12 +11,14 @@ import ScrollProgress from '@/features/blog/components/ScrollProgress.client';
 import GiscusComments from '@/features/blog/components/GiscusComments.client';
 import { resolveBlogAuthor } from '@/features/blog/authors';
 import { RiCalendarLine, RiTimeLine } from '@remixicon/react';
+import { withTrailingSlash } from '@/shared/urls';
 
 
 type Props = CollectionEntry<'blog'>['data'] & {
   slug?: string;
   ogSlug?: string;
   readTimeMinutes?: number;
+  localizedPaths?: Partial<Record<Language, string>>;
 };
 
 const {
@@ -29,6 +31,7 @@ const {
   slug,
   ogSlug,
   readTimeMinutes,
+  localizedPaths,
 } = Astro.props;
 
 const lang: Language = Astro.url.pathname.startsWith('/zh/') ? 'zh' : 'en';
@@ -36,11 +39,11 @@ const t: TranslationDictionary = getTranslationDictionary(lang);
 
 const currentPath = slug
   ? lang === 'zh'
-    ? `/zh/blog/${slug}`
-    : `/blog/${slug}`
+    ? withTrailingSlash(`/zh/blog/${slug}`)
+    : withTrailingSlash(`/blog/${slug}`)
   : lang === 'zh'
-    ? '/zh/blog'
-    : '/blog';
+    ? '/zh/blog/'
+    : '/blog/';
 
 const formattedDate = pubDate.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
   year: 'numeric',
@@ -65,7 +68,7 @@ const resolvedAuthor = resolveBlogAuthor(author, source, lang);
   <body class="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-500 antialiased font-sans">
     <ScrollProgress client:load />
 
-    <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} />
+    <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} localizedPaths={localizedPaths} />
     <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
       <div class="-mx-6 section-rule"></div>
     </div>
