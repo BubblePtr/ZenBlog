@@ -10,6 +10,7 @@ const lang = 'zh' as const;
 const t = getTranslationDictionary(lang);
 const entries = await getAllWikiEntries();
 const graphData = await buildGraphData();
+const localizedPaths = { zh: '/zh/wiki/' };
 ---
 
 <PageShell
@@ -17,6 +18,7 @@ const graphData = await buildGraphData();
   title={`${t['nav.wiki']} | ${SITE_TITLE}`}
   description="量化交易与预测市场的知识库"
   currentPath="/zh/wiki"
+  localizedPaths={localizedPaths}
   mainClass="max-w-[84rem] mx-auto px-6 py-12 sm:py-20 relative z-10"
 >
   <div class="mb-12">

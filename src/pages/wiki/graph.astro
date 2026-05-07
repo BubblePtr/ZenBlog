@@ -1,35 +1,5 @@
 ---
-import { SITE_TITLE } from '@/consts';
-import { KnowledgeGraph } from '@/features/wiki';
-import { buildGraphData } from '@/features/wiki/server/queries.server';
-import PageShell from '@/shared/components/layout/PageShell.astro';
-import { getTranslationDictionary } from '@/shared/i18n/types';
-
-const lang = 'zh' as const;
-const t = getTranslationDictionary(lang);
-const graphData = await buildGraphData();
+import StaticRedirect from '@/shared/components/navigation/StaticRedirect.astro';
 ---
 
-<PageShell
-  lang={lang}
-  title={`知识图谱 | ${t['nav.wiki']}`}
-  description="量化交易知识图谱可视化"
-  currentPath="/wiki/graph"
-  mainClass="max-w-5xl mx-auto px-6 py-12 sm:py-20 relative z-10"
->
-  <div class="mb-8">
-    <p class="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 mb-4">
-      KNOWLEDGE GRAPH
-    </p>
-    <h1
-      class="text-3xl sm:text-4xl font-semibold text-zinc-900 dark:text-zinc-100 mb-3"
-      style="font-family: var(--font-serif)"
-    >
-      知识图谱
-    </h1>
-    <p class="text-zinc-500 dark:text-zinc-400 text-sm">
-      {graphData.nodes.length} 个节点，{graphData.edges.length} 条连接。点击节点跳转到对应词条。
-    </p>
-  </div>
-  <KnowledgeGraph client:load graphData={graphData} />
-</PageShell>
+<StaticRedirect target="/zh/wiki/graph/" title="Redirecting to LLM-WIKI" />

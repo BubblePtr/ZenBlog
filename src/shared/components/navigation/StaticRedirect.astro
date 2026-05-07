@@ -1,0 +1,25 @@
+---
+interface Props {
+  target: string;
+  title?: string;
+}
+
+const { target, title = 'Redirecting' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={target} />
+    <title>{title}</title>
+    <script is:inline define:vars={{ target }}>
+      window.location.replace(target);
+    </script>
+  </head>
+  <body>
+    <p><a href={target}>Redirecting to LLM-WIKI</a></p>
+  </body>
+</html>

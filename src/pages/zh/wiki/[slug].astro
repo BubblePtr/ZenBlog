@@ -18,6 +18,7 @@ const lang = 'zh' as const;
 const t = getTranslationDictionary(lang);
 const entry = Astro.props;
 const slug = extractSlug(entry.id);
+const localizedPaths = { zh: `/zh/wiki/${slug}/` };
 
 const allEntries = await getCollection('wiki');
 const backlinks: Array<{ slug: string; title: string }> = [];
@@ -37,6 +38,7 @@ const { Content } = await render(entry);
   title={`${entry.data.title} | ${t['nav.wiki']}`}
   description={`${entry.data.title} — 量化交易知识库`}
   currentPath="/zh/wiki"
+  localizedPaths={localizedPaths}
   mainClass="max-w-3xl mx-auto px-6 py-12 sm:py-20 relative z-10"
 >
   <WikiPage entry={entry} backlinks={backlinks}>

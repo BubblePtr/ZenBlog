@@ -11,11 +11,12 @@ interface SiteHeaderProps {
   currentPath: string;
   lang: Language;
   t: TranslationDictionary;
+  localizedPaths?: Partial<Record<Language, string>>;
 }
 
 type NavItemKey = 'blog' | 'photography' | 'about';
 
-export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
+export default function SiteHeader({ currentPath, lang, t, localizedPaths }: SiteHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const getHref = (item: NavItemKey) => (lang === 'zh' ? `/zh/${item}` : `/${item}`);
 
@@ -102,7 +103,11 @@ export default function SiteHeader({ currentPath, lang, t }: SiteHeaderProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <LanguageSwitcher currentLang={lang} currentPath={currentPath} />
+          <LanguageSwitcher
+            currentLang={lang}
+            currentPath={currentPath}
+            localizedPaths={localizedPaths}
+          />
           <ThemeToggle
             className="hidden sm:flex items-center justify-center min-w-11 min-h-11 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
             aria-label="Toggle theme"

@@ -8,6 +8,7 @@ import { getTranslationDictionary } from '@/shared/i18n/types';
 const lang = 'zh' as const;
 const t = getTranslationDictionary(lang);
 const graphData = await buildGraphData();
+const localizedPaths = { zh: '/zh/wiki/graph/' };
 ---
 
 <PageShell
@@ -15,6 +16,7 @@ const graphData = await buildGraphData();
   title={`知识图谱 | ${t['nav.wiki']}`}
   description="量化交易知识图谱可视化"
   currentPath="/zh/wiki/graph"
+  localizedPaths={localizedPaths}
   mainClass="max-w-5xl mx-auto px-6 py-12 sm:py-20 relative z-10"
 >
   <div class="mb-8">

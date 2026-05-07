@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { href: '/photography', labelKey: 'nav.photography' as const },
 ] as const;
 
-const QUANT_LINKS = [{ href: '/wiki', label: 'LLM-WIKI' }] as const;
+const QUANT_LINKS = [{ href: '/zh/wiki/', label: 'LLM-WIKI' }] as const;
 
 const SOCIAL_LINKS = [
   { icon: RiGithubFill, href: 'https://github.com/BubblePtr', label: 'GitHub' },
@@ -88,7 +88,7 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
                 {QUANT_LINKS.map((link) => (
                   <a
                     key={link.href}
-                    href={getLocalizedPath(link.href)}
+                    href={link.href}
                     className="inline-block text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:translate-x-0.5 transition-all duration-200"
                   >
                     {link.label}
