@@ -19,7 +19,6 @@ const t = getTranslationDictionary(lang);
 const entry = Astro.props;
 const slug = extractSlug(entry.id);
 
-// Compute backlinks
 const allEntries = await getCollection('wiki');
 const backlinks: Array<{ slug: string; title: string }> = [];
 for (const other of allEntries) {
@@ -37,7 +36,7 @@ const { Content } = await render(entry);
   lang={lang}
   title={`${entry.data.title} | ${t['nav.wiki']}`}
   description={`${entry.data.title} — 量化交易知识库`}
-  currentPath="/wiki"
+  currentPath="/zh/wiki"
   mainClass="max-w-3xl mx-auto px-6 py-12 sm:py-20 relative z-10"
 >
   <WikiPage entry={entry} backlinks={backlinks}>

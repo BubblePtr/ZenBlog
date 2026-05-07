@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import type { GraphData, GraphNode, GraphEdge } from '../types';
+import { useEffect, useRef } from 'react';
+import type { GraphData, GraphNode } from '../types';
 
 interface KnowledgeGraphProps {
   graphData: GraphData;
@@ -22,8 +22,8 @@ const typeLabels: Record<string, string> = {
 export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
-  const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
+  const hoveredRef = useRef<GraphNode | null>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -46,16 +46,14 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
     const { nodes, edges } = graphData;
 
     // Physics simulation state
-    const nodeMap = new Map<
-      string,
-      {
-        node: GraphNode;
-        x: number;
-        y: number;
-        vx: number;
-        vy: number;
-      }
-    >();
+    interface SimNode {
+      node: GraphNode;
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+    }
+    const nodeMap = new Map<string, SimNode>();
 
     // Initialize positions in a circle
     const cx = width / 2;
@@ -92,7 +90,6 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
       const damping = 0.85;
       const centerForce = 0.01;
 
-      // Repulsion between all nodes
       for (let i = 0; i < positions.length; i++) {
         for (let j = i + 1; j < positions.length; j++) {
           const a = positions[i];
@@ -110,7 +107,6 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
         }
       }
 
-      // Attraction along edges
       for (const edge of edges) {
         const a = nodeMap.get(edge.source);
         const b = nodeMap.get(edge.target);
@@ -127,7 +123,6 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
         b.vy -= fy;
       }
 
-      // Center gravity + update
       for (const pos of positions) {
         pos.vx += (cx - pos.x) * centerForce;
         pos.vy += (cy - pos.y) * centerForce;
@@ -135,7 +130,6 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
         pos.vy *= damping;
         pos.x += pos.vx;
         pos.y += pos.vy;
-        // Clamp
         pos.x = Math.max(40, Math.min(width - 40, pos.x));
         pos.y = Math.max(40, Math.min(height - 40, pos.y));
       }
@@ -153,10 +147,10 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
       ctx.clearRect(0, 0, width, height);
 
       const isDark = document.documentElement.classList.contains('dark');
-      const hoveredId = hoveredNode?.id || selectedNode?.id;
-      const relatedIds = hoveredId ? adjacency.get(hoveredId) || new Set() : new Set();
+      const hovered = hoveredRef.current;
+      const hoveredId = hovered?.id ?? null;
+      const relatedIds = hoveredId ? adjacency.get(hoveredId) || new Set() : new Set<string>();
 
-      // Draw edges
       for (const edge of edges) {
         const a = nodeMap.get(edge.source);
         const b = nodeMap.get(edge.target);
@@ -164,7 +158,6 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
 
         const isHighlighted =
           hoveredId && (edge.source === hoveredId || edge.target === hoveredId);
-        const isFaded = hoveredId && !isHighlighted;
 
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -180,7 +173,6 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
         ctx.stroke();
       }
 
-      // Draw nodes
       for (const pos of nodeMap.values()) {
         const isHovered = hoveredId === pos.node.id;
         const isRelated = relatedIds.has(pos.node.id);
@@ -194,7 +186,6 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
         ctx.fillStyle = color;
         ctx.fill();
 
-        // Label
         ctx.font = `${isHovered ? 'bold ' : ''}${isHovered ? 13 : 11}px system-ui, -apple-system, sans-serif`;
         ctx.fillStyle = isDark
           ? isFaded
@@ -210,7 +201,6 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
       }
     }
 
-    // Mouse interaction
     function getNodeAt(mx: number, my: number) {
       for (const pos of nodeMap.values()) {
         const dx = pos.x - mx;
@@ -220,13 +210,25 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
       return null;
     }
 
+    function updateTooltip(node: GraphNode | null) {
+      const tooltip = tooltipRef.current;
+      if (!tooltip) return;
+      if (node) {
+        tooltip.style.display = 'block';
+        tooltip.innerHTML = `<span class="font-medium text-zinc-900 dark:text-zinc-100">${node.title}</span><span class="text-zinc-400 ml-2">${typeLabels[node.type]}</span>`;
+      } else {
+        tooltip.style.display = 'none';
+      }
+    }
+
     function handleMouseMove(e: MouseEvent) {
       const rect = canvas.getBoundingClientRect();
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
       const node = getNodeAt(mx, my);
-      setHoveredNode(node);
+      hoveredRef.current = node;
       canvas.style.cursor = node ? 'pointer' : 'default';
+      updateTooltip(node);
       if (!simulationRunning) draw();
     }
 
@@ -236,7 +238,6 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
       const my = e.clientY - rect.top;
       const node = getNodeAt(mx, my);
       if (node) {
-        setSelectedNode(node);
         window.location.href = `/wiki/${node.id}`;
       }
     }
@@ -272,10 +273,12 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
         ref={canvasRef}
         className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950"
       />
-      {/* Legend */}
       <div className="flex flex-wrap gap-4 mt-4 justify-center">
         {Object.entries(typeLabels).map(([type, label]) => (
-          <div key={type} className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+          <div
+            key={type}
+            className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400"
+          >
             <span
               className="w-2.5 h-2.5 rounded-full"
               style={{ backgroundColor: typeColors[type] }}
@@ -284,12 +287,10 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
           </div>
         ))}
       </div>
-      {hoveredNode && (
-        <div className="absolute top-3 left-3 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-xs shadow-lg">
-          <span className="font-medium text-zinc-900 dark:text-zinc-100">{hoveredNode.title}</span>
-          <span className="text-zinc-400 ml-2">{typeLabels[hoveredNode.type]}</span>
-        </div>
-      )}
+      <div
+        ref={tooltipRef}
+        className="absolute top-3 left-3 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-xs shadow-lg hidden"
+      />
     </div>
   );
 }
