@@ -26,8 +26,6 @@ export default function LanguageSwitcher({
 
     if (path.startsWith('/zh/')) {
       path = path.replace('/zh/', '/');
-    } else if (path === '/zh') {
-      path = '/';
     }
 
     if (lang === 'zh') {

@@ -6,6 +6,8 @@ import type { BlogListItem, BubbleDiarySummary } from '@/types/content';
 
 export type BlogEntry = CollectionEntry<'blog'>;
 
+let cachedBlogEntries: BlogEntry[] | undefined;
+
 interface BlogListOptions {
   homeOnly?: boolean;
   limit?: number;
@@ -23,12 +25,17 @@ function buildBlogUrl(slug: string, lang: Language): string {
   return withTrailingSlash(lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`);
 }
 
+async function getCachedBlogEntries(): Promise<BlogEntry[]> {
+  cachedBlogEntries ??= await getCollection('blog');
+  return cachedBlogEntries;
+}
+
 export async function getBlogLocalizedPaths(
   post: BlogEntry,
 ): Promise<Partial<Record<Language, string>>> {
   const lang = getEntryLang(post);
   const slug = extractBlogSlug(post.id, lang);
-  const allPosts = await getCollection('blog');
+  const allPosts = await getCachedBlogEntries();
   const localizedPaths: Partial<Record<Language, string>> = {};
 
   for (const targetLang of ['en', 'zh'] as const) {

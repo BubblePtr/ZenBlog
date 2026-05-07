@@ -1,4 +1,5 @@
-const FILE_EXTENSION_RE = /\/[^/?#]+\.[^/?#]+$/;
+const FILE_EXTENSION_RE =
+  /\/[\w-][\w.-]*\.(?:avif|css|gif|html|ico|jpeg|jpg|js|json|map|png|svg|txt|webp|xml)$/i;
 
 export function withTrailingSlash(href: string): string {
   if (!href.startsWith('/') || href.startsWith('//')) {
