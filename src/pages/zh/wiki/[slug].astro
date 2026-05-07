@@ -41,7 +41,7 @@ const { Content } = await render(entry);
   localizedPaths={localizedPaths}
   mainClass="max-w-3xl mx-auto px-6 py-12 sm:py-20 relative z-10"
 >
-  <WikiPage entry={entry} backlinks={backlinks}>
+  <WikiPage entry={entry} backlinks={backlinks} lang={lang}>
     <Content components={{ WikiLink }} />
   </WikiPage>
 </PageShell>

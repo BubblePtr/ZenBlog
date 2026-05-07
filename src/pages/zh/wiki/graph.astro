@@ -33,5 +33,5 @@ const localizedPaths = { zh: '/zh/wiki/graph/' };
       {graphData.nodes.length} 个节点，{graphData.edges.length} 条连接。点击节点跳转到对应词条。
     </p>
   </div>
-  <KnowledgeGraph client:load graphData={graphData} />
+  <KnowledgeGraph client:load graphData={graphData} nodeHrefBase="/zh/wiki" />
 </PageShell>

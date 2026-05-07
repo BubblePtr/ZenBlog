@@ -13,7 +13,7 @@ export function extractSlug(id: string): string {
 }
 
 export function getWikiUrl(slug: string, lang: 'en' | 'zh' = 'zh'): string {
-  return lang === 'zh' ? `/zh/wiki/${slug}` : `/wiki/${slug}`;
+  return lang === 'zh' ? `/zh/wiki/${slug}/` : `/wiki/${slug}/`;
 }
 
 export async function getWikiStaticPaths() {

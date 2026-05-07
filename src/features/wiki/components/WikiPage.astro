@@ -5,9 +5,11 @@ import { extractSlug, getWikiUrl } from '../server/queries.server';
 interface Props {
   entry: WikiEntry;
   backlinks: Array<{ slug: string; title: string }>;
+  lang?: 'en' | 'zh';
 }
 
 const { entry, backlinks } = Astro.props;
+const lang = Astro.props.lang ?? 'zh';
 
 const typeLabels: Record<string, string> = {
   entity: '实体',
@@ -63,7 +65,7 @@ const slug = extractSlug(entry.id);
       <div class="flex flex-wrap gap-2">
         {backlinks.map((bl) => (
           <a
-            href={getWikiUrl(bl.slug, 'zh')}
+            href={getWikiUrl(bl.slug, lang)}
             class="text-sm px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-500 transition-colors no-underline"
           >
             {bl.title}

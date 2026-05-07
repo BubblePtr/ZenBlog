@@ -15,7 +15,8 @@
 import fs from 'fs';
 import path from 'path';
 
-const WIKI_SRC = process.env.WIKI_SRC || path.join(process.env.HOME, 'wiki');
+const homeDir = process.env.HOME ?? process.env.USERPROFILE ?? '.';
+const WIKI_SRC = process.env.WIKI_SRC || path.join(homeDir, 'wiki');
 const WIKI_DEST = path.resolve('src/content/wiki');
 
 const WIKILINK_RE = /\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]/g;

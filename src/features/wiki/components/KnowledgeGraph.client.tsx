@@ -3,6 +3,7 @@ import type { GraphData, GraphNode } from '../types';
 
 interface KnowledgeGraphProps {
   graphData: GraphData;
+  nodeHrefBase?: string;
 }
 
 const typeColors: Record<string, string> = {
@@ -19,7 +20,10 @@ const typeLabels: Record<string, string> = {
   query: '查询',
 };
 
-export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
+export default function KnowledgeGraph({
+  graphData,
+  nodeHrefBase = '/zh/wiki',
+}: KnowledgeGraphProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const hoveredRef = useRef<GraphNode | null>(null);
@@ -237,7 +241,7 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
       const my = e.clientY - rect.top;
       const node = getNodeAt(mx, my);
       if (node) {
-        window.location.href = `/wiki/${node.id}`;
+        window.location.href = `${nodeHrefBase.replace(/\/$/, '')}/${node.id}/`;
       }
     }
 
@@ -264,7 +268,7 @@ export default function KnowledgeGraph({ graphData }: KnowledgeGraphProps) {
       canvas.removeEventListener('click', handleClick);
       window.removeEventListener('resize', handleResize);
     };
-  }, [graphData]);
+  }, [graphData, nodeHrefBase]);
 
   return (
     <div ref={containerRef} className="relative w-full">
