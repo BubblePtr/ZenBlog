@@ -9,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd /Users/void/code/ZenBlog && bun run fmt 2>/dev/null || true"
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && bun run fmt"
           }
         ]
       },
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd /Users/void/code/ZenBlog && bun run check:arch 2>&1 | tail -5"
+            "command": "cd \"$(git rev-parse --show-toplevel)\" && bun run check:arch 2>&1 | tail -5"
           }
         ]
       }
