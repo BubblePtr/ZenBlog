@@ -1,0 +1,27 @@
+{
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /Users/void/code/ZenBlog && bun run fmt 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit(src/features/*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /Users/void/code/ZenBlog && bun run check:arch 2>&1 | tail -5"
+          }
+        ]
+      }
+    ]
+  }
+}
