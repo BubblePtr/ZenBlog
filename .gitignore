@@ -4,8 +4,9 @@ dist/
 .wrangler/
 # generated types
 .astro/
-.claude/
-.conductor/
+# claude code project config (local-only)
+.claude/settings.local.json
+.claude/skills/
 skills-lock.json
 
 # dependencies
