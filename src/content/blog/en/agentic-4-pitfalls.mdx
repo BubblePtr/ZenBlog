@@ -2,7 +2,7 @@
 title: 4 Pitfalls of Agentic Engineering in Production
 description: Four hard-won lessons from a Figma-to-code project.
 pubDate: '2026-04-13'
-heroImage: './agentic-4-pitfalls-hero.jpg'
+heroImage: '../images/agentic-4-pitfalls-hero.jpg'
 showOnHome: true
 lang: en
 tags: ['agentic', 'llm', 'engineering']
@@ -36,7 +36,7 @@ Tools like Claude Code or Codex run in a REPL-like interactive mode where you ca
 
 That cost multiplies when you run a test suite in batch. If you can't see where things go wrong, you're wasting tokens for nothing. Below is a screenshot from my test runs. I used LangSmith to trace the Agent's behavior.
 
-![LangSmith test-run traces showing a high volume of RuntimeErrors and high-latency spans](./agentic-4-pitfalls-langsmith.jpg)
+![LangSmith test-run traces showing a high volume of RuntimeErrors and high-latency spans](../images/agentic-4-pitfalls-langsmith.jpg)
 
 ## 4. Don't just supervise—think deeply
 
