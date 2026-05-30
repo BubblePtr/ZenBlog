@@ -6,10 +6,14 @@ import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { stripLeadingHeadingOne } from './src/remark/strip-leading-heading-one.mjs';
+import { anchorHeadings } from './src/rehype/anchor-headings.mjs';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const headingAnchorOptions = {
+  include: ['/src/content/blog/'],
+};
 
 // https://astro.build/config
 export default defineConfig({
@@ -26,10 +30,13 @@ export default defineConfig({
   image: {
     domains: ['gravatar.com', 'cdn.ninthbit.org'],
   },
+  markdown: {
+    rehypePlugins: [[anchorHeadings, headingAnchorOptions]],
+  },
   integrations: [
     mdx({
       remarkPlugins: [stripLeadingHeadingOne, remarkMath],
-      rehypePlugins: [rehypeKatex],
+      rehypePlugins: [rehypeKatex, [anchorHeadings, headingAnchorOptions]],
     }),
     sitemap(),
     react()

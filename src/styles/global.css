@@ -206,6 +206,8 @@ body {
 
   /* 正文中的标题：无衬线 + 正常字重 */
   .prose h2 {
+    position: relative;
+    scroll-margin-top: 6rem;
     font-family: var(--font-heading);
     font-size: var(--font-size-prose-heading);
     font-weight: var(--font-weight-normal); /* 400 */
@@ -216,6 +218,8 @@ body {
   }
 
   .prose h3 {
+    position: relative;
+    scroll-margin-top: 6rem;
     font-family: var(--font-heading);
     font-size: 1.25rem; /* 20px */
     font-weight: var(--font-weight-normal);
@@ -226,6 +230,8 @@ body {
   }
 
   .prose h4 {
+    position: relative;
+    scroll-margin-top: 6rem;
     font-family: var(--font-heading);
     font-size: 1.125rem; /* 18px */
     font-weight: var(--font-weight-normal);
@@ -235,10 +241,45 @@ body {
     margin-bottom: 0.75rem;
   }
 
+  .prose .heading-anchor {
+    position: absolute;
+    left: -1.15em;
+    width: 1em;
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+    opacity: 0;
+    transition:
+      color 150ms ease,
+      opacity 150ms ease;
+  }
+
+  .prose h2:hover .heading-anchor,
+  .prose h3:hover .heading-anchor,
+  .prose h4:hover .heading-anchor,
+  .prose .heading-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  .prose .heading-anchor:hover {
+    color: var(--color-orange-600);
+  }
+
+  .dark .prose .heading-anchor:hover {
+    color: var(--color-orange-400);
+  }
+
+  @media (hover: none) {
+    .prose .heading-anchor {
+      opacity: 0.45;
+    }
+  }
+
   /* 链接 */
   .prose a {
-    @apply text-orange-600 dark:text-orange-400 underline underline-offset-2 decoration-orange-600/40 dark:decoration-orange-400/40;
-    @apply hover:text-orange-700 dark:hover:text-orange-300 hover:decoration-orange-700/60 dark:hover:decoration-orange-300/60 transition-colors;
+    @apply underline underline-offset-2 decoration-zinc-400/60 dark:decoration-zinc-500/70;
+    @apply hover:text-orange-600 dark:hover:text-orange-400 hover:decoration-orange-600/60 dark:hover:decoration-orange-400/60 transition-colors;
+    color: inherit;
   }
 
   /* 无序列表 */
@@ -267,12 +308,21 @@ body {
 
   /* 引用块 */
   .prose blockquote {
-    @apply border-l-4 border-zinc-300 dark:border-zinc-600 pl-4 my-6 italic;
+    @apply border-l-4 border-zinc-300 dark:border-zinc-600 pl-4 my-6;
     color: var(--color-text-secondary);
+    font-style: normal;
   }
 
   .prose blockquote p {
     @apply my-0;
+  }
+
+  .prose blockquote p:first-of-type::before {
+    content: '“';
+  }
+
+  .prose blockquote p:last-of-type::after {
+    content: '”';
   }
 
   /* 水平线 — Vercel 风格虚线分割 */
@@ -340,6 +390,16 @@ body {
   /* 图片 */
   .prose img {
     @apply my-8;
+  }
+
+  .prose a.github-repo-card {
+    @apply block my-8 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 no-underline shadow-sm;
+    @apply transition-colors transition-shadow hover:border-orange-500/70 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-orange-400/70;
+    color: inherit;
+  }
+
+  .prose a.github-repo-card img {
+    @apply my-0 block w-full;
   }
 
   /* 表格 */
