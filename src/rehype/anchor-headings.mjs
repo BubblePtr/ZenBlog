@@ -168,6 +168,16 @@ function createSlug(text, usedSlugs) {
   return slug;
 }
 
+function getExistingId(node) {
+  const id = node.properties?.id;
+
+  return typeof id === 'string' && id.trim() ? id : null;
+}
+
+function createAriaLabel(label, prefix) {
+  return label ? `${prefix}: ${label}` : `${prefix}: this heading`;
+}
+
 function shouldProcessFile(file, include) {
   if (include.length === 0) {
     return true;
@@ -177,7 +187,7 @@ function shouldProcessFile(file, include) {
   return paths.some((filePath) => include.some((includedPath) => filePath.includes(includedPath)));
 }
 
-function visitHeadings(node, levels, usedSlugs, file) {
+function visitHeadings(node, levels, usedSlugs, file, ariaLabelPrefix) {
   if (!node || typeof node !== 'object') {
     return;
   }
@@ -187,26 +197,33 @@ function visitHeadings(node, levels, usedSlugs, file) {
 
     if (levels.has(level)) {
       const label = getTextContent(node).trim();
-      const id = createSlug(label, usedSlugs);
+      node.properties ??= {};
+
+      let id = getExistingId(node);
 
       if (!id) {
-        const filePath = file?.path ?? file?.history?.[0] ?? 'unknown file';
+        id = createSlug(label, usedSlugs);
 
-        throw new Error(
-          `[anchor-headings] Missing short English heading anchor for "${label}" in ${filePath}. Add it to translatedHeadings or include an English phrase in the heading.`,
-        );
+        if (!id) {
+          const filePath = file?.path ?? file?.history?.[0] ?? 'unknown file';
+
+          throw new Error(
+            `[anchor-headings] Missing short English heading anchor for "${label}" in ${filePath}. Add it to translatedHeadings or include an English phrase in the heading.`,
+          );
+        }
+
+        node.properties.id = id;
+      } else {
+        usedSlugs.add(id);
       }
-
-      node.properties ??= {};
-      node.properties.id = id;
 
       node.children.unshift({
         type: 'element',
         tagName: 'a',
         properties: {
-          ariaLabel: label ? `链接到：${label}` : '链接到此标题',
+          ariaLabel: createAriaLabel(label, ariaLabelPrefix),
           className: ['heading-anchor'],
-          href: `#${node.properties.id}`,
+          href: `#${id}`,
         },
         children: [{ type: 'text', value: '#' }],
       });
@@ -215,12 +232,13 @@ function visitHeadings(node, levels, usedSlugs, file) {
 
   if (Array.isArray(node.children)) {
     for (const child of node.children) {
-      visitHeadings(child, levels, usedSlugs, file);
+      visitHeadings(child, levels, usedSlugs, file, ariaLabelPrefix);
     }
   }
 }
 
 export function anchorHeadings(options = {}) {
+  const ariaLabelPrefix = options.ariaLabelPrefix ?? 'Link to';
   const levels = new Set(options.levels ?? [2, 3, 4]);
   const include = options.include ?? [];
 
@@ -229,6 +247,6 @@ export function anchorHeadings(options = {}) {
       return;
     }
 
-    visitHeadings(tree, levels, new Set(), file);
+    visitHeadings(tree, levels, new Set(), file, ariaLabelPrefix);
   };
 }

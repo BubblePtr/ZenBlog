@@ -12,6 +12,7 @@ import rehypeKatex from 'rehype-katex';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const headingAnchorOptions = {
+  ariaLabelPrefix: 'Link to',
   include: ['/src/content/blog/'],
 };
 
@@ -28,7 +29,7 @@ export default defineConfig({
     }
   },
   image: {
-    domains: ['gravatar.com', 'cdn.ninthbit.org'],
+    domains: ['gravatar.com', 'cdn.ninthbit.org', 'opengraph.githubassets.com'],
   },
   markdown: {
     rehypePlugins: [[anchorHeadings, headingAnchorOptions]],

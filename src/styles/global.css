@@ -278,7 +278,9 @@ body {
   /* 链接 */
   .prose a {
     @apply underline underline-offset-2 decoration-zinc-400/60 dark:decoration-zinc-500/70;
+
     @apply hover:text-orange-600 dark:hover:text-orange-400 hover:decoration-orange-600/60 dark:hover:decoration-orange-400/60 transition-colors;
+
     color: inherit;
   }
 
@@ -309,7 +311,9 @@ body {
   /* 引用块 */
   .prose blockquote {
     @apply border-l-4 border-zinc-300 dark:border-zinc-600 pl-4 my-6;
+
     color: var(--color-text-secondary);
+
     font-style: normal;
   }
 
@@ -394,7 +398,9 @@ body {
 
   .prose a.github-repo-card {
     @apply block my-8 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 no-underline shadow-sm;
+
     @apply transition-colors transition-shadow hover:border-orange-500/70 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-orange-400/70;
+
     color: inherit;
   }
 

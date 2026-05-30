@@ -14,7 +14,7 @@ pi 又叫 pi coding agent，如果你没有听说过它，那你一定听说过 
 
 所以我们先来了解一下，pi 的能力边界是什么。
 
-一切都围绕着极简二字，0 配置的 pi agent 只支持 4 种工具：bash、read、write 和 edit，没有 mcp 、没有 sub-agents、没有 plan mode 、没有 permision popups。一切都没有，都需要自己配置。看到这，如果你想要一个开箱即用的 coding agent ，那么可以转向 Codex 和 Claude Code。
+一切都围绕着极简二字，0 配置的 pi agent 只支持 4 种工具：bash、read、write 和 edit，没有 mcp 、没有 sub-agents、没有 plan mode 、没有 permission popups。一切都没有，都需要自己配置。看到这，如果你想要一个开箱即用的 coding agent ，那么可以转向 Codex 和 Claude Code。
 
 ![Pi Agent 极简内核设计原则截图](../images/pi-agent-config-guide-minimal-core.png)
 
@@ -31,13 +31,13 @@ pi 又叫 pi coding agent，如果你没有听说过它，那你一定听说过 
 3. 用户交互/界面渲染：Pi 也允许用户自定义交互逻辑和渲染逻辑，比如写一个提问 QA 的问答框、自定义 Editor 样式或者写一个等待模型输出时的小游戏（例如：贪吃蛇、飞机大战等）
 4. 会话持久化：通过 `pi.appendEntry()` 存储重启后仍保留的状态。可以用来做一个类似 todo 的拓展。
 
-其实写到这，就非常像 neovim 插件了，熟悉的 `eport function`。还有对插件各生命周期的控制，太熟悉了。
+其实写到这，就非常像 neovim 插件了，熟悉的 `export function`。还有对插件各生命周期的控制，太熟悉了。
 
 **如何写一个 Pi 拓展？**
 
 在 AI 时代，我们不必再像 neovim 时期，自己动手写 lua 代码，最简单的方式或许就是和 Pi 说清楚你的需求，让它自己去写一个，并且通过热加载马上生效。所以你可以对 Pi 说：
 
-> 我想写一个叫做 permision-gate 的 Pi Extension，作用是 Prompts for confirmation before dangerous bash commands (rm -rf, sudo, etc.)
+> 我想写一个叫做 permission-gate 的 Pi Extension，作用是 Prompts for confirmation before dangerous bash commands (rm -rf, sudo, etc.)
 
 再比如，我想通过插件形式，完全实现像 Claude Code 格式的 hooks 功能，你可以对 Pi 说：
 
@@ -45,7 +45,7 @@ pi 又叫 pi coding agent，如果你没有听说过它，那你一定听说过 
 
 ## 什么是 Prompt Templates ？
 
-其实这个更像 Claude Code 的自定义斜杠命令，而上面拓展中的自定义命令更加的强大，可以调用 Pi 内部提供的 API。
+其实这个更像 Claude Code 的自定义斜杠命令，而上面拓展中的自定义命令更加强大，可以调用 Pi 内部提供的 API。
 
 格式：一个带 front-matter 的 markdown 文件
 
