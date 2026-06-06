@@ -73,22 +73,8 @@ const photography = defineCollection({
     }),
 });
 
-const wiki = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/wiki' }),
-  schema: z.object({
-    title: z.string(),
-    created: z.string(),
-    updated: z.string(),
-    type: z.enum(['entity', 'concept', 'comparison', 'query']),
-    tags: z.array(z.string()).optional(),
-    confidence: z.enum(['high', 'medium', 'low']).optional(),
-    contested: z.boolean().optional(),
-  }),
-});
-
 export const collections = {
   blog,
   projects,
   photography,
-  wiki,
 };

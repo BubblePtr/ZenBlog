@@ -6,8 +6,6 @@ export const en = {
   'nav.projects': 'PROJECTS',
   'nav.about': 'ABOUT ME',
 
-  'nav.wiki': 'WIKI',
-
   // Home
   'home.title': 'Kieran Zhang',
   'home.description': 'Welcome to my digital garden!',
