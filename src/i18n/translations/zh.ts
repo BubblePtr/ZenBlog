@@ -90,27 +90,16 @@ export const zh = {
   // 关于页
   'about.title': '关于我',
   'about.name': 'Kieran Zhang',
-  'about.location': 'Shanghai, China',
-  'about.identity.role': '软件工程师 · 独立开发者',
+  'about.location': '江苏南京',
+  'about.identity.role': 'AI Native 独立开发者',
   'about.identity.statement':
-    '金融跨界的软件工程师。\n在华为做过编译器和 AI 诊断工具，现在独立做 Agent，目标是放大人，而不是替代人。\n信奉实用，但对手感和细节有近乎偏执的追求。\n这里存着我学到的东西，让几年后的自己有路可回。',
+    '2022 年进华为之前，我在一家小公司起步。之后这几年一直围着 IDE 和开发工具做事——国产编程语言的语言服务、鸿蒙的 IDE 集成与性能调优，也把 AI 能力带进移动端的开发、测试、运维与问题排查。这些年最深的体会就一句：软件工程里，一切都是 trade-off。\n\n2026 年我离开华为，开始独立做产品。不是因为对大厂失望，而是觉得在 AI 这个时代，一个人能做成的事，比以前多太多了。\n\n工作之外，我喜欢用分析哲学的方式把问题拆开，但越往后越认同儒家的务实与入世。写作是我把这些想清楚的方式，于是有了这个站。',
   'about.identity.contact.email': 'Email',
   'about.identity.contact.github': 'GitHub',
   'about.identity.contact.rss': 'RSS',
-  'about.timeline.title': '时间线',
-  'about.timeline.expand': '展开',
-  'about.timeline.collapse': '收起',
-  'about.timeline.badge.role': '职业',
-  'about.timeline.badge.education': '就读',
-  'about.timeline.badge.making': '创作',
-  'about.timeline.badge.life': '转折',
-  'about.timeline.decade.2010s': '2010s',
-  'about.timeline.decade.2020s': '2020s',
   'about.reading.title': '最近在读',
-  'about.working.title': '在用的',
   'about.around.title': '生活',
-  'about.around.body':
-    '在上海，住徐汇一带。下班后常常沿着武康路或者衡复风貌区走一段，周末多半在咖啡馆里，或者带相机去拍那些还没消失的弄堂。',
+  'about.around.body': '工作之外，常背一台尼康 Z5 II 到处拍；偶尔打打德州。',
 
   // 项目页
   'projects.title': '项目',

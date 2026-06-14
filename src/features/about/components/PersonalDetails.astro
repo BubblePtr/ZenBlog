@@ -16,11 +16,8 @@ const isZh = lang === 'zh';
 const sectionHeadingClass = `tabular-nums text-xs text-[var(--color-text-secondary)] ${
   isZh ? 'tracking-[0.1em]' : 'uppercase tracking-[0.22em]'
 }`;
-const dtLabelClass = `min-w-[5rem] text-[10px] text-[var(--color-text-secondary)]/70 ${
-  isZh ? 'tracking-[0.08em]' : 'uppercase tracking-[0.2em]'
-}`;
 
-const { reading, working } = getAboutContent(lang);
+const { reading } = getAboutContent(lang);
 ---
 
 <section
@@ -64,26 +61,6 @@ const { reading, working } = getAboutContent(lang);
           ))
         }
       </ul>
-    </div>
-
-    <div class="mt-[clamp(2.75rem,5vw,4rem)]">
-      <header class="flex items-baseline gap-5">
-        <h2 class={sectionHeadingClass}>
-          {t['about.working.title']}
-        </h2>
-      </header>
-      <dl class="mt-5 flex max-w-[58ch] flex-col gap-y-2.5">
-        {
-          working.map((group) => (
-            <div class="flex flex-wrap items-baseline gap-x-4 gap-y-0.5 text-[0.9375rem]">
-              <dt class={dtLabelClass}>{group.label}</dt>
-              <dd class="font-light leading-[1.65] text-[var(--color-text-primary)]">
-                {group.description}
-              </dd>
-            </div>
-          ))
-        }
-      </dl>
     </div>
 
     <div class="mt-[clamp(3rem,6vw,5rem)]">

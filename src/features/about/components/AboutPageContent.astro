@@ -2,9 +2,7 @@
 import type { TranslationDictionary } from '@/shared/i18n/types';
 import type { Language } from '@/i18n/config';
 import IdentityBand from '@/features/about/components/IdentityBand.astro';
-import LifeTimeline from '@/features/about/components/LifeTimeline.client';
 import PersonalDetails from '@/features/about/components/PersonalDetails.astro';
-import { getAboutContent } from '@/features/about/content';
 
 interface Props {
   t: TranslationDictionary;
@@ -12,13 +10,10 @@ interface Props {
 }
 
 const { t, lang } = Astro.props;
-const { timeline } = getAboutContent(lang);
 ---
 
 <div class="max-w-[60rem] mx-auto px-6 sm:px-8 relative z-10">
   <IdentityBand t={t} lang={lang} />
-
-  <LifeTimeline client:visible t={t} lang={lang} entries={timeline} />
 
   <PersonalDetails t={t} lang={lang} />
 </div>
