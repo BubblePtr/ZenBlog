@@ -47,8 +47,8 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
       </div>
 
       {/* Content area: rail divider and photo preview grid */}
-      <div className="-mx-6 rail-line-t px-6 pt-8 sm:pt-10">
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+      <div className="mx-[var(--page-bleed)] rail-line-t px-[var(--rail-line-pad)] pt-8 sm:pt-10">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3">
           {photos.slice(0, 6).map((photo) => (
             <a
               key={photo.slug}

@@ -49,8 +49,26 @@
 
     /* 内容导轨颜色 */
     --rail-color: rgba(0, 0, 0, 0.14);
-    --rail-left-position: max(1.5rem, calc(50vw - 42rem));
-    --rail-right-position: min(calc(100vw - 1.5rem), calc(50vw + 42rem));
+
+    /* Rails track the 84rem content column edge (50vw ± 42rem) on wide screens,
+       so they keep the original generous margin from the viewport edge. On
+       narrow screens that term goes negative and the rails clamp to --rail-edge
+       near the edge, while content keeps a larger fluid padding (--page-gutter)
+       so the rail↔text gap grows instead of collapsing. --page-bleed lets
+       full-width rules cancel that padding to meet the rails at the column edge. */
+    /* Fixed page frame: the rails sit at a constant inset from the viewport
+       edge (--rail-edge) on every non-mobile width — they never move as the
+       viewport narrows. Content runs full width with --page-gutter padding
+       (rail inset + a --rail-gap breathing space), so text stays --rail-gap
+       clear of the rails. --page-bleed lets full-width rules cancel the gap to
+       meet the rails; --rail-line-pad re-pads content inside those bled rules. */
+    --rail-edge: 64px;
+    --rail-gap: 3rem;
+    --page-gutter: calc(var(--rail-edge) + var(--rail-gap));
+    --rail-left-position: var(--rail-edge);
+    --rail-right-position: calc(100vw - var(--rail-edge));
+    --page-bleed: calc(-1 * var(--rail-gap));
+    --rail-line-pad: var(--rail-gap);
   }
 
   .dark {
@@ -111,8 +129,10 @@
   }
 
   @media (max-width: 767px) {
-    body::before {
-      display: none;
+    /* Mobile: rails stay visible at a tighter 24px inset with a small gap. */
+    :root {
+      --rail-edge: 24px;
+      --rail-gap: 1rem;
     }
   }
 

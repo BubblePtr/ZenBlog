@@ -15,7 +15,7 @@ const groups = await getPhotographyDateGroups(lang);
   title={`${t['nav.photography']} | ${SITE_TITLE}`}
   description={t['photography.description']}
   currentPath="/photography"
-  mainClass="max-w-[84rem] mx-auto px-6 py-12 sm:py-20 relative z-10"
+  mainClass="px-[var(--page-gutter)] py-12 sm:py-20 relative z-10"
 >
   <PhotographyGallery client:load groups={groups} t={t} />
 </PageShell>

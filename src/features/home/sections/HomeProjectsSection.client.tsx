@@ -69,9 +69,9 @@ export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsS
         </p>
       </div>
 
-      <div className="-mx-6 grid rail-line-x lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-0">
+      <div className="mx-[var(--page-bleed)] grid rail-line-x lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-0">
         <aside className="hidden lg:block">
-          <div className="sticky top-24 px-6 py-6 pr-6">
+          <div className="sticky top-24 py-6 pr-6 pl-[var(--rail-gap)]">
             <div className="space-y-2">
               {projects.map((project) => {
                 const isActive = project.slug === activeSlug;
@@ -81,7 +81,7 @@ export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsS
                   <a
                     key={project.slug}
                     href={`#project-${project.slug}`}
-                    className={`flex items-center gap-3 border-l pl-4 no-underline focus-ring ${
+                    className={`group flex items-center gap-3 border-l pl-4 no-underline focus-ring ${
                       isActive
                         ? 'border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100'
                         : 'border-zinc-200 text-zinc-400 dark:border-zinc-800 dark:text-zinc-500'
@@ -96,7 +96,9 @@ export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsS
                     >
                       {projectMark}
                     </span>
-                    <h3 className="text-sm tracking-tight">{project.data.title}</h3>
+                    <span className="flex h-11 items-center">
+                      <h3 className="text-sm tracking-tight">{project.data.title}</h3>
+                    </span>
                   </a>
                 );
               })}

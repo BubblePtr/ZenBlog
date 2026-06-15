@@ -15,7 +15,7 @@ const posts = await getBlogListByLang(lang);
   title={`${t['nav.blog']} | ${SITE_TITLE}`}
   description={t['blog.description']}
   currentPath="/blog"
-  mainClass="max-w-[84rem] mx-auto px-6 py-12 sm:py-20 relative z-10"
+  mainClass="px-[var(--page-gutter)] py-12 sm:py-20 relative z-10"
 >
   <BlogListSection client:load posts={posts} lang={lang} t={t} />
 </PageShell>

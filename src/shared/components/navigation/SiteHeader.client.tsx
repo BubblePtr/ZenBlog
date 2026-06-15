@@ -54,7 +54,7 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
     <header className="relative z-40 w-full transition-all duration-300">
       <div className="absolute inset-0 bg-[oklch(98%_0.006_60)]/80 dark:bg-zinc-950/80 backdrop-blur-md" />
 
-      <div className="relative max-w-[84rem] mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="relative px-[var(--page-gutter)] h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <nav className="hidden sm:flex items-center gap-6 text-sm font-normal text-zinc-500 dark:text-zinc-400">
             <a

@@ -15,8 +15,6 @@ export interface BlogListItem {
     heroImage?: ImageMetadata | '';
     author?: BlogAuthor;
     authorName: string;
-    series?: string;
-    seriesNo?: number;
     tags?: string[];
     showOnHome?: boolean;
   };
