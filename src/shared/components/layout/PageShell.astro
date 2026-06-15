@@ -42,16 +42,16 @@ const normalizedCurrentPath = withTrailingSlash(currentPath);
   </head>
   <body class={bodyClass}>
     <SiteHeader client:load currentPath={normalizedCurrentPath} lang={lang} t={t} localizedPaths={localizedPaths} />
-    <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
-      <div class="-mx-6 section-rule"></div>
+    <div class="px-[var(--page-gutter)]" aria-hidden="true">
+      <div class="mx-[var(--page-bleed)] section-rule"></div>
     </div>
     <main class={mainClass}>
       <slot />
     </main>
     {showFooter && (
       <>
-        <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
-          <div class="-mx-6 section-rule"></div>
+        <div class="px-[var(--page-gutter)]" aria-hidden="true">
+          <div class="mx-[var(--page-bleed)] section-rule"></div>
         </div>
         <SiteFooter client:visible lang={lang} t={t} />
       </>

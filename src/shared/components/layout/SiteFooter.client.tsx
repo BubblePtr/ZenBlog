@@ -47,7 +47,7 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
 
   return (
     <footer className="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950">
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <div className="px-[var(--page-gutter)] py-16">
         <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left justify-between gap-12">
           {/* 左侧：品牌区 + 版权信息 */}
           <div className="flex flex-col items-center gap-4 md:items-start">

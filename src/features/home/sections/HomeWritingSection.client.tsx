@@ -112,7 +112,7 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
       </div>
 
       {/* 内容区：双列卡片网格 */}
-      <div className="-mx-6 rail-line-t px-6">
+      <div className="mx-[var(--page-bleed)] rail-line-t px-[var(--rail-line-pad)]">
         <div className="grid grid-cols-1 gap-x-6 gap-y-8 pt-8 sm:grid-cols-2 sm:gap-y-10">
           {assignIllustrations(posts).map((imageSrc, index) => {
             const post = posts[index];
