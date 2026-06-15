@@ -16,6 +16,7 @@ export interface BlogListItem {
     author?: BlogAuthor;
     authorName: string;
     series?: string;
+    seriesNo?: number;
     tags?: string[];
     showOnHome?: boolean;
   };

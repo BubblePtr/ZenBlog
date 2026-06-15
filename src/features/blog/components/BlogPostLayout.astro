@@ -9,6 +9,7 @@ import SiteHeader from '@/shared/components/navigation/SiteHeader.client';
 import SiteFooter from '@/shared/components/layout/SiteFooter.client';
 import ScrollProgress from '@/features/blog/components/ScrollProgress.client';
 import GiscusComments from '@/features/blog/components/GiscusComments.client';
+import SeriesBadge from '@/features/blog/components/SeriesBadge';
 import { resolveBlogAuthor } from '@/features/blog/authors';
 import { RiCalendarLine, RiTimeLine } from '@remixicon/react';
 import { withTrailingSlash } from '@/shared/urls';
@@ -18,6 +19,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
   slug?: string;
   ogSlug?: string;
   readTimeMinutes?: number;
+  seriesNo?: number;
   localizedPaths?: Partial<Record<Language, string>>;
 };
 
@@ -27,6 +29,8 @@ const {
   pubDate,
   heroImage,
   author,
+  series,
+  seriesNo,
   slug,
   ogSlug,
   readTimeMinutes,
@@ -75,9 +79,17 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
     <main class="max-w-7xl mx-auto px-6 py-12 sm:py-20 relative z-10">
       <article>
         <header class="mx-auto w-full max-w-3xl mb-12">
-          <p class="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 mb-6">
-            {sectionLabel}
-          </p>
+          {
+            series ? (
+              <div class="mb-6">
+                <SeriesBadge series={series} no={seriesNo} lang={lang} variant="seal" />
+              </div>
+            ) : (
+              <p class="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 mb-6">
+                {sectionLabel}
+              </p>
+            )
+          }
           <div class="flex items-center gap-4 text-xs font-mono text-zinc-400 mb-6 uppercase tracking-wider">
             <span class="flex items-center gap-1">
               <RiTimeLine size={12} /> {readTimeLabel}
