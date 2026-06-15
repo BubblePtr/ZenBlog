@@ -17,9 +17,7 @@ const blog = defineCollection({
           avatar: z.string().optional(),
         })
         .optional(),
-      source: z.enum(['human', 'openclaw']).default('human'),
       series: z.string().optional(),
-      externalId: z.string().optional(),
       tags: z.array(z.string()).optional(),
       showOnHome: z.boolean().optional(),
       lang: z.enum(['en', 'zh']).default('zh'), // 语言标识，默认中文

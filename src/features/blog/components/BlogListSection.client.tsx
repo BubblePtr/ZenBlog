@@ -1,15 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { RiArrowDownSLine, RiCheckLine } from '@remixicon/react';
-import BubbleDiarySpotlight from '@/features/blog/components/BubbleDiarySpotlight.client';
-import type { BlogListItem, BubbleDiarySummary } from '@/types/content';
+import type { BlogListItem } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
 import { withTrailingSlash } from '@/shared/urls';
 
 interface BlogListSectionProps {
   posts: BlogListItem[];
-  bubbleDiary: BubbleDiarySummary | null;
   lang: Language;
   t: TranslationDictionary;
 }
@@ -28,7 +26,7 @@ interface FilterOption {
   label: string;
 }
 
-export default function BlogListSection({ posts, bubbleDiary, lang, t }: BlogListSectionProps) {
+export default function BlogListSection({ posts, lang, t }: BlogListSectionProps) {
   const translate = (key: TranslationKey) => t[key] || key;
   const [selectedYear, setSelectedYear] = useState('all');
   const [selectedAuthor, setSelectedAuthor] = useState('all');
@@ -93,8 +91,6 @@ export default function BlogListSection({ posts, bubbleDiary, lang, t }: BlogLis
           {translate('blog.description')}
         </p>
       </div>
-
-      <BubbleDiarySpotlight bubbleDiary={bubbleDiary} lang={lang} t={t} variant="blog" />
 
       <section className="mt-16">
         <div className="grid gap-4 sm:grid-cols-2">

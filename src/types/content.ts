@@ -15,27 +15,9 @@ export interface BlogListItem {
     heroImage?: ImageMetadata | '';
     author?: BlogAuthor;
     authorName: string;
-    source: 'human' | 'openclaw';
     series?: string;
     tags?: string[];
     showOnHome?: boolean;
-  };
-}
-
-export interface BubbleDiarySummary {
-  totalEntries: number;
-  recentEntries: Array<{
-    title: string;
-    pubDate: Date;
-    lang: 'en' | 'zh';
-    url: string;
-  }>;
-  latestEntry: {
-    title: string;
-    description: string;
-    pubDate: Date;
-    lang: 'en' | 'zh';
-    url: string;
   };
 }
 
