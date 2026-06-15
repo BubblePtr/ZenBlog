@@ -27,17 +27,7 @@ bun run fmt:check              # 检查格式是否符合规范
 bun run photos:sync-exif       # 从本地图片读取 EXIF 写入 frontmatter
 bun run r2:images:upload       # 扫描 content 中外部图片上传到 R2
 bun run r2:images:replace      # 批量替换 content 中的图片宿主域名
-bun run bubble:sync            # 同步 OpenClaw/Bubble 日记到博客（需要环境变量，见下方说明）
 ```
-
-### Bubble 内容同步
-
-`bubble:sync` 脚本将外部 AI 助手（Bubble）的日记条目同步到 `src/content/blog/zh/openclaw/`，生成 frontmatter 中 `source: "openclaw"` 的 MDX 文章。
-
-所需环境变量：
-- `BUBBLE_BUILD_DIR` — Bubble 构建产物目录路径（默认 `.tmp/bubble-build`）
-- `BUBBLE_ENTRY_PATH` — 可选，指定单个 entry JSON 文件路径
-- `BUBBLE_OVERWRITE=true` — 覆盖已同步的条目
 
 ## 核心架构
 
