@@ -8,6 +8,7 @@ import {
   getBlogLocalizedPaths,
   getBlogStaticPathsByLang,
   getReadTime,
+  getSeriesPosition,
 } from '@/features/blog/server';
 
 const lang = 'en' as const;
@@ -24,6 +25,7 @@ const currentSlug = extractBlogSlug(post.id, lang);
 const ogSlug = post.id.replace(/\.[^/.]+$/, '');
 const readTimeMinutes = getReadTime(post.body ?? '', lang);
 const localizedPaths = await getBlogLocalizedPaths(post);
+const seriesPosition = await getSeriesPosition(post);
 ---
 
 <BlogPostLayout
@@ -31,6 +33,7 @@ const localizedPaths = await getBlogLocalizedPaths(post);
   slug={currentSlug}
   ogSlug={ogSlug}
   readTimeMinutes={readTimeMinutes}
+  seriesNo={seriesPosition?.no}
   localizedPaths={localizedPaths}
 >
   <Content components={mdxComponents} />

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { RiArrowDownSLine, RiCheckLine } from '@remixicon/react';
+import SeriesBadge from '@/features/blog/components/SeriesBadge';
 import type { BlogListItem } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
@@ -19,6 +20,8 @@ interface BlogGridRow {
   publishedAt: Date;
   publishedLabel: string;
   year: string;
+  series?: string;
+  seriesNo?: number;
 }
 
 interface FilterOption {
@@ -42,6 +45,8 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
         publishedAt,
         publishedLabel: formatGridDate(publishedAt, lang),
         year: String(publishedAt.getFullYear()),
+        series: post.data.series,
+        seriesNo: post.data.seriesNo,
       };
     });
   }, [posts, lang]);
@@ -152,6 +157,16 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
                     <h2 className="mt-3 text-[1.05rem] font-normal tracking-tight text-zinc-900 transition-colors group-hover:text-zinc-600 dark:text-zinc-100 dark:group-hover:text-zinc-300">
                       {row.title}
                     </h2>
+                    {row.series && (
+                      <div className="mt-2">
+                        <SeriesBadge
+                          series={row.series}
+                          no={row.seriesNo}
+                          lang={lang}
+                          variant="compact"
+                        />
+                      </div>
+                    )}
                   </div>
 
                   <div className="hidden grid-cols-[170px_minmax(0,1fr)_180px] items-center gap-6 md:grid">
@@ -159,9 +174,21 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
                       {row.publishedLabel}
                     </div>
 
-                    <h2 className="min-w-0 text-[1.05rem] font-normal tracking-tight text-zinc-900 transition-colors group-hover:text-zinc-600 dark:text-zinc-100 dark:group-hover:text-zinc-300">
-                      {row.title}
-                    </h2>
+                    <div className="min-w-0">
+                      <h2 className="text-[1.05rem] font-normal tracking-tight text-zinc-900 transition-colors group-hover:text-zinc-600 dark:text-zinc-100 dark:group-hover:text-zinc-300">
+                        {row.title}
+                      </h2>
+                      {row.series && (
+                        <div className="mt-2">
+                          <SeriesBadge
+                            series={row.series}
+                            no={row.seriesNo}
+                            lang={lang}
+                            variant="compact"
+                          />
+                        </div>
+                      )}
+                    </div>
 
                     <div className="text-right text-[0.95rem] text-zinc-500 dark:text-zinc-400">
                       {row.authorName}
