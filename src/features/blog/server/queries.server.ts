@@ -1,6 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { resolveBlogAuthor } from '@/features/blog/authors';
-import { buildSeriesIndexMap, type SeriesPosition } from '@/features/blog/series';
 import type { Language } from '@/i18n/config';
 import { withTrailingSlash } from '@/shared/urls';
 import type { BlogListItem } from '@/types/content';
@@ -57,11 +56,7 @@ export async function getBlogLocalizedPaths(
   return localizedPaths;
 }
 
-export function mapBlogListItem(
-  post: BlogEntry,
-  lang: Language,
-  seriesPosition?: SeriesPosition,
-): BlogListItem {
+export function mapBlogListItem(post: BlogEntry, lang: Language): BlogListItem {
   const resolvedAuthor = resolveBlogAuthor(post.data.author, lang);
 
   return {
@@ -73,8 +68,6 @@ export function mapBlogListItem(
       heroImage: post.data.heroImage,
       author: post.data.author,
       authorName: resolvedAuthor.name,
-      series: post.data.series,
-      seriesNo: seriesPosition?.no,
       tags: post.data.tags,
       showOnHome: post.data.showOnHome === true,
     },
@@ -89,15 +82,7 @@ export async function getBlogListByLang(
     .filter((post) => post.id.startsWith(`${lang}/`))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-  const seriesIndex = buildSeriesIndexMap(
-    entries.map((post) => ({
-      id: post.id,
-      series: post.data.series,
-      pubDate: post.data.pubDate,
-    })),
-  );
-
-  const allPosts = entries.map((post) => mapBlogListItem(post, lang, seriesIndex.get(post.id)));
+  const allPosts = entries.map((post) => mapBlogListItem(post, lang));
 
   const filtered = options.homeOnly
     ? allPosts.filter((post) => post.data.showOnHome === true)
@@ -117,27 +102,6 @@ export async function getBlogStaticPathsByLang(lang: Language) {
     params: { slug: extractBlogSlug(post.id, lang) },
     props: post,
   }));
-}
-
-export async function getSeriesPosition(post: BlogEntry): Promise<SeriesPosition | null> {
-  if (!post.data.series) {
-    return null;
-  }
-
-  const lang = getEntryLang(post);
-  const siblings = (await getCollection('blog')).filter(
-    (entry) => entry.id.startsWith(`${lang}/`) && entry.data.series === post.data.series,
-  );
-
-  const seriesIndex = buildSeriesIndexMap(
-    siblings.map((entry) => ({
-      id: entry.id,
-      series: entry.data.series,
-      pubDate: entry.data.pubDate,
-    })),
-  );
-
-  return seriesIndex.get(post.id) ?? null;
 }
 
 export function getReadTime(content: string, lang: Language): number {

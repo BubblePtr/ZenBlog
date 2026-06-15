@@ -9,7 +9,7 @@ import SiteHeader from '@/shared/components/navigation/SiteHeader.client';
 import SiteFooter from '@/shared/components/layout/SiteFooter.client';
 import ScrollProgress from '@/features/blog/components/ScrollProgress.client';
 import GiscusComments from '@/features/blog/components/GiscusComments.client';
-import SeriesBadge from '@/features/blog/components/SeriesBadge';
+import BlogColophon from '@/features/blog/components/BlogColophon.astro';
 import { resolveBlogAuthor } from '@/features/blog/authors';
 import { RiCalendarLine, RiTimeLine } from '@remixicon/react';
 import { withTrailingSlash } from '@/shared/urls';
@@ -19,7 +19,6 @@ type Props = CollectionEntry<'blog'>['data'] & {
   slug?: string;
   ogSlug?: string;
   readTimeMinutes?: number;
-  seriesNo?: number;
   localizedPaths?: Partial<Record<Language, string>>;
 };
 
@@ -29,8 +28,6 @@ const {
   pubDate,
   heroImage,
   author,
-  series,
-  seriesNo,
   slug,
   ogSlug,
   readTimeMinutes,
@@ -72,24 +69,16 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
     <ScrollProgress client:load />
 
     <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} localizedPaths={localizedPaths} />
-    <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
-      <div class="-mx-6 section-rule"></div>
+    <div class="px-[var(--page-gutter)]" aria-hidden="true">
+      <div class="mx-[var(--page-bleed)] section-rule"></div>
     </div>
 
-    <main class="max-w-7xl mx-auto px-6 py-12 sm:py-20 relative z-10">
+    <main class="px-[var(--page-gutter)] py-12 sm:py-20 relative z-10">
       <article>
         <header class="mx-auto w-full max-w-3xl mb-12">
-          {
-            series ? (
-              <div class="mb-6">
-                <SeriesBadge series={series} no={seriesNo} lang={lang} variant="seal" />
-              </div>
-            ) : (
-              <p class="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 mb-6">
-                {sectionLabel}
-              </p>
-            )
-          }
+          <p class="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 mb-6">
+            {sectionLabel}
+          </p>
           <div class="flex items-center gap-4 text-xs font-mono text-zinc-400 mb-6 uppercase tracking-wider">
             <span class="flex items-center gap-1">
               <RiTimeLine size={12} /> {readTimeLabel}
@@ -125,17 +114,20 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
             {description}
           </p>
 
-          <div class="inline-flex items-center gap-3">
-            <img
-              src={resolvedAuthor.avatar}
-              alt={resolvedAuthor.name}
-              class="h-8 w-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-700"
-              loading="lazy"
-            />
-            <div>
-              <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 leading-none mb-0.5">{resolvedAuthor.name}</p>
-              <p class="text-xs text-zinc-500 dark:text-zinc-400">{resolvedAuthor.title}</p>
+          <div class="flex w-full items-center justify-between gap-4">
+            <div class="inline-flex items-center gap-3">
+              <img
+                src={resolvedAuthor.avatar}
+                alt={resolvedAuthor.name}
+                class="h-8 w-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-700"
+                loading="lazy"
+              />
+              <div>
+                <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 leading-none mb-0.5">{resolvedAuthor.name}</p>
+                <p class="text-xs text-zinc-500 dark:text-zinc-400">{resolvedAuthor.title}</p>
+              </div>
             </div>
+            <BlogColophon lang={lang} width={132} class="shrink-0 justify-end" />
           </div>
 
           <div aria-hidden="true" class="-mx-[calc(50vw-50%)] section-rule mt-6" />
@@ -158,8 +150,8 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
       </section>
     </main>
 
-    <div class="max-w-[84rem] mx-auto px-6" aria-hidden="true">
-      <div class="-mx-6 section-rule"></div>
+    <div class="px-[var(--page-gutter)]" aria-hidden="true">
+      <div class="mx-[var(--page-bleed)] section-rule"></div>
     </div>
     <SiteFooter client:visible lang={lang} t={t} />
   </body>

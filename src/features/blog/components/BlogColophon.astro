@@ -1,0 +1,31 @@
+---
+import { Image } from 'astro:assets';
+import type { Language } from '@/i18n/config';
+import seal from '@/assets/badges/journal-banner-landscape.png';
+
+interface Props {
+  lang: Language;
+  width?: number;
+  class?: string;
+}
+
+const { lang, width = 240, class: className } = Astro.props;
+
+// The column's bound-volume stamp ("独立开发周记 / INDIE DEV WEEKLY"), placed
+// beside the byline so the reader meets author and imprint together. A brand
+// mark, kept untranslated; the Latin subtitle carries it for English readers.
+const alt = lang === 'zh' ? '独立开发周记' : 'Indie Dev Weekly';
+---
+
+<div class:list={['flex', className]}>
+  <Image
+    src={seal}
+    alt={alt}
+    widths={[150, 240, 320, 440]}
+    sizes={`${width}px`}
+    format="webp"
+    loading="lazy"
+    style={`max-width:${width}px`}
+    class="h-auto w-full select-none opacity-90 [filter:drop-shadow(0_3px_10px_rgba(20,30,55,0.1))] dark:opacity-100 dark:[filter:drop-shadow(0_0_1px_rgba(212,175,110,0.3))_drop-shadow(0_5px_14px_rgba(0,0,0,0.5))]"
+  />
+</div>
