@@ -22,6 +22,19 @@
 /og/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
+# 爬虫文件：明确 text/plain，避免审计工具误判 MIME
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+/sitemap-index.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=86400
+
 # HTML 页面：不缓存，确保始终获取最新内容
 /*
   Cache-Control: public, max-age=0, must-revalidate

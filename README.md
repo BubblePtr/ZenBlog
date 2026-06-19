@@ -27,8 +27,19 @@
 3. 输出目录设置为 `dist`。
 4. 在 Pages 中确保启用 Bun（默认会根据 `bun.lock` 自动识别）。
 5. 首次部署后，先在 `*.pages.dev` 地址验证页面可用。
-6. 绑定自定义域名（如 `kieranzhang.dev` 与 `www.kieranzhang.dev`），并配置一个方向的 301 重定向避免重复收录。
-7. 在 Cloudflare 打开 `Always Use HTTPS` 与 `Auto Minify (HTML/CSS/JS)`。
+6. 绑定 apex 域名（如 `kieranzhang.dev`）到 Pages 项目。
+7. 为 `www` 子域名配置 **Redirect Rule**（Pages `_redirects` 不支持跨域重定向，必须在 Cloudflare Rules 中设置）：
+   - 匹配：`https://www.kieranzhang.dev/*`（通配符模式）
+   - 目标：`https://kieranzhang.dev/${1}`
+   - 状态码：`301`
+   - 建议勾选「保留查询字符串」
+8. 在 Cloudflare 打开 `Always Use HTTPS` 与 `Auto Minify (HTML/CSS/JS)`。
+9. 部署后验证：
+   ```bash
+   curl -sI https://www.kieranzhang.dev/robots.txt
+   curl -sI https://kieranzhang.dev/robots.txt
+   ```
+   前者应 301 到 apex，后者返回 `200` 与 `Content-Type: text/plain`。
 
 ### 手动构建
 
