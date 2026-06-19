@@ -122,3 +122,17 @@ OG 图片使用静态资源（`/public/og/` 或同类静态路径），不再动
 - 外部图片域名需在 `astro.config.mjs` 的 `image.domains` 中注册
 - 评论系统使用 Giscus（`@giscus/react`），配置在 `src/features/blog/components/GiscusComments.client.tsx`
 - 动画使用 `framer-motion`，图标使用 `@remixicon/react`
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked as local markdown files under `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default mattpocock/skills triage vocabulary is used unchanged. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context repo: one `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.

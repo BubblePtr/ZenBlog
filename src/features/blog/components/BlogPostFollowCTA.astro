@@ -1,0 +1,61 @@
+---
+import type { Language } from '@/i18n/config';
+import type { TranslationDictionary } from '@/shared/i18n/types';
+import { getTranslationDictionary } from '@/shared/i18n/types';
+import { RiGithubFill, RiTwitterXFill, RiMailLine } from '@remixicon/react';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const t: TranslationDictionary = getTranslationDictionary(lang);
+
+const links = [
+  {
+    icon: RiGithubFill,
+    href: 'https://github.com/BubblePtr',
+    label: t['blog.post.followCta.github'],
+  },
+  {
+    icon: RiTwitterXFill,
+    href: 'https://twitter.com/ninthbit_ai',
+    label: t['blog.post.followCta.twitter'],
+  },
+  {
+    icon: RiMailLine,
+    href: 'mailto:oldmeatovo@gmail.com',
+    label: t['blog.post.followCta.email'],
+  },
+];
+---
+
+<aside
+  class="mx-auto w-full max-w-xl mt-16 pt-10 border-t border-zinc-200 dark:border-zinc-800"
+  aria-label={lang === 'zh' ? '关注作者' : 'Follow the author'}
+>
+  <h2
+    class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2"
+    style={lang === 'zh' ? 'font-family: var(--font-serif)' : 'font-family: var(--font-serif-en)'}
+  >
+    {t['blog.post.followCta.title']}
+  </h2>
+  <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-5 leading-relaxed">
+    {t['blog.post.followCta.body']}
+  </p>
+  <div class="flex flex-wrap gap-3">
+    {
+      links.map(({ icon: Icon, href, label }) => (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-3.5 py-1.5 text-sm font-medium rounded-full border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+        >
+          <Icon size={16} />
+          <span>{label}</span>
+        </a>
+      ))
+    }
+  </div>
+</aside>
