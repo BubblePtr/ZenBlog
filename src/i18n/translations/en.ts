@@ -85,6 +85,14 @@ export const en = {
   'projects.header.subtitle2': 'Building things is the best way to learn.',
   'projects.empty': 'No projects found. Start building!',
 
+  // Blog post
+  'blog.post.followCta.title': 'Enjoyed this?',
+  'blog.post.followCta.body':
+    'Follow along for more notes on software engineering, AI products, and indie building.',
+  'blog.post.followCta.github': 'GitHub',
+  'blog.post.followCta.twitter': 'Twitter / X',
+  'blog.post.followCta.email': 'Email',
+
   // Footer
   'footer.rights': 'All rights reserved',
   'footer.navigate': 'Site Links',

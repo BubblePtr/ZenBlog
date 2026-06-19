@@ -81,6 +81,14 @@ export const zh = {
   'projects.header.subtitle2': '构建是最好的学习方式。',
   'projects.empty': '未找到项目。开始构建吧！',
 
+  // 文章页
+  'blog.post.followCta.title': '喜欢这篇文章？',
+  'blog.post.followCta.body':
+    '在 GitHub、Twitter 或邮件关注我，获取更多关于软件工程、AI 与独立开发的思考。',
+  'blog.post.followCta.github': 'GitHub',
+  'blog.post.followCta.twitter': 'Twitter / X',
+  'blog.post.followCta.email': '邮件',
+
   // 页脚
   'footer.rights': '版权所有',
   'footer.navigate': '站内链接',
