@@ -4,6 +4,7 @@ import { RiArrowDownSLine, RiCheckLine, RiQuillPenLine } from '@remixicon/react'
 import type { BlogListItem } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
+import { isIndieDevWeeklyPost } from '@/features/blog/series';
 import { withTrailingSlash } from '@/shared/urls';
 
 interface BlogListSectionProps {
@@ -19,6 +20,7 @@ interface BlogGridRow {
   publishedAt: Date;
   publishedLabel: string;
   year: string;
+  isIndieDevWeekly: boolean;
 }
 
 interface FilterOption {
@@ -42,6 +44,7 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
         publishedAt,
         publishedLabel: formatGridDate(publishedAt, lang),
         year: String(publishedAt.getFullYear()),
+        isIndieDevWeekly: isIndieDevWeeklyPost(post.data.tags),
       };
     });
   }, [posts, lang]);
@@ -150,10 +153,12 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
                     </div>
 
                     <h2 className="mt-3 text-[1.05rem] font-normal tracking-tight text-zinc-900 transition-colors group-hover:text-zinc-600 dark:text-zinc-100 dark:group-hover:text-zinc-300">
-                      <RiQuillPenLine
-                        aria-hidden="true"
-                        className="mr-2 inline-block h-[1em] w-[1em] -translate-y-px align-[-0.1em] text-zinc-400 dark:text-zinc-600"
-                      />
+                      {row.isIndieDevWeekly && (
+                        <RiQuillPenLine
+                          aria-hidden="true"
+                          className="mr-2 inline-block h-[1em] w-[1em] -translate-y-px align-[-0.1em] text-zinc-400 dark:text-zinc-600"
+                        />
+                      )}
                       {row.title}
                     </h2>
                   </div>
@@ -165,10 +170,12 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
 
                     <div className="min-w-0">
                       <h2 className="text-[1.05rem] font-normal tracking-tight text-zinc-900 transition-colors group-hover:text-zinc-600 dark:text-zinc-100 dark:group-hover:text-zinc-300">
-                        <RiQuillPenLine
-                          aria-hidden="true"
-                          className="mr-2 inline-block h-[1em] w-[1em] -translate-y-px align-[-0.1em] text-zinc-400 dark:text-zinc-600"
-                        />
+                        {row.isIndieDevWeekly && (
+                          <RiQuillPenLine
+                            aria-hidden="true"
+                            className="mr-2 inline-block h-[1em] w-[1em] -translate-y-px align-[-0.1em] text-zinc-400 dark:text-zinc-600"
+                          />
+                        )}
                         {row.title}
                       </h2>
                     </div>

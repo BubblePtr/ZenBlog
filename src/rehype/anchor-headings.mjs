@@ -104,6 +104,12 @@ const translatedHeadings = new Map(
     关于那场让人失望的活动: ['on', 'that', 'disappointing', 'event'],
     西溪的梅花救了这个周末: ['xixi', 'plum', 'blossoms', 'saved', 'the', 'weekend'],
     关于写作的边界: ['on', 'the', 'boundaries', 'of', 'writing'],
+    前言: ['preface'],
+    独立开发的新旅途: ['indie', 'dev', 'new', 'journey'],
+    路径依赖下的产品: ['path', 'dependent', 'product'],
+    更多的产品想法: ['more', 'product', 'ideas'],
+    agentteam架构的一些思考: ['agent', 'team', 'architecture', 'thoughts'],
+    杂记: ['misc', 'notes'],
   }),
 );
 

@@ -8,6 +8,7 @@ import path from 'path';
 import { stripLeadingHeadingOne } from './src/remark/strip-leading-heading-one.mjs';
 import { anchorHeadings } from './src/rehype/anchor-headings.mjs';
 import remarkMath from 'remark-math';
+import remarkCjkFriendly from 'remark-cjk-friendly/parseOnly';
 import rehypeKatex from 'rehype-katex';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -32,11 +33,12 @@ export default defineConfig({
     domains: ['gravatar.com', 'cdn.ninthbit.org', 'opengraph.githubassets.com'],
   },
   markdown: {
+    remarkPlugins: [remarkCjkFriendly],
     rehypePlugins: [[anchorHeadings, headingAnchorOptions]],
   },
   integrations: [
     mdx({
-      remarkPlugins: [stripLeadingHeadingOne, remarkMath],
+      remarkPlugins: [stripLeadingHeadingOne, remarkCjkFriendly, remarkMath],
       rehypePlugins: [rehypeKatex, [anchorHeadings, headingAnchorOptions]],
     }),
     sitemap(),
