@@ -12,6 +12,7 @@ import GiscusComments from '@/features/blog/components/GiscusComments.client';
 import BlogColophon from '@/features/blog/components/BlogColophon.astro';
 import BlogPostFollowCTA from '@/features/blog/components/BlogPostFollowCTA.astro';
 import { resolveBlogAuthor } from '@/features/blog/authors';
+import { isIndieDevWeeklyPost } from '@/features/blog/series';
 import { RiCalendarLine, RiTimeLine } from '@remixicon/react';
 import { withTrailingSlash } from '@/shared/urls';
 
@@ -29,11 +30,14 @@ const {
   pubDate,
   heroImage,
   author,
+  tags,
   slug,
   ogSlug,
   readTimeMinutes,
   localizedPaths,
 } = Astro.props;
+
+const showIndieDevWeeklyColophon = isIndieDevWeeklyPost(tags);
 
 const lang: Language = Astro.url.pathname.startsWith('/zh/') ? 'zh' : 'en';
 const t: TranslationDictionary = getTranslationDictionary(lang);
@@ -93,10 +97,14 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
                 </span>
               </div>
             </div>
-            <BlogColophon lang={lang} width={180} class="shrink-0 hidden sm:flex" />
+            {showIndieDevWeeklyColophon && (
+              <BlogColophon lang={lang} width={180} class="shrink-0 hidden sm:flex" />
+            )}
           </div>
 
-          <BlogColophon lang={lang} width={160} class="sm:hidden mb-6" />
+          {showIndieDevWeeklyColophon && (
+            <BlogColophon lang={lang} width={160} class="sm:hidden mb-6" />
+          )}
 
           <h1
             class="text-[2.2rem] sm:text-[2.9rem] font-semibold text-zinc-900 dark:text-zinc-100 leading-[1.2] mb-8"
