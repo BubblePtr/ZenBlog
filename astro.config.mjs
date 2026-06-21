@@ -44,9 +44,6 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
-    optimizeDeps: {
-      exclude: ['@resvg/resvg-wasm'],
-    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src')

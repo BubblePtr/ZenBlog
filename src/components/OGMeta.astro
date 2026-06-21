@@ -9,8 +9,7 @@
  *   title        — page title (string)
  *   description  — page description (string, optional)
  *   slug         — blog post slug (string | undefined)
- *                  If provided, uses the dynamic per-post OG image.
- *                  If omitted, falls back to the static brand image.
+ *                  Used to set og:type to "article" when present.
  *   type         — "website" | "article" (default: auto-detected from slug)
  */
 
@@ -29,9 +28,7 @@ const {
 } = Astro.props;
 
 const siteUrl = 'https://kieranzhang.dev';
-const ogImage = slug
-  ? `${siteUrl}/og/${slug}.png`
-  : `${siteUrl}/og/brand.png`;
+const ogImage = `${siteUrl}/og/brand.png`;
 
 const pageTitle = slug ? `${title} — Kieran Zhang` : title;
 const descriptionText = description.trim();
