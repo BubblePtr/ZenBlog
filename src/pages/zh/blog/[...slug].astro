@@ -7,6 +7,7 @@ import {
   extractBlogSlug,
   getBlogLocalizedPaths,
   getBlogStaticPathsByLang,
+  getBlogTocHeadings,
   getReadTime,
 } from '@/features/blog/server';
 
@@ -24,6 +25,7 @@ const currentSlug = extractBlogSlug(post.id, lang);
 const ogSlug = post.id.replace(/\.[^/.]+$/, '');
 const readTimeMinutes = getReadTime(post.body ?? '', lang);
 const localizedPaths = await getBlogLocalizedPaths(post);
+const tocHeadings = getBlogTocHeadings(post.body ?? '');
 ---
 
 <BlogPostLayout
@@ -32,6 +34,7 @@ const localizedPaths = await getBlogLocalizedPaths(post);
   ogSlug={ogSlug}
   readTimeMinutes={readTimeMinutes}
   localizedPaths={localizedPaths}
+  tocHeadings={tocHeadings}
 >
   <Content components={mdxComponents} />
 </BlogPostLayout>

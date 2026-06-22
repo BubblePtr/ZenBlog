@@ -7,7 +7,8 @@ import { Image } from 'astro:assets';
 import BaseHead from '@/components/BaseHead.astro';
 import SiteHeader from '@/shared/components/navigation/SiteHeader.client';
 import SiteFooter from '@/shared/components/layout/SiteFooter.client';
-import ScrollProgress from '@/features/blog/components/ScrollProgress.client';
+import ArticleToc from '@/features/blog/components/ArticleToc.astro';
+import type { TocHeading } from '@/features/blog/toc';
 import GiscusComments from '@/features/blog/components/GiscusComments.client';
 import BlogColophon from '@/features/blog/components/BlogColophon.astro';
 import BlogPostFollowCTA from '@/features/blog/components/BlogPostFollowCTA.astro';
@@ -22,6 +23,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
   ogSlug?: string;
   readTimeMinutes?: number;
   localizedPaths?: Partial<Record<Language, string>>;
+  tocHeadings?: TocHeading[];
 };
 
 const {
@@ -35,6 +37,7 @@ const {
   ogSlug,
   readTimeMinutes,
   localizedPaths,
+  tocHeadings = [],
 } = Astro.props;
 
 const showIndieDevWeeklyColophon = isIndieDevWeeklyPost(tags);
@@ -71,8 +74,6 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
   </head>
 
   <body class="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-500 antialiased font-sans">
-    <ScrollProgress client:load />
-
     <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} localizedPaths={localizedPaths} />
     <div class="px-[var(--page-gutter)]" aria-hidden="true">
       <div class="mx-[var(--page-bleed)] section-rule"></div>
@@ -148,8 +149,13 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
           <div aria-hidden="true" class="-mx-[calc(50vw-50%)] section-rule mt-6" />
         </section>
 
-        <div class="prose mx-auto max-w-xl">
-          <slot />
+        <div class="flex justify-center">
+          <div class="article-body-shell relative w-full max-w-xl">
+            <ArticleToc lang={lang} headings={tocHeadings} />
+            <div class="article-prose prose">
+              <slot />
+            </div>
+          </div>
         </div>
 
         <BlogPostFollowCTA lang={lang} />
