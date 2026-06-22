@@ -88,7 +88,7 @@ export const en = {
   // Blog post
   'blog.post.followCta.title': 'Enjoyed this?',
   'blog.post.followCta.body':
-    'Follow along for more notes on software engineering, AI products, and indie building.',
+    'Follow on GitHub or Twitter for more on software engineering, AI, and indie building.',
   'blog.post.followCta.github': 'GitHub',
   'blog.post.followCta.twitter': 'Twitter / X',
   'blog.post.followCta.email': 'Email',

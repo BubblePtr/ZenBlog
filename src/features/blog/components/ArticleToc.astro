@@ -1,0 +1,58 @@
+---
+import type { Language } from '@/i18n/config';
+import type { TocHeading } from '@/features/blog/toc';
+import { shouldShowToc } from '@/features/blog/toc';
+
+interface Props {
+  lang: Language;
+  headings: TocHeading[];
+}
+
+const { lang, headings } = Astro.props;
+
+if (!shouldShowToc(headings)) {
+  return null;
+}
+
+const title = lang === 'zh' ? '目录' : 'On this page';
+const firstSlug = headings[0]?.slug;
+---
+
+<aside class="article-toc-aside">
+  <nav data-article-toc aria-label={title} class="article-toc">
+    <div class="article-toc-rail relative">
+      <span aria-hidden="true" class="article-toc-rail-line"></span>
+      <span aria-hidden="true" class="article-toc-flow">
+        <span class="article-toc-flow-dot"></span>
+        <span class="article-toc-flow-tail"></span>
+      </span>
+      <ul class="article-toc-list">
+        {
+          headings.map((heading) => (
+            <li>
+              <a
+                href={`#${heading.slug}`}
+                data-toc-link={heading.slug}
+                class:list={[
+                  'article-toc-link block py-1.5 text-sm leading-snug',
+                  heading.depth === 3 && 'pl-3',
+                  heading.slug === firstSlug && 'is-active',
+                ]}
+                aria-current={heading.slug === firstSlug ? 'location' : undefined}
+              >
+                <span class="line-clamp-2">{heading.text}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </nav>
+</aside>
+
+<script>
+  import { initArticleTocScrollSpy } from '@/features/blog/article-toc.client';
+
+  initArticleTocScrollSpy();
+  document.addEventListener('astro:page-load', initArticleTocScrollSpy);
+</script>
