@@ -51,8 +51,12 @@ const firstSlug = headings[0]?.slug;
 </aside>
 
 <script>
-  import { initArticleTocScrollSpy } from '@/features/blog/article-toc.client';
+  import {
+    initArticleTocScrollSpy,
+    teardownArticleTocScrollSpy,
+  } from '@/features/blog/article-toc.client';
 
   initArticleTocScrollSpy();
   document.addEventListener('astro:page-load', initArticleTocScrollSpy);
+  document.addEventListener('astro:before-swap', teardownArticleTocScrollSpy);
 </script>

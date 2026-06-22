@@ -8,11 +8,33 @@ const TAIL_CHARGE = 0.75;
 const TAIL_DISCHARGE = 0.08;
 const TAIL_SCROLL_GAIN = 0.5;
 
+let activeTocCleanup: (() => void) | undefined;
+
+function getFirstTocHeadingElement(prose: HTMLElement): HTMLElement | null {
+  const firstTocLink = document.querySelector<HTMLAnchorElement>(
+    '[data-article-toc] [data-toc-link]',
+  );
+  const id = firstTocLink?.dataset.tocLink;
+
+  if (id) {
+    const heading = document.getElementById(id);
+    if (heading) {
+      return heading;
+    }
+  }
+
+  return prose.querySelector<HTMLElement>('h2[id], h3[id]');
+}
+
+function shouldHandleTocClick(event: MouseEvent): boolean {
+  return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+}
+
 function alignArticleTocAside(): void {
   const shell = document.querySelector<HTMLElement>('.article-body-shell');
   const prose = document.querySelector<HTMLElement>(PROSE_SELECTOR);
   const aside = document.querySelector<HTMLElement>('.article-toc-aside');
-  const firstHeading = prose?.querySelector<HTMLElement>('h2[id]');
+  const firstHeading = prose ? getFirstTocHeadingElement(prose) : null;
 
   if (!shell || !aside) {
     return;
@@ -24,6 +46,7 @@ function alignArticleTocAside(): void {
   }
 
   if (!firstHeading) {
+    aside.style.top = '';
     return;
   }
 
@@ -34,7 +57,7 @@ function alignArticleTocAside(): void {
   aside.style.top = `${Math.max(0, offset)}px`;
 }
 
-function watchArticleTocLayout(): void {
+function watchArticleTocLayout(signal: AbortSignal): void {
   const prose = document.querySelector<HTMLElement>(PROSE_SELECTOR);
   if (!prose) {
     return;
@@ -42,7 +65,7 @@ function watchArticleTocLayout(): void {
 
   for (const image of prose.querySelectorAll('img')) {
     if (!image.complete) {
-      image.addEventListener('load', alignArticleTocAside, { once: true });
+      image.addEventListener('load', alignArticleTocAside, { once: true, signal });
     }
   }
 }
@@ -326,52 +349,66 @@ export function mountArticleTocScrollSpy(nav: HTMLElement): (() => void) | undef
     displayY = prefersReducedMotion ? targetY : displayY;
   };
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onResize, { passive: true });
+  const onLinkClick = (event: MouseEvent) => {
+    const link = event.currentTarget;
+
+    if (!(link instanceof HTMLAnchorElement) || !shouldHandleTocClick(event)) {
+      return;
+    }
+
+    const id = link.dataset.tocLink;
+    if (!id) {
+      return;
+    }
+
+    const target = document.getElementById(id);
+    if (!target) {
+      return;
+    }
+
+    event.preventDefault();
+    lockedLinkId = id;
+    snapToLink(id, true);
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    history.replaceState(null, '', `#${id}`);
+    scheduleClickLockRelease();
+  };
+
+  const controller = new AbortController();
+  const { signal } = controller;
+
+  window.addEventListener('scroll', onScroll, { passive: true, signal });
+  window.addEventListener('resize', onResize, { passive: true, signal });
+  watchArticleTocLayout(signal);
 
   for (const link of links) {
-    link.addEventListener('click', (event) => {
-      const id = link.dataset.tocLink;
-      if (!id) {
-        return;
-      }
-
-      const target = document.getElementById(id);
-      if (!target) {
-        return;
-      }
-
-      event.preventDefault();
-      lockedLinkId = id;
-      snapToLink(id, true);
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      history.replaceState(null, '', `#${id}`);
-      scheduleClickLockRelease();
-    });
+    link.addEventListener('click', onLinkClick, { signal });
   }
 
   return () => {
+    controller.abort();
     window.cancelAnimationFrame(frameId);
     window.clearTimeout(scrollIdleTimer);
-    window.removeEventListener('scroll', onScroll);
-    window.removeEventListener('resize', onResize);
   };
 }
 
+export function teardownArticleTocScrollSpy(): void {
+  activeTocCleanup?.();
+  activeTocCleanup = undefined;
+}
+
 export function initArticleTocScrollSpy(): void {
+  teardownArticleTocScrollSpy();
+
   const nav = document.querySelector<HTMLElement>('[data-article-toc]');
   if (!nav) {
     return;
   }
 
   alignArticleTocAside();
-  watchArticleTocLayout();
-
-  const existingCleanup = (nav as HTMLElement & { __tocCleanup?: () => void }).__tocCleanup;
-  existingCleanup?.();
 
   const cleanup = mountArticleTocScrollSpy(nav);
   if (cleanup) {
-    (nav as HTMLElement & { __tocCleanup?: () => void }).__tocCleanup = cleanup;
+    activeTocCleanup = cleanup;
   }
 }
