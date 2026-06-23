@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
@@ -33,14 +34,13 @@ export default defineConfig({
     domains: ['gravatar.com', 'cdn.ninthbit.org', 'opengraph.githubassets.com'],
   },
   markdown: {
-    remarkPlugins: [remarkCjkFriendly],
-    rehypePlugins: [[anchorHeadings, headingAnchorOptions]],
-  },
-  integrations: [
-    mdx({
+    processor: unified({
       remarkPlugins: [stripLeadingHeadingOne, remarkCjkFriendly, remarkMath],
       rehypePlugins: [rehypeKatex, [anchorHeadings, headingAnchorOptions]],
     }),
+  },
+  integrations: [
+    mdx(),
     sitemap(),
     react()
   ],
