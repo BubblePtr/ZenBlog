@@ -10,6 +10,7 @@ import {
 } from '@remixicon/react';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
+import { SITE_URL } from '@/consts';
 import { withTrailingSlash } from '@/shared/urls';
 
 const container = {
@@ -226,7 +227,7 @@ function RssTooltipContent({
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText('https://kieranzhang.dev/rss.xml');
+      await navigator.clipboard.writeText(`${SITE_URL}/rss.xml`);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1600);
     } catch {

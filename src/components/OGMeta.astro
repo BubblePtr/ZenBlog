@@ -13,6 +13,8 @@
  *   type         — "website" | "article" (default: auto-detected from slug)
  */
 
+import { SITE_URL } from '../consts';
+
 interface Props {
   title: string;
   description?: string;
@@ -27,8 +29,7 @@ const {
   type = slug ? 'article' : 'website',
 } = Astro.props;
 
-const siteUrl = 'https://kieranzhang.dev';
-const ogImage = `${siteUrl}/og/brand.png`;
+const ogImage = `${SITE_URL}/og/brand.png`;
 
 const pageTitle = slug ? `${title} — Kieran Zhang` : title;
 const descriptionText = description.trim();
