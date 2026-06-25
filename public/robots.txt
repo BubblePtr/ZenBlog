@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kieranzhang.dev/sitemap.xml
+Sitemap: https://kieran.build/sitemap.xml

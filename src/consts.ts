@@ -3,3 +3,5 @@
 
 export const SITE_TITLE = 'Kieran Zhang';
 export const SITE_DESCRIPTION = 'Welcome to my digital garden!';
+export const SITE_URL = 'https://kieran.build';
+export const SITE_HOST = 'kieran.build';

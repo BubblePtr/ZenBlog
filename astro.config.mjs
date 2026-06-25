@@ -20,7 +20,7 @@ const headingAnchorOptions = {
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://kieranzhang.dev',
+  site: 'https://kieran.build',
   // 纯静态输出，可直接部署到 Cloudflare Pages
   output: 'static',
   i18n: {

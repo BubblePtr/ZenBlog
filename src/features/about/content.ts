@@ -66,8 +66,8 @@ export const PROFILE_CARD = {
   following: 574,
   followers: 917,
   followLabel: 'Follow',
-  website: 'kieranzhang.dev',
-  websiteHref: 'https://kieranzhang.dev',
+  website: 'kieran.build',
+  websiteHref: 'https://kieran.build',
   twitterHref: 'https://twitter.com/ninthbit_ai',
 } as const;
 
