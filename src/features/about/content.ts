@@ -12,6 +12,65 @@ export interface AboutContent {
   reading: ReadingItem[];
 }
 
+export interface SocialLink {
+  id: 'github' | 'twitter' | 'email' | 'rss';
+  href: string;
+  labelKey:
+    | 'about.identity.contact.github'
+    | 'blog.post.followCta.twitter'
+    | 'about.identity.contact.email'
+    | 'about.identity.contact.rss';
+  external: boolean;
+}
+
+const SOCIAL_LINKS: SocialLink[] = [
+  {
+    id: 'github',
+    href: 'https://github.com/BubblePtr',
+    labelKey: 'about.identity.contact.github',
+    external: true,
+  },
+  {
+    id: 'twitter',
+    href: 'https://twitter.com/ninthbit_ai',
+    labelKey: 'blog.post.followCta.twitter',
+    external: true,
+  },
+  {
+    id: 'email',
+    href: 'mailto:oldmeatovo@gmail.com',
+    labelKey: 'about.identity.contact.email',
+    external: false,
+  },
+  {
+    id: 'rss',
+    href: '/rss.xml',
+    labelKey: 'about.identity.contact.rss',
+    external: false,
+  },
+];
+
+export function getAboutSocialLinks(): SocialLink[] {
+  return SOCIAL_LINKS;
+}
+
+/** Profile card copy — English UI except `bio`, shared across locales. */
+export const PROFILE_CARD = {
+  banner: 'Design + Code',
+  handle: '@ninthbit_ai',
+  bio: 'AI Native · Indie Developer. 💻Collaborated with Douyin, Feishu, BiliBili and Meituan. 🐱梦想是养一只三花。📚道理全在书上，做人却在书外。',
+  location: 'Nanjing, China',
+  followingLabel: 'Following',
+  followersLabel: 'Followers',
+  /** Update manually when X counts change. */
+  following: 574,
+  followers: 917,
+  followLabel: 'Follow',
+  website: 'kieranzhang.dev',
+  websiteHref: 'https://kieranzhang.dev',
+  twitterHref: 'https://twitter.com/ninthbit_ai',
+} as const;
+
 const en: AboutContent = {
   reading: [
     {

@@ -3,6 +3,7 @@ import type { TranslationDictionary } from '@/shared/i18n/types';
 import type { Language } from '@/i18n/config';
 import IdentityBand from '@/features/about/components/IdentityBand.astro';
 import PersonalDetails from '@/features/about/components/PersonalDetails.astro';
+import ConnectAside from '@/features/about/components/ConnectAside.astro';
 
 interface Props {
   t: TranslationDictionary;
@@ -13,7 +14,17 @@ const { t, lang } = Astro.props;
 ---
 
 <div class="px-[var(--page-gutter)] relative z-10">
-  <IdentityBand t={t} lang={lang} />
+  <div class="mx-auto w-full max-w-5xl">
+    <div
+      class="grid grid-cols-1 gap-y-10 pt-[clamp(3rem,7vw,5.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(20.875rem,21rem)] lg:items-start lg:gap-x-14 xl:gap-x-16"
+    >
+      <ConnectAside t={t} lang={lang} class="order-1 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-2" />
 
-  <PersonalDetails t={t} lang={lang} />
+      <IdentityBand t={t} lang={lang} class="order-2 lg:order-none lg:col-start-1 lg:row-start-1" />
+
+      <div class="order-3 lg:order-none lg:col-start-1 lg:row-start-2">
+        <PersonalDetails t={t} lang={lang} />
+      </div>
+    </div>
+  </div>
 </div>
