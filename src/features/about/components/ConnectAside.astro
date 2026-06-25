@@ -1,0 +1,120 @@
+---
+import type { TranslationDictionary } from '@/shared/i18n/types';
+import type { Language } from '@/i18n/config';
+import { PROFILE_CARD } from '@/features/about/content';
+
+interface Props {
+  t: TranslationDictionary;
+  lang: Language;
+  class?: string;
+}
+
+const { t, lang, class: className } = Astro.props;
+
+const AVATAR_URL = 'https://cdn.ninthbit.org/avatar.jpg';
+
+const CARD_BANNER_BG =
+  'linear-gradient(194.85deg, rgb(45, 49, 60) 3.58%, rgb(29, 31, 38) 90.42%)';
+const CARD_BANNER_TEXT =
+  'linear-gradient(188.69deg, rgb(176, 185, 255) 5.45%, rgb(231, 233, 255) 78.15%)';
+---
+
+<aside
+  class:list={['lg:sticky lg:top-24 lg:self-start w-full max-w-[20.875rem]', className]}
+  aria-label={lang === 'zh' ? '个人资料' : 'Profile'}
+>
+  <div
+    class="overflow-hidden rounded-[24px] border border-[#d5e0f6] bg-white shadow-[2px_2px_4px_0px_rgba(174,191,237,0.25)] dark:border-[#d5e0f6]/80 dark:bg-white dark:shadow-[2px_2px_4px_0px_rgba(174,191,237,0.2)]"
+  >
+    <div
+      class="mx-[4.5px] mt-[4.5px] flex h-[107px] items-center justify-center overflow-hidden rounded-[18px] px-4"
+      style={`background-image: ${CARD_BANNER_BG}`}
+    >
+      <p
+        class="bg-clip-text text-center text-base font-semibold leading-5 text-transparent"
+        style={`background-image: ${CARD_BANNER_TEXT}`}
+      >
+        {PROFILE_CARD.banner}
+      </p>
+    </div>
+
+    <div class="px-[25px] pb-5 pt-0">
+      <div class="relative -mt-[38px] mb-3 h-[86px] w-[86px]">
+        <div
+          class="h-full w-full overflow-hidden rounded-full border-4 border-white bg-[#1d1f26]"
+          style="view-transition-name: hero-avatar"
+        >
+          <img
+            src={AVATAR_URL}
+            alt={t['about.name']}
+            loading="eager"
+            fetchpriority="high"
+            class="h-full w-full object-cover"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-start justify-between gap-3">
+        <h1 class="text-base font-semibold leading-5 text-[#1f242f]">
+          {t['about.name']}
+        </h1>
+        <a
+          href={PROFILE_CARD.twitterHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="shrink-0 rounded-full bg-[#0571ed] px-3 py-0.5 text-xs font-medium leading-6 text-white transition-colors hover:bg-[#0461cc] focus-ring"
+        >
+          {PROFILE_CARD.followLabel}
+        </a>
+      </div>
+
+      <p class="mt-1 text-xs font-medium leading-5 text-[#6b7387]">
+        {PROFILE_CARD.handle}
+      </p>
+
+      <p class="mt-3 max-w-[280px] text-xs font-medium leading-5 text-[#6b7387]">
+        {PROFILE_CARD.bio}
+      </p>
+
+      <div class="mt-4 flex items-center gap-8 text-sm leading-5">
+        <p class="whitespace-nowrap">
+          <span class="font-bold text-[#353c4b]">{PROFILE_CARD.following.toLocaleString('en-US')}</span>
+          <span class="ml-2 text-xs font-medium text-[#6b7387]">{PROFILE_CARD.followingLabel}</span>
+        </p>
+        <p class="whitespace-nowrap">
+          <span class="font-bold text-[#353c4b]">{PROFILE_CARD.followers.toLocaleString('en-US')}</span>
+          <span class="ml-2 text-xs font-medium text-[#6b7387]">{PROFILE_CARD.followersLabel}</span>
+        </p>
+      </div>
+
+      <a
+        href={PROFILE_CARD.websiteHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-4 inline-flex items-center gap-2 text-xs font-medium leading-5 text-[#0571ed] transition-colors hover:text-[#0461cc] focus-ring"
+      >
+        <img
+          src="/images/about/profile-link-icon.svg"
+          alt=""
+          width="14"
+          height="14"
+          class="shrink-0"
+          aria-hidden="true"
+        />
+        {PROFILE_CARD.website}
+      </a>
+
+      <p class="mt-2 flex items-center gap-2 text-xs font-medium leading-5 text-[#afb7cd]">
+        <img
+          src="/images/about/profile-location-icon.svg"
+          alt=""
+          width="14"
+          height="14"
+          class="shrink-0"
+          aria-hidden="true"
+        />
+        {PROFILE_CARD.location}
+      </p>
+    </div>
+  </div>
+</aside>
