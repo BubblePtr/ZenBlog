@@ -17,7 +17,7 @@ const NAV_LINKS = [
 const SOCIAL_LINKS = [
   { icon: RiGithubFill, href: 'https://github.com/BubblePtr', label: 'GitHub' },
   { icon: RiTwitterXFill, href: 'https://twitter.com/ninthbit_ai', label: 'Twitter' },
-  { icon: RiMailLine, href: 'mailto:oldmeatovo@gmail.com', label: 'Email' },
+  { icon: RiMailLine, href: 'mailto:hi@kieran.build', label: 'Email' },
   { icon: RiRssLine, href: '/rss.xml', label: 'RSS Feed' },
 ];
 
