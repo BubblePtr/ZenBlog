@@ -38,7 +38,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   },
   {
     id: 'email',
-    href: 'mailto:oldmeatovo@gmail.com',
+    href: 'mailto:hi@kieran.build',
     labelKey: 'about.identity.contact.email',
     external: false,
   },
