@@ -551,16 +551,50 @@ body {
     @apply my-8;
   }
 
-  .prose a.github-repo-card {
-    @apply block my-8 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 no-underline shadow-sm;
+  .prose a.github-repo-card,
+  .prose a.link-card {
+    @apply my-8 block overflow-hidden rounded-lg border border-zinc-200 bg-white no-underline shadow-sm;
 
     @apply transition-colors transition-shadow hover:border-orange-500/70 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-orange-400/70;
 
     color: inherit;
+    text-decoration: none;
   }
 
   .prose a.github-repo-card img {
     @apply my-0 block w-full;
+  }
+
+  .prose a.link-card {
+    @apply flex items-stretch;
+  }
+
+  .prose a.link-card .link-card-image {
+    @apply my-0 block w-32 shrink-0 self-stretch border-r border-zinc-200 object-cover sm:w-40 dark:border-zinc-800;
+  }
+
+  .prose a.link-card .link-card-body {
+    @apply flex min-w-0 flex-1 flex-col justify-center gap-1 px-4 py-3;
+  }
+
+  .prose a.link-card .link-card-site {
+    @apply block text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-400 dark:text-zinc-500;
+  }
+
+  .prose a.link-card .link-card-title {
+    @apply block text-[15px] font-semibold leading-snug text-zinc-900 dark:text-zinc-100;
+  }
+
+  .prose a.link-card .link-card-description {
+    @apply line-clamp-2 block text-sm leading-relaxed text-zinc-500 dark:text-zinc-400;
+  }
+
+  .prose .image-row {
+    @apply my-8 grid grid-cols-1 gap-4 md:grid-cols-2;
+  }
+
+  .prose .image-row img {
+    @apply my-0 w-full;
   }
 
   /* 表格 */

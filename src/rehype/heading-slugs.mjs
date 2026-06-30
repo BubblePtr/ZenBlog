@@ -81,6 +81,9 @@ const translatedHeadings = new Map(
     更多的产品想法: ['more', 'product', 'ideas'],
     agentteam架构的一些思考: ['agent', 'team', 'architecture', 'thoughts'],
     杂记: ['misc', 'notes'],
+    agentteam深入使用体验: ['agent', 'team', 'deep', 'dive'],
+    一个动态agent工作流的设计: ['dynamic', 'agent', 'workflow', 'design'],
+    一个自动化内容系统的搭建: ['automated', 'content', 'system', 'setup'],
   }),
 );
 

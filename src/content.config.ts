@@ -10,6 +10,14 @@ const blog = defineCollection({
       description: z.string(),
       pubDate: z.coerce.date(),
       heroImage: z.union([image(), z.literal('')]).optional(),
+      heroImageCredit: z
+        .object({
+          author: z.string(),
+          authorUrl: z.string().url(),
+          source: z.string(),
+          sourceUrl: z.string().url(),
+        })
+        .optional(),
       author: z
         .object({
           name: z.string(),

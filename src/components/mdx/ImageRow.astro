@@ -1,0 +1,18 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src1: ImageMetadata;
+  alt1: string;
+  src2: ImageMetadata;
+  alt2: string;
+}
+
+const { src1, alt1, src2, alt2 } = Astro.props;
+---
+
+<div class="image-row">
+  <Image src={src1} alt={alt1} inferSize class="w-full h-auto" />
+  <Image src={src2} alt={alt2} inferSize class="w-full h-auto" />
+</div>

@@ -1,0 +1,21 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  image: string;
+  site?: string;
+}
+
+const { href, title, description, image, site } = Astro.props;
+const siteLabel = site ?? new URL(href).hostname.replace(/^www\./, '');
+---
+
+<a class="link-card not-prose" href={href} target="_blank" rel="noopener noreferrer">
+  <img src={image} alt="" class="link-card-image" loading="lazy" decoding="async" />
+  <div class="link-card-body">
+    <span class="link-card-site">{siteLabel}</span>
+    <span class="link-card-title">{title}</span>
+    {description && <span class="link-card-description">{description}</span>}
+  </div>
+</a>
