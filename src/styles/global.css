@@ -552,7 +552,7 @@ body {
   }
 
   .prose a.github-repo-card,
-  .prose a.og-card {
+  .prose a.link-card {
     @apply block my-8 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 no-underline shadow-sm;
 
     @apply transition-colors transition-shadow hover:border-orange-500/70 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-orange-400/70;
@@ -560,9 +560,28 @@ body {
     color: inherit;
   }
 
-  .prose a.github-repo-card img,
-  .prose a.og-card img {
+  .prose a.github-repo-card img {
     @apply my-0 block w-full;
+  }
+
+  .prose a.link-card .link-card-image {
+    @apply my-0 block aspect-[1.91/1] w-full border-b border-zinc-200 object-cover dark:border-zinc-800;
+  }
+
+  .prose a.link-card .link-card-body {
+    @apply px-4 py-3;
+  }
+
+  .prose a.link-card .link-card-site {
+    @apply mb-1 text-xs font-medium uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500;
+  }
+
+  .prose a.link-card .link-card-title {
+    @apply mb-1 text-base font-semibold leading-snug text-zinc-900 dark:text-zinc-100;
+  }
+
+  .prose a.link-card .link-card-description {
+    @apply line-clamp-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400;
   }
 
   .prose .image-row {
