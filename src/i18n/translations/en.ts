@@ -92,6 +92,9 @@ export const en = {
   'blog.post.followCta.github': 'GitHub',
   'blog.post.followCta.twitter': 'Twitter / X',
   'blog.post.followCta.email': 'Email',
+  'blog.lightbox.prev': 'Previous image',
+  'blog.lightbox.next': 'Next image',
+  'blog.lightbox.close': 'Close preview',
 
   // Footer
   'footer.rights': 'All rights reserved',

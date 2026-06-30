@@ -88,6 +88,9 @@ export const zh = {
   'blog.post.followCta.github': 'GitHub',
   'blog.post.followCta.twitter': 'Twitter / X',
   'blog.post.followCta.email': '邮件',
+  'blog.lightbox.prev': '上一张',
+  'blog.lightbox.next': '下一张',
+  'blog.lightbox.close': '关闭预览',
 
   // 页脚
   'footer.rights': '版权所有',

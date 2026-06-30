@@ -12,6 +12,7 @@ import type { TocHeading } from '@/features/blog/toc';
 import GiscusComments from '@/features/blog/components/GiscusComments.client';
 import BlogColophon from '@/features/blog/components/BlogColophon.astro';
 import BlogPostFollowCTA from '@/features/blog/components/BlogPostFollowCTA.astro';
+import BlogImageLightbox from '@/features/blog/components/BlogImageLightbox.astro';
 import { resolveBlogAuthor } from '@/features/blog/authors';
 import { isIndieDevWeeklyPost } from '@/features/blog/series';
 import { RiCalendarLine, RiTimeLine } from '@remixicon/react';
@@ -81,7 +82,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
     </div>
 
     <main class="px-[var(--page-gutter)] py-12 sm:py-20 relative z-10">
-      <article>
+      <article data-blog-article>
         <header class="mx-auto w-full max-w-3xl mb-12">
           <div class="flex items-center justify-between gap-6 mb-6">
             <div>
@@ -118,7 +119,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
 
         {
           heroImage && (
-            <figure class="mb-12">
+            <figure class="mb-12" data-blog-hero-image>
               <div class="relative aspect-[16/10] sm:aspect-[21/9] w-full overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
                 <Image src={heroImage} alt={title} class="object-cover w-full h-full" inferSize loading="eager" />
               </div>
@@ -202,5 +203,6 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
       <div class="mx-[var(--page-bleed)] section-rule"></div>
     </div>
     <SiteFooter client:visible lang={lang} t={t} />
+    <BlogImageLightbox lang={lang} />
   </body>
 </html>

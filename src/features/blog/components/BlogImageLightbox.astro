@@ -1,0 +1,45 @@
+---
+import type { Language } from '@/i18n/config';
+import { getTranslationDictionary } from '@/shared/i18n/types';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const t = getTranslationDictionary(lang);
+---
+
+<div
+  id="blog-image-lightbox-config"
+  hidden
+  data-close={t['blog.lightbox.close']}
+  data-prev={t['blog.lightbox.prev']}
+  data-next={t['blog.lightbox.next']}
+>
+</div>
+
+<script>
+  import {
+    initBlogImageLightbox,
+    teardownBlogImageLightbox,
+  } from '@/features/blog/blog-image-lightbox.client';
+
+  function getLightboxLabels() {
+    const config = document.getElementById('blog-image-lightbox-config');
+
+    return {
+      close: config?.dataset.close ?? 'Close preview',
+      prev: config?.dataset.prev ?? 'Previous image',
+      next: config?.dataset.next ?? 'Next image',
+    };
+  }
+
+  function bootBlogImageLightbox() {
+    initBlogImageLightbox({ labels: getLightboxLabels() });
+  }
+
+  bootBlogImageLightbox();
+  document.addEventListener('astro:page-load', bootBlogImageLightbox);
+  document.addEventListener('astro:before-swap', teardownBlogImageLightbox);
+</script>
