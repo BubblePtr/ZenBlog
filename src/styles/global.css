@@ -551,7 +551,8 @@ body {
     @apply my-8;
   }
 
-  .prose a.github-repo-card {
+  .prose a.github-repo-card,
+  .prose a.og-card {
     @apply block my-8 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 no-underline shadow-sm;
 
     @apply transition-colors transition-shadow hover:border-orange-500/70 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-orange-400/70;
@@ -559,8 +560,17 @@ body {
     color: inherit;
   }
 
-  .prose a.github-repo-card img {
+  .prose a.github-repo-card img,
+  .prose a.og-card img {
     @apply my-0 block w-full;
+  }
+
+  .prose .image-row {
+    @apply my-8 grid grid-cols-1 gap-4 md:grid-cols-2;
+  }
+
+  .prose .image-row img {
+    @apply my-0 w-full;
   }
 
   /* 表格 */
