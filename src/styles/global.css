@@ -551,6 +551,14 @@ body {
     @apply my-8;
   }
 
+  .prose img[data-lightbox-enabled] {
+    @apply cursor-zoom-in transition-opacity hover:opacity-90;
+  }
+
+  [data-blog-article] > figure img[data-lightbox-enabled] {
+    @apply cursor-zoom-in transition-opacity hover:opacity-90;
+  }
+
   .prose a.github-repo-card,
   .prose a.link-card {
     @apply my-8 block overflow-hidden rounded-lg border border-zinc-200 bg-white no-underline shadow-sm;
@@ -636,9 +644,63 @@ body {
   .prose mark {
     @apply bg-yellow-100 dark:bg-yellow-900/50 px-1 rounded;
   }
+
+  .blog-image-lightbox {
+    @apply fixed inset-0 z-[120] flex items-center justify-center p-4 sm:p-8;
+  }
+
+  .blog-image-lightbox-backdrop {
+    @apply absolute inset-0 bg-black/80 backdrop-blur-sm;
+  }
+
+  .blog-image-lightbox-dialog {
+    @apply relative z-10 flex h-full w-full max-w-6xl items-center justify-center;
+  }
+
+  .blog-image-lightbox-figure {
+    @apply m-0 flex max-h-full max-w-full flex-col items-center gap-3;
+  }
+
+  .blog-image-lightbox-image {
+    @apply my-0 max-h-[calc(100vh-8rem)] w-auto max-w-full rounded-md border border-white/10 bg-zinc-950 object-contain shadow-2xl;
+  }
+
+  .blog-image-lightbox-caption {
+    @apply max-w-2xl text-center text-sm text-zinc-200;
+  }
+
+  .blog-image-lightbox-close,
+  .blog-image-lightbox-nav {
+    @apply absolute z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white transition-colors hover:bg-black/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70;
+  }
+
+  .blog-image-lightbox-close {
+    @apply top-3 right-3;
+  }
+
+  .blog-image-lightbox-close-icon,
+  .blog-image-lightbox-nav-icon {
+    @apply block shrink-0;
+  }
+
+  .blog-image-lightbox-prev {
+    @apply top-1/2 left-2 -translate-y-1/2 sm:left-4;
+  }
+
+  .blog-image-lightbox-next {
+    @apply top-1/2 right-2 -translate-y-1/2 sm:right-4;
+  }
+
+  .blog-image-lightbox-nav:disabled {
+    @apply cursor-not-allowed opacity-30;
+  }
 }
 
 @layer utilities {
+  body.blog-image-lightbox-open {
+    overflow: hidden;
+  }
+
   /* 自定义选中文本颜色 */
   ::selection {
     @apply bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100;

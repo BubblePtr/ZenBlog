@@ -69,6 +69,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/turndown": "^5.0.6",
     "baseline-browser-mapping": "^2.9.17",
+    "happy-dom": "^20.10.6",
     "oxfmt": "^0.44.0",
     "oxlint": "^1.59.0",
     "sass-embedded": "^1.97.1",
