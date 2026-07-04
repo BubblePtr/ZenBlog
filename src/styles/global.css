@@ -923,9 +923,9 @@ body {
 .crisp-toc-origin-ring {
   position: absolute;
   top: 50%;
-  left: 6px;
-  width: 20px;
-  height: 20px;
+  left: 8px;
+  width: 24px;
+  height: 24px;
   border: 1px solid rgba(0, 0, 0, 0.16);
   border-radius: 9999px;
   transform: translate(-50%, -50%);
@@ -939,8 +939,8 @@ body {
   position: absolute;
   top: 50%;
   left: 0;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border-radius: 9999px;
   background: #09090b;
   transform: translateY(-50%);

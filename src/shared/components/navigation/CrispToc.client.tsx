@@ -36,13 +36,17 @@ const DEFAULT_ITEMS: CrispTocItem[] = [
 
 const THEME_OPTIONS = ['Current', 'Crisp', 'Wood', 'Glassy', 'Tape'] as const;
 
-const TICK_STEP = 8;
 const DOT_LERP = 0.14;
 const TICK_SHORT_WIDTH = 10;
 const TICK_LONG_WIDTH = 22;
 const TICK_SIDE_HYSTERESIS = 0.75;
 const BULGE_AMPLITUDE = 14;
 const BULGE_SIGMA = 36;
+
+interface TickMark {
+  y: number;
+  kind: 'long' | 'short';
+}
 
 function clampIndex(index: number, length: number): number {
   return Math.max(0, Math.min(length - 1, index));
@@ -52,16 +56,37 @@ function gaussianInfluence(distance: number, sigma: number): number {
   return Math.exp(-(distance * distance) / (2 * sigma * sigma));
 }
 
-function isLongTick(tickIndex: number): boolean {
-  return tickIndex % 3 === 0;
+function buildTickMarks(itemCenters: number[]): TickMark[] {
+  if (itemCenters.length === 0) {
+    return [];
+  }
+
+  const ticks: TickMark[] = [];
+
+  for (let index = 0; index < itemCenters.length; index += 1) {
+    ticks.push({ y: itemCenters[index], kind: 'long' });
+
+    const nextCenter = itemCenters[index + 1];
+    if (nextCenter === undefined) {
+      continue;
+    }
+
+    const gap = nextCenter - itemCenters[index];
+    ticks.push(
+      { y: itemCenters[index] + gap / 3, kind: 'short' },
+      { y: itemCenters[index] + (gap * 2) / 3, kind: 'short' },
+    );
+  }
+
+  return ticks;
 }
 
-function getTickMetrics(dotY: number, tickY: number, tickIndex: number) {
+function getTickMetrics(dotY: number, tickY: number, kind: TickMark['kind']) {
   const distance = tickY - dotY;
   const influence = gaussianInfluence(distance, BULGE_SIGMA);
 
   return {
-    width: isLongTick(tickIndex) ? TICK_LONG_WIDTH : TICK_SHORT_WIDTH,
+    width: kind === 'long' ? TICK_LONG_WIDTH : TICK_SHORT_WIDTH,
     offsetX: influence * BULGE_AMPLITUDE,
     opacity: 0.22 + influence * 0.52,
   };
@@ -128,7 +153,6 @@ export default function CrispToc({
     itemCentersRef.current = centers;
 
     const first = centers[0] ?? 0;
-    const last = centers.at(-1) ?? first;
     targetYRef.current = centers[activeIndex] ?? first;
 
     if (displayYRef.current === 0) {
@@ -136,12 +160,11 @@ export default function CrispToc({
       previousYRef.current = displayYRef.current;
     }
 
-    const tickCount = Math.max(2, Math.ceil((last - first) / TICK_STEP) + 1);
+    const tickMarks = buildTickMarks(centers);
     const nextTickSide = new Map<number, -1 | 1>();
 
-    for (let tickIndex = 0; tickIndex < tickCount; tickIndex += 1) {
-      const tickY = first + tickIndex * TICK_STEP;
-      nextTickSide.set(tickY, displayYRef.current >= tickY ? 1 : -1);
+    for (const tick of tickMarks) {
+      nextTickSide.set(tick.y, displayYRef.current >= tick.y ? 1 : -1);
     }
 
     tickSideRef.current = nextTickSide;
@@ -232,13 +255,7 @@ export default function CrispToc({
 
   const displayY = displayYRef.current;
   const itemCenters = itemCentersRef.current;
-  const firstCenter = itemCenters[0] ?? 0;
-  const lastCenter = itemCenters.at(-1) ?? firstCenter;
-  const tickCount = Math.max(2, Math.ceil((lastCenter - firstCenter) / TICK_STEP) + 1);
-  const tickMarks = Array.from(
-    { length: tickCount },
-    (_, tickIndex) => firstCenter + tickIndex * TICK_STEP,
-  );
+  const tickMarks = buildTickMarks(itemCenters);
 
   const visualIndex = itemCenters.reduce((nearest, center, centerIndex) => {
     const nearestCenter = itemCenters[nearest] ?? 0;
@@ -306,15 +323,15 @@ export default function CrispToc({
           </div>
 
           <div className="crisp-toc-scale">
-            {tickMarks.map((tickY, tickIndex) => {
-              const { width, offsetX, opacity } = getTickMetrics(displayY, tickY, tickIndex);
+            {tickMarks.map((tick) => {
+              const { width, offsetX, opacity } = getTickMetrics(displayY, tick.y, tick.kind);
 
               return (
                 <span
-                  key={tickY}
-                  className={`crisp-toc-tick ${isLongTick(tickIndex) ? 'is-long' : 'is-short'}`}
+                  key={tick.y}
+                  className={`crisp-toc-tick ${tick.kind === 'long' ? 'is-long' : 'is-short'}`}
                   style={{
-                    top: `${tickY}px`,
+                    top: `${tick.y}px`,
                     width: `${width}px`,
                     opacity,
                     transform: `translateY(-50%) translateX(${offsetX}px)`,
