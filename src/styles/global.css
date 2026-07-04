@@ -880,6 +880,8 @@ body {
   height: 100%;
   min-height: inherit;
   --crisp-toc-lane-left: 0.625rem;
+  --crisp-toc-dot-size: 16px;
+  --crisp-toc-bulge-amplitude: 16px;
 }
 
 .crisp-toc-ball {
@@ -923,9 +925,9 @@ body {
 .crisp-toc-origin-ring {
   position: absolute;
   top: 50%;
-  left: 8px;
-  width: 24px;
-  height: 24px;
+  left: calc(var(--crisp-toc-dot-size) / 2);
+  width: calc(var(--crisp-toc-dot-size) + 8px);
+  height: calc(var(--crisp-toc-dot-size) + 8px);
   border: 1px solid rgba(0, 0, 0, 0.16);
   border-radius: 9999px;
   transform: translate(-50%, -50%);
@@ -939,8 +941,8 @@ body {
   position: absolute;
   top: 50%;
   left: 0;
-  width: 16px;
-  height: 16px;
+  width: var(--crisp-toc-dot-size);
+  height: var(--crisp-toc-dot-size);
   border-radius: 9999px;
   background: #09090b;
   transform: translateY(-50%);

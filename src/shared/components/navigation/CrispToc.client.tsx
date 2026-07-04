@@ -36,11 +36,12 @@ const DEFAULT_ITEMS: CrispTocItem[] = [
 
 const THEME_OPTIONS = ['Current', 'Crisp', 'Wood', 'Glassy', 'Tape'] as const;
 
+const DOT_SIZE = 16;
 const DOT_LERP = 0.14;
 const TICK_SHORT_WIDTH = 10;
 const TICK_LONG_WIDTH = 22;
 const TICK_SIDE_HYSTERESIS = 0.75;
-const BULGE_AMPLITUDE = 14;
+const BULGE_AMPLITUDE = DOT_SIZE;
 const BULGE_SIGMA = 36;
 
 interface TickMark {
