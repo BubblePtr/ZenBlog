@@ -295,22 +295,24 @@ body {
     }
   }
 
-  .article-toc-link {
-    color: var(--color-text-secondary);
-    transition: color 320ms ease;
-  }
-
-  .article-toc {
+  .article-toc.crisp-toc--article {
     margin: 0 auto 2rem;
     width: 100%;
     max-width: 36rem;
   }
 
-  .article-toc-list {
+  .article-toc.crisp-toc--article .crisp-toc-list {
     max-height: min(40vh, 18rem);
     overflow-y: auto;
-    padding-left: 0.75rem;
     scrollbar-width: thin;
+  }
+
+  .article-toc.crisp-toc--article .crisp-toc-item {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition:
+      color 320ms ease,
+      transform 0ms linear;
   }
 
   @media (min-width: 1280px) {
@@ -320,11 +322,11 @@ body {
       bottom: 0;
       left: 100%;
       margin-left: 3rem;
-      width: 15rem;
+      width: 17rem;
       pointer-events: none;
     }
 
-    .article-toc {
+    .article-toc.crisp-toc--article {
       position: sticky;
       top: 7rem;
       margin: 0;
@@ -334,100 +336,22 @@ body {
       pointer-events: auto;
     }
 
-    .article-toc-list {
+    .article-toc.crisp-toc--article .crisp-toc-list {
       max-height: min(calc(100vh - 10rem), 100%);
     }
   }
 
-  .article-toc-link:hover {
+  .article-toc.crisp-toc--article .crisp-toc-item:hover {
     color: var(--color-text-emphasis);
   }
 
-  .article-toc-link.is-active {
+  .article-toc.crisp-toc--article .crisp-toc-item.is-active {
     color: oklch(55.3% 0.195 38.4);
+    font-weight: 500;
   }
 
-  .dark .article-toc-link.is-active {
+  .dark .article-toc.crisp-toc--article .crisp-toc-item.is-active {
     color: oklch(70.5% 0.213 47.6);
-  }
-
-  .article-toc-rail-line {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: rgba(0, 0, 0, 0.12);
-    pointer-events: none;
-  }
-
-  .dark .article-toc-rail-line {
-    background: rgba(255, 255, 255, 0.14);
-  }
-
-  .article-toc-flow {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 2;
-    display: block;
-    pointer-events: none;
-    will-change: transform;
-  }
-
-  .article-toc-flow-dot {
-    display: block;
-    width: 5px;
-    height: 5px;
-    border-radius: 9999px;
-    background: oklch(70.5% 0.213 47.6);
-    box-shadow:
-      0 0 6px rgba(249, 115, 22, 0.95),
-      0 0 14px rgba(249, 115, 22, 0.65),
-      0 0 24px rgba(249, 115, 22, 0.35);
-  }
-
-  .article-toc-flow-tail {
-    position: absolute;
-    left: 50%;
-    bottom: 100%;
-    width: 2.5px;
-    height: 2rem;
-    border-radius: 9999px;
-    opacity: 0;
-    transform: translateX(-50%) scaleY(0);
-    transform-origin: bottom center;
-    background: linear-gradient(
-      to top,
-      rgba(249, 115, 22, 0.9) 0%,
-      rgba(249, 115, 22, 0.4) 40%,
-      rgba(249, 115, 22, 0) 100%
-    );
-    filter: blur(0.2px);
-    pointer-events: none;
-    will-change: transform, opacity;
-  }
-
-  .article-toc-flow.is-ascending .article-toc-flow-tail {
-    bottom: auto;
-    top: 100%;
-    transform-origin: top center;
-    background: linear-gradient(
-      to bottom,
-      rgba(249, 115, 22, 0.9) 0%,
-      rgba(249, 115, 22, 0.4) 40%,
-      rgba(249, 115, 22, 0) 100%
-    );
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .article-toc-flow {
-      will-change: auto;
-    }
-
-    .article-toc-flow-tail {
-      display: none;
-    }
   }
 
   /* 链接 */
@@ -811,5 +735,267 @@ body {
   ::view-transition-new(*) {
     animation-duration: 0.01ms !important;
     animation-delay: 0s !important;
+  }
+}
+
+/* Crisp TOC — interactive scale navigation */
+.crisp-toc.crisp-toc--article {
+  align-items: stretch;
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  gap: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  outline: none;
+}
+
+.dark .crisp-toc.crisp-toc--article {
+  background: transparent;
+  color: inherit;
+}
+
+.crisp-toc.crisp-toc--article .crisp-toc-body {
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  width: 100%;
+}
+
+.crisp-toc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  width: min(100%, 24rem);
+  padding: 2rem 1.5rem;
+  font-family: var(--font-mono);
+  color: #111;
+  background: #f4f4f5;
+  border-radius: 0.75rem;
+  outline: none;
+}
+
+.dark .crisp-toc {
+  color: #fafafa;
+  background: #18181b;
+}
+
+.crisp-toc-theme-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.crisp-toc-theme-pill {
+  border: 0;
+  border-radius: 9999px;
+  padding: 0.35rem 0.8rem;
+  font: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: #a1a1aa;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.crisp-toc-theme-pill.is-active {
+  color: #fff;
+  background: #09090b;
+}
+
+.dark .crisp-toc-theme-pill.is-active {
+  color: #09090b;
+  background: #fafafa;
+}
+
+.crisp-toc-body {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: start;
+  width: 100%;
+  min-height: 18rem;
+}
+
+.crisp-toc-rail {
+  position: relative;
+  height: 100%;
+  min-height: inherit;
+  --crisp-toc-lane-left: 0.625rem;
+  --crisp-toc-dot-size: 16px;
+  --crisp-toc-bulge-amplitude: 32px;
+}
+
+.crisp-toc-ball {
+  position: absolute;
+  left: var(--crisp-toc-lane-left);
+  top: 0;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.crisp-toc-scale {
+  position: relative;
+  height: 100%;
+  min-height: inherit;
+}
+
+.crisp-toc-tick {
+  position: absolute;
+  left: var(--crisp-toc-lane-left);
+  height: 2px;
+  border-radius: 9999px;
+  background: #a1a1aa;
+  transform-origin: left center;
+  will-change: transform, opacity;
+}
+
+.crisp-toc-tick.is-long {
+  background: #71717a;
+}
+
+.dark .crisp-toc-tick {
+  background: #71717a;
+}
+
+.dark .crisp-toc-tick.is-long {
+  background: #a1a1aa;
+}
+
+.crisp-toc-origin-ring {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--crisp-toc-dot-size) / 2);
+  width: calc(var(--crisp-toc-dot-size) + 8px);
+  height: calc(var(--crisp-toc-dot-size) + 8px);
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+}
+
+.dark .crisp-toc-origin-ring {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.crisp-toc-origin-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--crisp-toc-dot-size);
+  height: var(--crisp-toc-dot-size);
+  border-radius: 9999px;
+  background: #09090b;
+  transform: translateY(-50%);
+}
+
+.dark .crisp-toc-origin-dot {
+  background: #fafafa;
+}
+
+.crisp-toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.crisp-toc-item {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0.45rem 0;
+  text-align: left;
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: rgba(24, 24, 27, 0.28);
+  background: transparent;
+  cursor: pointer;
+  transition: color 220ms ease;
+  will-change: transform;
+}
+
+.dark .crisp-toc-item {
+  color: rgba(250, 250, 250, 0.28);
+}
+
+.crisp-toc-item:hover {
+  color: rgba(24, 24, 27, 0.55);
+}
+
+.dark .crisp-toc-item:hover {
+  color: rgba(250, 250, 250, 0.55);
+}
+
+.crisp-toc-item.is-active {
+  color: #09090b;
+  font-weight: 600;
+}
+
+.dark .crisp-toc-item.is-active {
+  color: #fafafa;
+}
+
+.crisp-toc-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.crisp-toc-nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 9999px;
+  color: #71717a;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.dark .crisp-toc-nav-button {
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #a1a1aa;
+}
+
+.crisp-toc-nav-button:hover:not(:disabled) {
+  border-color: rgba(0, 0, 0, 0.28);
+  color: #09090b;
+}
+
+.dark .crisp-toc-nav-button:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fafafa;
+}
+
+.crisp-toc-nav-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.crisp-toc-hint {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: #a1a1aa;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crisp-toc-tick {
+    will-change: auto;
   }
 }

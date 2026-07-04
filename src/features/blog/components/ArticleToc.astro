@@ -2,6 +2,7 @@
 import type { Language } from '@/i18n/config';
 import type { TocHeading } from '@/features/blog/toc';
 import { shouldShowToc } from '@/features/blog/toc';
+import CrispToc from '@/shared/components/navigation/CrispToc.client';
 
 interface Props {
   lang: Language;
@@ -15,48 +16,32 @@ if (!shouldShowToc(headings)) {
 }
 
 const title = lang === 'zh' ? '目录' : 'On this page';
-const firstSlug = headings[0]?.slug;
+const items = headings.map((heading) => ({
+  id: heading.slug,
+  label: heading.text,
+}));
 ---
 
 <aside class="article-toc-aside">
-  <nav data-article-toc aria-label={title} class="article-toc">
-    <div class="article-toc-rail relative">
-      <span aria-hidden="true" class="article-toc-rail-line"></span>
-      <span aria-hidden="true" class="article-toc-flow">
-        <span class="article-toc-flow-dot"></span>
-        <span class="article-toc-flow-tail"></span>
-      </span>
-      <ul class="article-toc-list">
-        {
-          headings.map((heading) => (
-            <li>
-              <a
-                href={`#${heading.slug}`}
-                data-toc-link={heading.slug}
-                class:list={[
-                  'article-toc-link block py-1.5 text-sm leading-snug',
-                  heading.depth === 3 && 'pl-3',
-                  heading.slug === firstSlug && 'is-active',
-                ]}
-                aria-current={heading.slug === firstSlug ? 'location' : undefined}
-              >
-                <span class="line-clamp-2">{heading.text}</span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </nav>
+  <CrispToc
+    client:load
+    items={items}
+    ariaLabel={title}
+    showThemeBar={false}
+    showFooter={false}
+    scrollSpy
+    soundEnabled={false}
+    class="article-toc"
+  />
 </aside>
 
 <script>
   import {
-    initArticleTocScrollSpy,
-    teardownArticleTocScrollSpy,
-  } from '@/features/blog/article-toc.client';
+    initArticleCrispTocLayout,
+    teardownArticleCrispTocLayout,
+  } from '@/features/blog/article-crisp-toc.client';
 
-  initArticleTocScrollSpy();
-  document.addEventListener('astro:page-load', initArticleTocScrollSpy);
-  document.addEventListener('astro:before-swap', teardownArticleTocScrollSpy);
+  initArticleCrispTocLayout();
+  document.addEventListener('astro:page-load', initArticleCrispTocLayout);
+  document.addEventListener('astro:before-swap', teardownArticleCrispTocLayout);
 </script>

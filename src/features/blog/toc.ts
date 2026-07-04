@@ -6,6 +6,10 @@ export interface TocHeading {
 
 export const MIN_TOC_HEADINGS = 2;
 
+export function getArticleTocHeadings(headings: TocHeading[]): TocHeading[] {
+  return headings.filter((heading) => heading.depth === 2);
+}
+
 export function shouldShowToc(headings: TocHeading[]): boolean {
   return headings.length >= MIN_TOC_HEADINGS;
 }
