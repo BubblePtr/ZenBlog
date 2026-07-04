@@ -299,10 +299,6 @@ body {
     margin: 0 auto 2rem;
     width: 100%;
     max-width: 36rem;
-    padding: 0;
-    gap: 0;
-    background: transparent;
-    border-radius: 0;
   }
 
   .article-toc.crisp-toc--article .crisp-toc-list {
@@ -326,7 +322,7 @@ body {
       bottom: 0;
       left: 100%;
       margin-left: 3rem;
-      width: 15rem;
+      width: 17rem;
       pointer-events: none;
     }
 
@@ -743,6 +739,29 @@ body {
 }
 
 /* Crisp TOC — interactive scale navigation */
+.crisp-toc.crisp-toc--article {
+  align-items: stretch;
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  gap: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  outline: none;
+}
+
+.dark .crisp-toc.crisp-toc--article {
+  background: transparent;
+  color: inherit;
+}
+
+.crisp-toc.crisp-toc--article .crisp-toc-body {
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  width: 100%;
+}
+
 .crisp-toc {
   display: flex;
   flex-direction: column;
