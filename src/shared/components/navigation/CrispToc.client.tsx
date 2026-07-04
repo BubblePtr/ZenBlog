@@ -41,7 +41,8 @@ const DOT_LERP = 0.14;
 const TICK_SHORT_WIDTH = 10;
 const TICK_LONG_WIDTH = 22;
 const TICK_SIDE_HYSTERESIS = 0.75;
-const BULGE_AMPLITUDE = DOT_SIZE;
+// Push ticks by 2× dot width so the peak line clears the ball by one diameter.
+const BULGE_AMPLITUDE = DOT_SIZE * 2;
 const BULGE_SIGMA = 36;
 
 interface TickMark {

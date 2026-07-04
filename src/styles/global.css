@@ -881,7 +881,7 @@ body {
   min-height: inherit;
   --crisp-toc-lane-left: 0.625rem;
   --crisp-toc-dot-size: 16px;
-  --crisp-toc-bulge-amplitude: 16px;
+  --crisp-toc-bulge-amplitude: 32px;
 }
 
 .crisp-toc-ball {
