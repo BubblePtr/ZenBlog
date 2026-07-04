@@ -38,25 +38,33 @@ const THEME_OPTIONS = ['Current', 'Crisp', 'Wood', 'Glassy', 'Tape'] as const;
 
 const TICK_STEP = 8;
 const DOT_LERP = 0.14;
-const TICK_SHORT_WIDTH = 8;
-const TICK_LONG_WIDTH = 30;
+const TICK_SHORT_WIDTH = 10;
+const TICK_LONG_WIDTH = 22;
 const TICK_SIDE_HYSTERESIS = 0.75;
+const BULGE_AMPLITUDE = 14;
+const BULGE_SIGMA = 36;
 
 function clampIndex(index: number, length: number): number {
   return Math.max(0, Math.min(length - 1, index));
 }
 
-function getActiveTickIndex(displayY: number, firstCenter: number, tickCount: number): number {
-  const rawIndex = Math.round((displayY - firstCenter) / TICK_STEP);
-  return Math.max(0, Math.min(tickCount - 1, rawIndex));
+function gaussianInfluence(distance: number, sigma: number): number {
+  return Math.exp(-(distance * distance) / (2 * sigma * sigma));
 }
 
-function getTickMetrics(tickIndex: number, activeTickIndex: number) {
-  const isActive = tickIndex === activeTickIndex;
+function isLongTick(tickIndex: number): boolean {
+  const mod = tickIndex % 4;
+  return mod === 0 || mod === 3;
+}
+
+function getTickMetrics(dotY: number, tickY: number, tickIndex: number) {
+  const distance = tickY - dotY;
+  const influence = gaussianInfluence(distance, BULGE_SIGMA);
 
   return {
-    width: isActive ? TICK_LONG_WIDTH : TICK_SHORT_WIDTH,
-    opacity: isActive ? 0.82 : 0.24,
+    width: isLongTick(tickIndex) ? TICK_LONG_WIDTH : TICK_SHORT_WIDTH,
+    offsetX: influence * BULGE_AMPLITUDE,
+    opacity: 0.22 + influence * 0.52,
   };
 }
 
@@ -238,8 +246,6 @@ export default function CrispToc({
     return Math.abs(center - displayY) < Math.abs(nearestCenter - displayY) ? centerIndex : nearest;
   }, activeIndex);
 
-  const activeTickIndex = getActiveTickIndex(displayY, firstCenter, tickCount);
-
   const moveBy = useCallback(
     (delta: number) => {
       primeCrispTickSound();
@@ -291,29 +297,32 @@ export default function CrispToc({
       ) : null}
 
       <div ref={bodyRef} className="crisp-toc-body">
-        <div className="crisp-toc-scale" aria-hidden="true">
-          {tickMarks.map((tickY, tickIndex) => {
-            const { width, opacity } = getTickMetrics(tickIndex, activeTickIndex);
-
-            return (
-              <span
-                key={tickY}
-                className={`crisp-toc-tick ${tickIndex === activeTickIndex ? 'is-active' : ''}`}
-                style={{
-                  top: `${tickY}px`,
-                  width: `${width}px`,
-                  opacity,
-                }}
-              />
-            );
-          })}
-
+        <div className="crisp-toc-rail" aria-hidden="true">
           <div
-            className="crisp-toc-origin"
+            className="crisp-toc-ball"
             style={{ transform: `translateY(${displayY}px) translateY(-50%)` }}
           >
             <span className="crisp-toc-origin-ring" />
             <span className="crisp-toc-origin-dot" />
+          </div>
+
+          <div className="crisp-toc-scale">
+            {tickMarks.map((tickY, tickIndex) => {
+              const { width, offsetX, opacity } = getTickMetrics(displayY, tickY, tickIndex);
+
+              return (
+                <span
+                  key={tickY}
+                  className={`crisp-toc-tick ${isLongTick(tickIndex) ? 'is-long' : 'is-short'}`}
+                  style={{
+                    top: `${tickY}px`,
+                    width: `${width}px`,
+                    opacity,
+                    transform: `translateY(-50%) translateX(${offsetX}px)`,
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
 
