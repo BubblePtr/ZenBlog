@@ -1,0 +1,15 @@
+---
+import PageShell from '@/shared/components/layout/PageShell.astro';
+import CrispToc from '@/shared/components/navigation/CrispToc.client';
+---
+
+<PageShell
+  title="Crisp TOC"
+  description="Crisp TOC component preview"
+  lang="en"
+  currentPath="/dev/crisp-toc"
+>
+  <main class="flex min-h-[80vh] items-center justify-center px-6 py-16">
+    <CrispToc client:load />
+  </main>
+</PageShell>

@@ -813,3 +813,237 @@ body {
     animation-delay: 0s !important;
   }
 }
+
+/* Crisp TOC — interactive scale navigation */
+.crisp-toc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  width: min(100%, 24rem);
+  padding: 2rem 1.5rem;
+  font-family: var(--font-mono);
+  color: #111;
+  background: #f4f4f5;
+  border-radius: 0.75rem;
+  outline: none;
+}
+
+.dark .crisp-toc {
+  color: #fafafa;
+  background: #18181b;
+}
+
+.crisp-toc-theme-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.crisp-toc-theme-pill {
+  border: 0;
+  border-radius: 9999px;
+  padding: 0.35rem 0.8rem;
+  font: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: #a1a1aa;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.crisp-toc-theme-pill.is-active {
+  color: #fff;
+  background: #09090b;
+}
+
+.dark .crisp-toc-theme-pill.is-active {
+  color: #09090b;
+  background: #fafafa;
+}
+
+.crisp-toc-body {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  align-items: start;
+  width: 100%;
+  min-height: 18rem;
+}
+
+.crisp-toc-scale {
+  position: relative;
+  height: 100%;
+  min-height: inherit;
+}
+
+.crisp-toc-tick {
+  position: absolute;
+  left: 0;
+  height: 1px;
+  border-radius: 9999px;
+  background: #a1a1aa;
+  transform-origin: left center;
+  will-change: transform, width, opacity;
+}
+
+.dark .crisp-toc-tick {
+  background: #71717a;
+}
+
+.crisp-toc-origin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.crisp-toc-origin-ring {
+  position: absolute;
+  top: 50%;
+  left: -1px;
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+}
+
+.dark .crisp-toc-origin-ring {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.crisp-toc-origin-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #09090b;
+  transform: translate(-50%, -50%);
+}
+
+.dark .crisp-toc-origin-dot {
+  background: #fafafa;
+}
+
+.crisp-toc-origin-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 1px;
+  background: #09090b;
+  transform: translateY(-50%);
+}
+
+.dark .crisp-toc-origin-line {
+  background: #fafafa;
+}
+
+.crisp-toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.crisp-toc-item {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0.45rem 0;
+  text-align: left;
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: rgba(24, 24, 27, 0.28);
+  background: transparent;
+  cursor: pointer;
+  transition: color 220ms ease;
+}
+
+.dark .crisp-toc-item {
+  color: rgba(250, 250, 250, 0.28);
+}
+
+.crisp-toc-item:hover {
+  color: rgba(24, 24, 27, 0.55);
+}
+
+.dark .crisp-toc-item:hover {
+  color: rgba(250, 250, 250, 0.55);
+}
+
+.crisp-toc-item.is-active {
+  color: #09090b;
+  font-weight: 600;
+}
+
+.dark .crisp-toc-item.is-active {
+  color: #fafafa;
+}
+
+.crisp-toc-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.crisp-toc-nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 9999px;
+  color: #71717a;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.dark .crisp-toc-nav-button {
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #a1a1aa;
+}
+
+.crisp-toc-nav-button:hover:not(:disabled) {
+  border-color: rgba(0, 0, 0, 0.28);
+  color: #09090b;
+}
+
+.dark .crisp-toc-nav-button:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fafafa;
+}
+
+.crisp-toc-nav-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.crisp-toc-hint {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: #a1a1aa;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crisp-toc-tick {
+    will-change: auto;
+  }
+}
