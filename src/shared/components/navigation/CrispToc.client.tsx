@@ -22,6 +22,10 @@ export interface CrispTocProps {
   onIndexChange?: (index: number) => void;
   soundEnabled?: boolean;
   showThemeBar?: boolean;
+  showFooter?: boolean;
+  scrollSpy?: boolean;
+  proseSelector?: string;
+  ariaLabel?: string;
   className?: string;
 }
 
@@ -41,7 +45,8 @@ const DOT_LERP = 0.14;
 const TICK_SHORT_WIDTH = 10;
 const TICK_LONG_WIDTH = 22;
 const TICK_SIDE_HYSTERESIS = 0.75;
-// Push ticks by 2× dot width so the peak line clears the ball by one diameter.
+const HEADER_OFFSET = 96;
+const SCROLL_IDLE_MS = 180;
 const BULGE_AMPLITUDE = DOT_SIZE * 2;
 const BULGE_SIGMA = 36;
 
@@ -97,6 +102,78 @@ function getTickMetrics(dotY: number, tickY: number, kind: TickMark['kind']) {
   };
 }
 
+function getHeadingDocumentTop(id: string): number | null {
+  const heading = document.getElementById(id);
+  if (!heading) {
+    return null;
+  }
+
+  return heading.getBoundingClientRect().top + window.scrollY;
+}
+
+function getScrollSpyTargetY(itemCenters: number[], items: CrispTocItem[]): number {
+  if (itemCenters.length === 0 || items.length === 0) {
+    return 0;
+  }
+
+  const headingTops = items.map((item) => getHeadingDocumentTop(item.id));
+  const firstTop = headingTops[0];
+  if (firstTop === null) {
+    return itemCenters[0] ?? 0;
+  }
+
+  const scrollAnchor = window.scrollY + HEADER_OFFSET;
+
+  if (scrollAnchor <= firstTop) {
+    return itemCenters[0] ?? 0;
+  }
+
+  const lastIndex = items.length - 1;
+  const lastTop = headingTops[lastIndex];
+  if (lastTop !== null && scrollAnchor >= lastTop) {
+    return itemCenters[lastIndex] ?? 0;
+  }
+
+  for (let index = 0; index < items.length - 1; index += 1) {
+    const start = headingTops[index];
+    const end = headingTops[index + 1];
+    if (start === null || end === null) {
+      continue;
+    }
+
+    if (scrollAnchor >= start && scrollAnchor < end) {
+      const progress = (scrollAnchor - start) / Math.max(end - start, 1);
+      const currentY = itemCenters[index] ?? 0;
+      const nextY = itemCenters[index + 1] ?? currentY;
+      return currentY + (nextY - currentY) * progress;
+    }
+  }
+
+  return itemCenters[lastIndex] ?? 0;
+}
+
+function getScrollSpyActiveIndex(items: CrispTocItem[]): number {
+  if (items.length === 0) {
+    return 0;
+  }
+
+  const scrollAnchor = window.scrollY + HEADER_OFFSET;
+  let activeIndex = 0;
+
+  for (let index = 0; index < items.length; index += 1) {
+    const top = getHeadingDocumentTop(items[index].id);
+    if (top !== null && scrollAnchor >= top) {
+      activeIndex = index;
+    }
+  }
+
+  return activeIndex;
+}
+
+function shouldHandleItemClick(event: MouseEvent): boolean {
+  return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+}
+
 export default function CrispToc({
   items = DEFAULT_ITEMS,
   defaultIndex = 0,
@@ -104,6 +181,10 @@ export default function CrispToc({
   onIndexChange,
   soundEnabled = true,
   showThemeBar = true,
+  showFooter = true,
+  scrollSpy = false,
+  proseSelector = '.article-prose',
+  ariaLabel = 'Section navigation',
   className = '',
 }: CrispTocProps) {
   const listId = useId();
@@ -116,6 +197,8 @@ export default function CrispToc({
   const previousYRef = useRef(0);
   const tickSideRef = useRef<Map<number, -1 | 1>>(new Map());
   const itemCentersRef = useRef<number[]>([]);
+  const lockedIndexRef = useRef<number | null>(null);
+  const scrollIdleTimerRef = useRef<number | undefined>(undefined);
 
   const isControlled = index !== undefined;
   const [internalIndex, setInternalIndex] = useState(() => clampIndex(defaultIndex, items.length));
@@ -135,6 +218,27 @@ export default function CrispToc({
     },
     [isControlled, items.length, onIndexChange],
   );
+
+  const releaseClickLock = useCallback(() => {
+    lockedIndexRef.current = null;
+  }, []);
+
+  const scheduleClickLockRelease = useCallback(() => {
+    window.clearTimeout(scrollIdleTimerRef.current);
+    scrollIdleTimerRef.current = window.setTimeout(releaseClickLock, SCROLL_IDLE_MS);
+  }, [releaseClickLock]);
+
+  const syncScrollSpyTarget = useCallback(() => {
+    const centers = itemCentersRef.current;
+    if (lockedIndexRef.current !== null) {
+      targetYRef.current = centers[lockedIndexRef.current] ?? targetYRef.current;
+      setActiveIndex(lockedIndexRef.current);
+      return;
+    }
+
+    targetYRef.current = getScrollSpyTargetY(centers, items);
+    setActiveIndex(getScrollSpyActiveIndex(items));
+  }, [items, setActiveIndex]);
 
   const measureLayout = useCallback(() => {
     const body = bodyRef.current;
@@ -157,7 +261,11 @@ export default function CrispToc({
     itemCentersRef.current = centers;
 
     const first = centers[0] ?? 0;
-    targetYRef.current = centers[activeIndex] ?? first;
+    if (!scrollSpy) {
+      targetYRef.current = centers[activeIndex] ?? first;
+    } else {
+      syncScrollSpyTarget();
+    }
 
     if (displayYRef.current === 0) {
       displayYRef.current = targetYRef.current;
@@ -173,7 +281,7 @@ export default function CrispToc({
 
     tickSideRef.current = nextTickSide;
     setLayoutVersion((value) => value + 1);
-  }, [activeIndex, items]);
+  }, [activeIndex, items, scrollSpy, syncScrollSpyTarget]);
 
   useLayoutEffect(() => {
     measureLayout();
@@ -199,14 +307,68 @@ export default function CrispToc({
   }, [measureLayout]);
 
   useEffect(() => {
+    if (scrollSpy) {
+      return;
+    }
+
     const centers = itemCentersRef.current;
     targetYRef.current = centers[activeIndex] ?? targetYRef.current;
-  }, [activeIndex, layoutVersion]);
+  }, [activeIndex, layoutVersion, scrollSpy]);
+
+  useEffect(() => {
+    if (!scrollSpy) {
+      return;
+    }
+
+    const onScroll = () => {
+      if (lockedIndexRef.current !== null) {
+        targetYRef.current = itemCentersRef.current[lockedIndexRef.current] ?? targetYRef.current;
+        setActiveIndex(lockedIndexRef.current);
+        scheduleClickLockRelease();
+        return;
+      }
+
+      syncScrollSpyTarget();
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    syncScrollSpyTarget();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.clearTimeout(scrollIdleTimerRef.current);
+    };
+  }, [scheduleClickLockRelease, scrollSpy, setActiveIndex, syncScrollSpyTarget, layoutVersion]);
+
+  useEffect(() => {
+    if (!scrollSpy) {
+      return;
+    }
+
+    const prose = document.querySelector<HTMLElement>(proseSelector);
+    if (!prose) {
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      measureLayout();
+    });
+
+    observer.observe(prose, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [measureLayout, proseSelector, scrollSpy]);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const step = () => {
+      if (scrollSpy && lockedIndexRef.current === null) {
+        targetYRef.current = getScrollSpyTargetY(itemCentersRef.current, items);
+      }
+
       const targetY = targetYRef.current;
       let displayY = displayYRef.current;
 
@@ -255,7 +417,7 @@ export default function CrispToc({
         window.cancelAnimationFrame(frameRef.current);
       }
     };
-  }, [soundEnabled, layoutVersion]);
+  }, [items, scrollSpy, soundEnabled, layoutVersion]);
 
   const displayY = displayYRef.current;
   const itemCenters = itemCentersRef.current;
@@ -266,12 +428,39 @@ export default function CrispToc({
     return Math.abs(center - displayY) < Math.abs(nearestCenter - displayY) ? centerIndex : nearest;
   }, activeIndex);
 
+  const navigateToItem = useCallback(
+    (itemIndex: number, event?: MouseEvent) => {
+      primeCrispTickSound();
+      setActiveIndex(itemIndex);
+
+      if (!scrollSpy) {
+        return;
+      }
+
+      const item = items[itemIndex];
+      const target = document.getElementById(item.id);
+      if (!target) {
+        return;
+      }
+
+      if (event && !shouldHandleItemClick(event)) {
+        return;
+      }
+
+      lockedIndexRef.current = itemIndex;
+      targetYRef.current = itemCentersRef.current[itemIndex] ?? targetYRef.current;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', `#${item.id}`);
+      scheduleClickLockRelease();
+    },
+    [items, scheduleClickLockRelease, scrollSpy, setActiveIndex],
+  );
+
   const moveBy = useCallback(
     (delta: number) => {
-      primeCrispTickSound();
-      setActiveIndex(activeIndex + delta);
+      navigateToItem(clampIndex(activeIndex + delta, items.length));
     },
-    [activeIndex, setActiveIndex],
+    [activeIndex, items.length, navigateToItem],
   );
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -289,12 +478,13 @@ export default function CrispToc({
 
   return (
     <div
-      className={`crisp-toc ${className}`.trim()}
-      tabIndex={0}
+      className={`crisp-toc ${scrollSpy ? 'crisp-toc--article' : ''} ${className}`.trim()}
+      tabIndex={scrollSpy ? -1 : 0}
       role="navigation"
-      aria-label="Section navigation"
-      onKeyDown={onKeyDown}
-      onPointerDown={primeCrispTickSound}
+      aria-label={ariaLabel}
+      onKeyDown={scrollSpy ? undefined : onKeyDown}
+      onPointerDown={soundEnabled ? primeCrispTickSound : undefined}
+      data-article-toc={scrollSpy ? '' : undefined}
     >
       {showThemeBar ? (
         <div className="crisp-toc-theme-bar" aria-hidden="true">
@@ -359,45 +549,62 @@ export default function CrispToc({
                   itemRefs.current[itemIndex] = node;
                 }}
               >
-                <button
-                  type="button"
-                  className={`crisp-toc-item ${isActive ? 'is-active' : ''}`}
-                  aria-current={isActive ? 'location' : undefined}
-                  style={{ transform: `translateX(${offsetX}px)` }}
-                  onClick={() => {
-                    primeCrispTickSound();
-                    setActiveIndex(itemIndex);
-                  }}
-                >
-                  {item.label}
-                </button>
+                {scrollSpy ? (
+                  <a
+                    href={`#${item.id}`}
+                    data-toc-link={item.id}
+                    className={`crisp-toc-item ${isActive ? 'is-active' : ''}`}
+                    aria-current={isActive ? 'location' : undefined}
+                    style={{ transform: `translateX(${offsetX}px)` }}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      navigateToItem(itemIndex, event.nativeEvent);
+                    }}
+                  >
+                    <span className="line-clamp-2">{item.label}</span>
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    className={`crisp-toc-item ${isActive ? 'is-active' : ''}`}
+                    aria-current={isActive ? 'location' : undefined}
+                    style={{ transform: `translateX(${offsetX}px)` }}
+                    onClick={() => {
+                      navigateToItem(itemIndex);
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                )}
               </li>
             );
           })}
         </ul>
       </div>
 
-      <div className="crisp-toc-footer">
-        <button
-          type="button"
-          className="crisp-toc-nav-button"
-          aria-label="Previous section"
-          onClick={() => moveBy(-1)}
-          disabled={activeIndex === 0}
-        >
-          <RiArrowUpLine aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          className="crisp-toc-nav-button"
-          aria-label="Next section"
-          onClick={() => moveBy(1)}
-          disabled={activeIndex === items.length - 1}
-        >
-          <RiArrowDownLine aria-hidden="true" />
-        </button>
-        <span className="crisp-toc-hint">USE ↑↓ TO NAVIGATE</span>
-      </div>
+      {showFooter ? (
+        <div className="crisp-toc-footer">
+          <button
+            type="button"
+            className="crisp-toc-nav-button"
+            aria-label="Previous section"
+            onClick={() => moveBy(-1)}
+            disabled={activeIndex === 0}
+          >
+            <RiArrowUpLine aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className="crisp-toc-nav-button"
+            aria-label="Next section"
+            onClick={() => moveBy(1)}
+            disabled={activeIndex === items.length - 1}
+          >
+            <RiArrowDownLine aria-hidden="true" />
+          </button>
+          <span className="crisp-toc-hint">USE ↑↓ TO NAVIGATE</span>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { extractMarkdownHeadings } from '../../remark/extract-markdown-headings.mjs';
-import { shouldShowToc } from '@/features/blog/toc';
+import { shouldShowToc, getArticleTocHeadings } from '@/features/blog/toc';
 
 describe('extractMarkdownHeadings', () => {
   test('extracts h2 and h3 with anchor-compatible slugs', () => {
@@ -41,5 +41,20 @@ describe('shouldShowToc', () => {
         { slug: 'b', text: 'B', depth: 2 },
       ]),
     ).toBe(true);
+  });
+});
+
+describe('getArticleTocHeadings', () => {
+  test('includes only h2 headings', () => {
+    expect(
+      getArticleTocHeadings([
+        { slug: 'section-one', text: 'Section One', depth: 2 },
+        { slug: 'nested-detail', text: 'Nested detail', depth: 3 },
+        { slug: 'section-two', text: 'Section Two', depth: 2 },
+      ]),
+    ).toEqual([
+      { slug: 'section-one', text: 'Section One', depth: 2 },
+      { slug: 'section-two', text: 'Section Two', depth: 2 },
+    ]);
   });
 });

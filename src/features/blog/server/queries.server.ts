@@ -4,6 +4,7 @@ import type { Language } from '@/i18n/config';
 import { withTrailingSlash } from '@/shared/urls';
 import type { BlogListItem } from '@/types/content';
 import type { TocHeading } from '@/features/blog/toc';
+import { getArticleTocHeadings } from '@/features/blog/toc';
 import { extractMarkdownHeadings } from '../../../remark/extract-markdown-headings.mjs';
 
 export type BlogEntry = CollectionEntry<'blog'>;
@@ -107,7 +108,7 @@ export async function getBlogStaticPathsByLang(lang: Language) {
 }
 
 export function getBlogTocHeadings(markdown: string): TocHeading[] {
-  return extractMarkdownHeadings(markdown) as TocHeading[];
+  return getArticleTocHeadings(extractMarkdownHeadings(markdown) as TocHeading[]);
 }
 
 export function getReadTime(content: string, lang: Language): number {
