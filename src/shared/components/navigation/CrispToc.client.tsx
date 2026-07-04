@@ -53,8 +53,7 @@ function gaussianInfluence(distance: number, sigma: number): number {
 }
 
 function isLongTick(tickIndex: number): boolean {
-  const mod = tickIndex % 4;
-  return mod === 0 || mod === 3;
+  return tickIndex % 3 === 0;
 }
 
 function getTickMetrics(dotY: number, tickY: number, tickIndex: number) {

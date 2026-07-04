@@ -869,7 +869,7 @@ body {
 .crisp-toc-body {
   position: relative;
   display: grid;
-  grid-template-columns: 3.75rem minmax(0, 1fr);
+  grid-template-columns: 2.75rem minmax(0, 1fr);
   align-items: start;
   width: 100%;
   min-height: 18rem;
@@ -879,11 +879,12 @@ body {
   position: relative;
   height: 100%;
   min-height: inherit;
+  --crisp-toc-lane-left: 0.625rem;
 }
 
 .crisp-toc-ball {
   position: absolute;
-  left: 0.35rem;
+  left: var(--crisp-toc-lane-left);
   top: 0;
   z-index: 2;
   width: 0;
@@ -899,7 +900,7 @@ body {
 
 .crisp-toc-tick {
   position: absolute;
-  left: 1.85rem;
+  left: var(--crisp-toc-lane-left);
   height: 1px;
   border-radius: 9999px;
   background: #a1a1aa;
@@ -922,7 +923,7 @@ body {
 .crisp-toc-origin-ring {
   position: absolute;
   top: 50%;
-  left: -1px;
+  left: 6px;
   width: 20px;
   height: 20px;
   border: 1px solid rgba(0, 0, 0, 0.16);
@@ -942,7 +943,7 @@ body {
   height: 12px;
   border-radius: 9999px;
   background: #09090b;
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
 }
 
 .dark .crisp-toc-origin-dot {
