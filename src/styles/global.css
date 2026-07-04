@@ -974,6 +974,7 @@ body {
   background: transparent;
   cursor: pointer;
   transition: color 220ms ease;
+  will-change: transform;
 }
 
 .dark .crisp-toc-item {

@@ -83,9 +83,12 @@ function buildTickMarks(itemCenters: number[]): TickMark[] {
   return ticks;
 }
 
+function getWaveOffset(dotY: number, y: number): number {
+  return gaussianInfluence(y - dotY, BULGE_SIGMA) * BULGE_AMPLITUDE;
+}
+
 function getTickMetrics(dotY: number, tickY: number, kind: TickMark['kind']) {
-  const distance = tickY - dotY;
-  const influence = gaussianInfluence(distance, BULGE_SIGMA);
+  const influence = gaussianInfluence(tickY - dotY, BULGE_SIGMA);
 
   return {
     width: kind === 'long' ? TICK_LONG_WIDTH : TICK_SHORT_WIDTH,
@@ -141,15 +144,14 @@ export default function CrispToc({
       return;
     }
 
-    const bodyRect = body.getBoundingClientRect();
+    const listTop = list.offsetTop;
     const centers = items.map((_, itemIndex) => {
       const item = itemRefs.current[itemIndex];
       if (!item) {
         return 0;
       }
 
-      const rect = item.getBoundingClientRect();
-      return rect.top - bodyRect.top + rect.height / 2;
+      return listTop + item.offsetTop + item.offsetHeight / 2;
     });
 
     itemCentersRef.current = centers;
@@ -347,6 +349,8 @@ export default function CrispToc({
         <ul ref={listRef} id={listId} className="crisp-toc-list">
           {items.map((item, itemIndex) => {
             const isActive = itemIndex === visualIndex;
+            const itemCenter = itemCenters[itemIndex] ?? 0;
+            const offsetX = getWaveOffset(displayY, itemCenter);
 
             return (
               <li
@@ -359,6 +363,7 @@ export default function CrispToc({
                   type="button"
                   className={`crisp-toc-item ${isActive ? 'is-active' : ''}`}
                   aria-current={isActive ? 'location' : undefined}
+                  style={{ transform: `translateX(${offsetX}px)` }}
                   onClick={() => {
                     primeCrispTickSound();
                     setActiveIndex(itemIndex);
