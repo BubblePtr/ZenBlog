@@ -27,6 +27,7 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
     >
       {/* 区块标题：标题+View All 全宽，描述限宽 */}
       <div className="mb-10">
+        <p className="kicker mb-4">No. 03 / Photography</p>
         <div className="flex items-baseline justify-between">
           <h2
             className={`text-2xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl ${lang === 'zh' ? 'font-article-title' : 'font-serif-en'}`}
@@ -35,7 +36,7 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
           </h2>
           <a
             href={getPhotographyUrl()}
-            className="inline-flex items-center gap-1 text-sm text-zinc-500 no-underline dark:text-zinc-400"
+            className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] text-zinc-500 no-underline transition-colors hover:text-[var(--color-accent)] dark:text-zinc-400"
           >
             <span>{translate('home.viewAll')}</span>
             <span>→</span>

@@ -50,8 +50,9 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
     <footer className="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950">
       <div className="px-[var(--page-gutter)] py-16">
         <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left justify-between gap-12">
-          {/* 左侧：品牌区 + 版权信息 */}
+          {/* 左侧：品牌区 + 版权信息（colophon 版权页语气） */}
           <div className="flex flex-col items-center gap-4 md:items-start">
+            <p className="kicker">Colophon</p>
             <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-100">{brandName}</h2>
             <div className="flex flex-col items-center gap-2 md:items-start">
               <p className="text-xs text-zinc-400">
@@ -83,15 +84,13 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
           <div className="flex flex-col items-center gap-12 sm:flex-row sm:gap-16 lg:gap-28 md:items-start">
             {/* 导航区 */}
             <div className="text-center md:text-left">
-              <h3 className="text-xs uppercase tracking-wider text-zinc-400 mb-3">
-                {t['footer.navigate']}
-              </h3>
+              <h3 className="kicker mb-3">{t['footer.navigate']}</h3>
               <nav className="flex flex-col items-center space-y-2 md:items-start">
                 {NAV_LINKS.map((link) => (
                   <a
                     key={link.href}
                     href={getLocalizedPath(link.href)}
-                    className="inline-block text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:translate-x-0.5 transition-all duration-200"
+                    className="inline-block font-mono text-xs tracking-[0.12em] text-zinc-600 dark:text-zinc-400 hover:text-[var(--color-accent)] hover:translate-x-0.5 transition-all duration-200"
                   >
                     {formatFooterLabel(t[link.labelKey])}
                   </a>
@@ -101,9 +100,7 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
 
             {/* 社交区 */}
             <div className="text-center md:text-left">
-              <h3 className="text-xs uppercase tracking-wider text-zinc-400 mb-3">
-                {t['footer.connect']}
-              </h3>
+              <h3 className="kicker mb-3">{t['footer.connect']}</h3>
               <div className="flex flex-col items-center space-y-2 md:items-start">
                 {SOCIAL_LINKS.map((link) => (
                   <a
@@ -111,10 +108,10 @@ export default function SiteFooter({ lang, t }: SiteFooterProps) {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors md:justify-start"
+                    className="flex items-center justify-center gap-2 font-mono text-xs tracking-[0.12em] text-zinc-500 hover:text-[var(--color-accent)] transition-colors md:justify-start"
                     aria-label={link.label}
                   >
-                    <link.icon size={20} />
+                    <link.icon size={16} />
                     <span>{formatFooterLabel(link.label)}</span>
                   </a>
                 ))}

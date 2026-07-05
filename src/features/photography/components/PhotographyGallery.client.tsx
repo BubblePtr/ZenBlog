@@ -50,7 +50,10 @@ export default function PhotographyGallery({ groups, t }: PhotographyGalleryProp
   return (
     <div className="w-full">
       <div className="mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <h1 className="font-heading text-4xl sm:text-5xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 mb-6">
+        <p className="kicker mb-5">Index / Photography</p>
+        <h1
+          className={`text-4xl sm:text-5xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 mb-6 ${/[一-鿿]/.test(title) ? 'font-article-title' : 'font-serif-en'}`}
+        >
           {title}
         </h1>
         <p className="font-light text-lg text-zinc-500 dark:text-zinc-400 leading-relaxed">
