@@ -57,6 +57,7 @@ export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsS
       className="mb-24 sm:mb-32"
     >
       <div className="mb-10 max-w-3xl">
+        <p className="kicker mb-4">No. 01 / Projects</p>
         <div className="flex items-baseline justify-between">
           <h2
             className={`text-2xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl ${lang === 'zh' ? 'font-article-title' : 'font-serif-en'}`}
@@ -123,7 +124,7 @@ export default function HomeProjectsSection({ projects, lang, t }: HomeProjectsS
                 }`}
               >
                 <div className="px-6 py-8 lg:rail-line-r lg:px-10 lg:py-10">
-                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500 dark:text-zinc-400">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-accent)]">
                     {String(index + 1).padStart(2, '0')}
                   </p>
                   <h3 className="mt-4 max-w-xl text-3xl tracking-tight text-zinc-900 dark:text-zinc-100">

@@ -21,6 +21,9 @@ interface BlogGridRow {
   publishedLabel: string;
   year: string;
   isIndieDevWeekly: boolean;
+  description?: string;
+  /* Issue-style folio number: oldest post is 001, stable across filtering. */
+  folio: string;
 }
 
 interface FilterOption {
@@ -34,7 +37,7 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
   const [selectedAuthor, setSelectedAuthor] = useState('all');
 
   const rows = useMemo<BlogGridRow[]>(() => {
-    return posts.map((post) => {
+    return posts.map((post, index) => {
       const publishedAt = new Date(post.data.pubDate);
 
       return {
@@ -45,6 +48,8 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
         publishedLabel: formatGridDate(publishedAt, lang),
         year: String(publishedAt.getFullYear()),
         isIndieDevWeekly: isIndieDevWeeklyPost(post.data.tags),
+        description: post.data.description,
+        folio: String(posts.length - index).padStart(3, '0'),
       };
     });
   }, [posts, lang]);
@@ -87,7 +92,10 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
   return (
     <div className="w-full">
       <div className="mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <h1 className="mb-6 font-heading text-4xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-5xl">
+        <p className="kicker mb-5">Index / Writing</p>
+        <h1
+          className={`mb-6 text-4xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-5xl ${lang === 'zh' ? 'font-article-title' : 'font-serif-en'}`}
+        >
           {translate('blog.title')}
         </h1>
         <p className="max-w-3xl font-light leading-relaxed text-zinc-500 dark:text-zinc-400 sm:text-lg">
@@ -134,42 +142,73 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
               {translate('blog.grid.empty')}
             </div>
           ) : (
-            filteredRows.map((row, index) => (
+            <>
+              {/* Cover Story：当前筛选下最新一篇作为头条 */}
               <motion.article
-                key={row.slug}
+                key={`cover-${filteredRows[0].slug}`}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: Math.min(index * 0.04, 0.32), duration: 0.35 }}
-                className="border-b border-zinc-200 dark:border-zinc-800"
+                transition={{ duration: 0.35 }}
+                className="mb-4"
               >
                 <a
-                  href={getBlogUrl(row.slug)}
-                  className="group block py-5 no-underline transition-colors focus:outline-none"
+                  href={getBlogUrl(filteredRows[0].slug)}
+                  className="group block py-6 no-underline focus:outline-none"
                 >
-                  <div className="md:hidden">
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-zinc-500 dark:text-zinc-400">
-                      <span>{row.publishedLabel}</span>
-                      <span>{row.authorName}</span>
-                    </div>
-
-                    <h2 className="mt-3 text-[1.05rem] font-normal tracking-tight text-zinc-900 transition-colors group-hover:text-zinc-600 dark:text-zinc-100 dark:group-hover:text-zinc-300">
-                      {row.isIndieDevWeekly && (
-                        <RiQuillPenLine
-                          aria-hidden="true"
-                          className="mr-2 inline-block h-[1em] w-[1em] -translate-y-px align-[-0.1em] text-zinc-400 dark:text-zinc-600"
-                        />
-                      )}
-                      {row.title}
-                    </h2>
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+                    <p className="kicker">Cover Story / {filteredRows[0].folio}</p>
+                    <p className="font-mono text-xs tabular-nums tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
+                      {filteredRows[0].publishedLabel}
+                    </p>
                   </div>
 
-                  <div className="hidden grid-cols-[170px_minmax(0,1fr)_180px] items-center gap-6 md:grid">
-                    <div className="text-[0.95rem] text-zinc-600 dark:text-zinc-300">
-                      {row.publishedLabel}
-                    </div>
+                  <h2
+                    className={`mt-5 max-w-3xl text-3xl leading-[1.15] tracking-tight text-zinc-900 transition-colors group-hover:text-[var(--color-accent)] dark:text-zinc-100 sm:text-[2.6rem] ${lang === 'zh' ? 'font-article-title' : 'font-serif-en'}`}
+                  >
+                    {filteredRows[0].title}
+                  </h2>
 
-                    <div className="min-w-0">
-                      <h2 className="text-[1.05rem] font-normal tracking-tight text-zinc-900 transition-colors group-hover:text-zinc-600 dark:text-zinc-100 dark:group-hover:text-zinc-300">
+                  {filteredRows[0].description && (
+                    <p className="mt-4 max-w-2xl text-base font-light leading-7 text-zinc-500 dark:text-zinc-400">
+                      {filteredRows[0].description}
+                    </p>
+                  )}
+
+                  <p className="mt-5 font-mono text-xs tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
+                    {filteredRows[0].authorName}
+                    <span
+                      aria-hidden="true"
+                      className="ml-3 inline-block text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100"
+                    >
+                      →
+                    </span>
+                  </p>
+                </a>
+                <div aria-hidden="true" className="section-rule" />
+              </motion.article>
+
+              {filteredRows.slice(1).map((row, index) => (
+                <motion.article
+                  key={row.slug}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: Math.min(index * 0.04, 0.32), duration: 0.35 }}
+                  className="border-b border-zinc-200 dark:border-zinc-800"
+                >
+                  <a
+                    href={getBlogUrl(row.slug)}
+                    className="group block py-5 no-underline transition-colors focus:outline-none"
+                  >
+                    <div className="md:hidden">
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs tabular-nums tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
+                        <span className="transition-colors group-hover:text-[var(--color-accent)]">
+                          {row.folio}
+                        </span>
+                        <span>{row.publishedLabel}</span>
+                        <span>{row.authorName}</span>
+                      </div>
+
+                      <h2 className="mt-3 text-[1.05rem] font-normal tracking-tight text-zinc-900 transition-colors group-hover:text-[var(--color-accent)] dark:text-zinc-100">
                         {row.isIndieDevWeekly && (
                           <RiQuillPenLine
                             aria-hidden="true"
@@ -180,13 +219,35 @@ export default function BlogListSection({ posts, lang, t }: BlogListSectionProps
                       </h2>
                     </div>
 
-                    <div className="text-right text-[0.95rem] text-zinc-500 dark:text-zinc-400">
-                      {row.authorName}
+                    <div className="hidden grid-cols-[3.5rem_150px_minmax(0,1fr)_180px] items-baseline gap-6 md:grid">
+                      <div className="font-mono text-xs tabular-nums tracking-[0.08em] text-zinc-400 transition-colors group-hover:text-[var(--color-accent)] dark:text-zinc-500">
+                        {row.folio}
+                      </div>
+
+                      <div className="font-mono text-xs tabular-nums tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
+                        {row.publishedLabel}
+                      </div>
+
+                      <div className="min-w-0">
+                        <h2 className="text-[1.05rem] font-normal tracking-tight text-zinc-900 transition-colors group-hover:text-[var(--color-accent)] dark:text-zinc-100">
+                          {row.isIndieDevWeekly && (
+                            <RiQuillPenLine
+                              aria-hidden="true"
+                              className="mr-2 inline-block h-[1em] w-[1em] -translate-y-px align-[-0.1em] text-zinc-400 dark:text-zinc-600"
+                            />
+                          )}
+                          {row.title}
+                        </h2>
+                      </div>
+
+                      <div className="text-right font-mono text-xs tracking-[0.08em] text-zinc-500 dark:text-zinc-400">
+                        {row.authorName}
+                      </div>
                     </div>
-                  </div>
-                </a>
-              </motion.article>
-            ))
+                  </a>
+                </motion.article>
+              ))}
+            </>
           )}
         </div>
       </section>

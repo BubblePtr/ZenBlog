@@ -51,6 +51,11 @@ export default function HomeHeroSection({ t, lang }: HomeHeroSectionProps) {
       animate="visible"
       variants={container}
     >
+      {/* 刊号行：杂志封面式的期刊标识 */}
+      <motion.p variants={item} className="kicker mb-10">
+        kieran.build <span aria-hidden="true">·</span> vol. {new Date().getFullYear()}
+      </motion.p>
+
       {/* 头像 */}
       <motion.div
         variants={item}

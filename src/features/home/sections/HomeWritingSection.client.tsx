@@ -92,6 +92,7 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
     >
       {/* 区块标题 */}
       <div className="mb-10">
+        <p className="kicker mb-4">No. 02 / Writing</p>
         <div className="flex items-baseline justify-between">
           <h2
             className={`text-2xl font-normal tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl ${isZh ? 'font-article-title' : 'font-serif-en'}`}
@@ -100,7 +101,7 @@ export default function HomeWritingSection({ posts, lang, t }: HomeWritingSectio
           </h2>
           <a
             href={getBlogListUrl()}
-            className="inline-flex items-center gap-1 text-sm text-zinc-500 no-underline dark:text-zinc-400"
+            className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] text-zinc-500 no-underline transition-colors hover:text-[var(--color-accent)] dark:text-zinc-400"
           >
             <span>{translate('home.viewAll')}</span>
             <span>→</span>

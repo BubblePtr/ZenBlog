@@ -50,6 +50,10 @@
     /* 内容导轨颜色 */
     --rail-color: rgba(0, 0, 0, 0.14);
 
+    /* 图纸蓝：全站唯一强调色（wayfinding only —— kicker、链接 hover、active 态） */
+    --color-accent: #1d4ed8;
+    --color-accent-strong: #1e3a8a;
+
     /* Rails track the 84rem content column edge (50vw ± 42rem) on wide screens,
        so they keep the original generous margin from the viewport edge. On
        narrow screens that term goes negative and the rails clamp to --rail-edge
@@ -83,6 +87,10 @@
 
     /* 暗色导轨颜色 */
     --rail-color: rgba(255, 255, 255, 0.14);
+
+    /* 暗色图纸蓝：提亮以保证对比度 */
+    --color-accent: #60a5fa;
+    --color-accent-strong: #93c5fd;
   }
 
   html {
@@ -282,11 +290,7 @@ body {
   }
 
   .prose .heading-anchor:hover {
-    color: var(--color-orange-600);
-  }
-
-  .dark .prose .heading-anchor:hover {
-    color: var(--color-orange-400);
+    color: var(--color-accent);
   }
 
   @media (max-width: 767px) {
@@ -346,30 +350,25 @@ body {
   }
 
   .article-toc.crisp-toc--article .crisp-toc-item.is-active {
-    color: oklch(55.3% 0.195 38.4);
+    color: var(--color-accent);
     font-weight: 500;
-  }
-
-  .dark .article-toc.crisp-toc--article .crisp-toc-item.is-active {
-    color: oklch(70.5% 0.213 47.6);
   }
 
   /* Connector line inherits the article accent so it reads as one unit with the label. */
   .article-toc.crisp-toc--article .crisp-toc-tick.crisp-toc-line {
-    --crisp-tick-ink: oklch(55.3% 0.195 38.4);
-  }
-
-  .dark .article-toc.crisp-toc--article .crisp-toc-tick.crisp-toc-line {
-    --crisp-tick-ink: oklch(70.5% 0.213 47.6);
+    --crisp-tick-ink: var(--color-accent);
   }
 
   /* 链接 */
   .prose a {
-    @apply underline underline-offset-2 decoration-zinc-400/60 dark:decoration-zinc-500/70;
-
-    @apply hover:text-orange-600 dark:hover:text-orange-400 hover:decoration-orange-600/60 dark:hover:decoration-orange-400/60 transition-colors;
+    @apply underline underline-offset-2 decoration-zinc-400/60 dark:decoration-zinc-500/70 transition-colors;
 
     color: inherit;
+  }
+
+  .prose a:hover {
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
   }
 
   /* 无序列表 */
@@ -496,10 +495,16 @@ body {
   .prose a.link-card {
     @apply my-8 block overflow-hidden rounded-lg border border-zinc-200 bg-white no-underline shadow-sm;
 
-    @apply transition-colors transition-shadow hover:border-orange-500/70 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-orange-400/70;
+    @apply transition-colors transition-shadow hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900;
 
     color: inherit;
     text-decoration: none;
+  }
+
+  .prose a.github-repo-card:hover,
+  .prose a.link-card:hover {
+    border-color: var(--color-accent);
+    color: inherit;
   }
 
   .prose a.github-repo-card img {
@@ -634,9 +639,25 @@ body {
     overflow: hidden;
   }
 
-  /* 自定义选中文本颜色 */
+  /* 选中文本用图纸蓝反白：全站强调色的最小签名 */
   ::selection {
-    @apply bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100;
+    background: var(--color-accent);
+    color: #faf7f2;
+  }
+
+  .dark ::selection {
+    background: var(--color-accent);
+    color: #09090b;
+  }
+
+  /* 杂志 kicker（栏目眉线）：mono 大写小字 + 图纸蓝 */
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem; /* 11px */
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
   }
 
   /* 统一焦点指示器样式 */

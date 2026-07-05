@@ -56,24 +56,19 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
 
       <div className="relative px-[var(--page-gutter)] h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <nav className="hidden sm:flex items-center gap-6 text-sm font-normal text-zinc-500 dark:text-zinc-400">
-            <a
-              href={lang === 'zh' ? '/zh' : '/'}
-              className={`block px-2 py-2 transition-colors relative group no-underline focus-ring ${
-                currentPath === '/' || currentPath === '/zh'
-                  ? 'text-zinc-900 dark:text-zinc-100'
-                  : 'hover:text-zinc-900 dark:hover:text-zinc-100'
-              }`}
-            >
-              {t['nav.home'] || 'HOME'}
-              <span
-                className={`absolute bottom-1 left-2 h-px bg-zinc-900 dark:bg-zinc-100 transition-all ${
-                  currentPath === '/' || currentPath === '/zh'
-                    ? 'w-[calc(100%-16px)]'
-                    : 'w-0 group-hover:w-[calc(100%-16px)] opacity-50'
-                }`}
-              />
-            </a>
+          {/* 刊头字标：兼作首页链接，桌面端替代 HOME 导航项 */}
+          <a
+            href={homeHref}
+            className={`font-mono text-[13px] font-semibold tracking-[0.18em] no-underline transition-colors focus-ring ${
+              currentPath === '/' || currentPath === '/zh'
+                ? 'text-zinc-900 dark:text-zinc-100'
+                : 'text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100'
+            }`}
+          >
+            KIERAN<span className="text-[var(--color-accent)]">·</span>ZHANG
+          </a>
+
+          <nav className="hidden sm:flex items-center gap-5 font-mono text-xs uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
             {navItems.map((item) => {
               const active = isActive(item.key);
               const href = getHref(item.key);
@@ -90,10 +85,10 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
                 >
                   {item.label}
                   <span
-                    className={`absolute bottom-1 left-2 h-px bg-zinc-900 dark:bg-zinc-100 transition-all ${
+                    className={`absolute bottom-1 left-2 h-px transition-all ${
                       active
-                        ? 'w-[calc(100%-16px)]'
-                        : 'w-0 group-hover:w-[calc(100%-16px)] opacity-50'
+                        ? 'w-[calc(100%-16px)] bg-[var(--color-accent)]'
+                        : 'w-0 group-hover:w-[calc(100%-16px)] bg-zinc-900 opacity-50 dark:bg-zinc-100'
                     }`}
                   />
                 </a>
