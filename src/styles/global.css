@@ -354,6 +354,15 @@ body {
     color: oklch(70.5% 0.213 47.6);
   }
 
+  /* Connector line inherits the article accent so it reads as one unit with the label. */
+  .article-toc.crisp-toc--article .crisp-toc-tick.crisp-toc-line {
+    --crisp-tick-ink: oklch(55.3% 0.195 38.4);
+  }
+
+  .dark .article-toc.crisp-toc--article .crisp-toc-tick.crisp-toc-line {
+    --crisp-tick-ink: oklch(70.5% 0.213 47.6);
+  }
+
   /* 链接 */
   .prose a {
     @apply underline underline-offset-2 decoration-zinc-400/60 dark:decoration-zinc-500/70;
@@ -838,7 +847,13 @@ body {
   z-index: 2;
   width: 0;
   height: 0;
-  pointer-events: none;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.crisp-toc-ball.is-dragging {
+  cursor: grabbing;
 }
 
 .crisp-toc-scale {
@@ -852,36 +867,30 @@ body {
   left: var(--crisp-toc-lane-left);
   height: 2px;
   border-radius: 9999px;
-  background: #a1a1aa;
+  --crisp-tick-base: #d4d4d8;
+  --crisp-tick-ink: #09090b;
+  /* --crisp-tick-heat (0..1) is set inline per frame from ball proximity. */
+  background: color-mix(
+    in oklab,
+    var(--crisp-tick-ink) calc(var(--crisp-tick-heat, 0) * 100%),
+    var(--crisp-tick-base)
+  );
   transform-origin: left center;
-  will-change: transform, opacity;
-}
-
-.crisp-toc-tick.is-long {
-  background: #71717a;
+  will-change: transform;
+  /* Heat flips 0/1 as the ball's center crosses ticks; the fade turns that
+     into a quick ratchet-style crossfade instead of a hard swap. */
+  transition:
+    background-color 140ms ease,
+    height 200ms ease;
 }
 
 .dark .crisp-toc-tick {
-  background: #71717a;
+  --crisp-tick-base: #52525b;
+  --crisp-tick-ink: #fafafa;
 }
 
-.dark .crisp-toc-tick.is-long {
-  background: #a1a1aa;
-}
-
-.crisp-toc-origin-ring {
-  position: absolute;
-  top: 50%;
-  left: calc(var(--crisp-toc-dot-size) / 2);
-  width: calc(var(--crisp-toc-dot-size) + 8px);
-  height: calc(var(--crisp-toc-dot-size) + 8px);
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  border-radius: 9999px;
-  transform: translate(-50%, -50%);
-}
-
-.dark .crisp-toc-origin-ring {
-  border-color: rgba(255, 255, 255, 0.22);
+.crisp-toc-tick.crisp-toc-line {
+  height: 2.5px;
 }
 
 .crisp-toc-origin-dot {
@@ -912,7 +921,11 @@ body {
   display: block;
   width: 100%;
   border: 0;
-  padding: 0.45rem 0;
+  padding: 0.45rem 0 0.45rem 0.75rem;
+  /* Single line only: wrapping reflows mid-animation and breaks the glide. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-align: left;
   font: inherit;
   font-size: 0.95rem;
