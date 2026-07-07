@@ -1,0 +1,169 @@
+---
+/**
+ * Dappled light overlay — bamboo-frond shadows draping down from the top,
+ * modeled on the dany.works atmospheric overlay.
+ *
+ * Pure static markup, zero JS. Each SVG defines one reusable frond — a
+ * drooping stem with leaves pinnately attached along its whole length —
+ * and instances it across the top edge, so every silhouette reads as a
+ * whole branch hanging into frame, never as floating leaves. Two layers
+ * at different blur depths sway around a far off-canvas pivot; `multiply`
+ * blending darkens the page like a real shadow. Covers only the first
+ * screen and scrolls away with it. Hidden in dark mode and frozen under
+ * prefers-reduced-motion.
+ */
+---
+
+<div class="dappled-light" aria-hidden="true">
+  <div class="dappled-layer dappled-far">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- One bamboo leaf blade, tip pointing up (-y), stem end at origin -->
+        <path
+          id="leaf-far"
+          d="M0 0 C 5 -12 7 -46 2.5 -104 C 1 -114 -1 -114 -2.5 -104 C -7 -46 -5 -12 0 0 Z"
+        ></path>
+        <!-- A tuft of overlapping blades, the unit bamboo foliage grows in -->
+        <g id="tuft-far">
+          <use href="#leaf-far" transform="rotate(176)"></use>
+          <use href="#leaf-far" transform="rotate(148) scale(0.85)"></use>
+          <use href="#leaf-far" transform="rotate(207) scale(0.9)"></use>
+          <use href="#leaf-far" transform="rotate(124) scale(0.6)"></use>
+        </g>
+        <!-- A whole drooping frond: thin stem arcing down-right, dense leaf
+             tufts at every node so the foliage buries the stem -->
+        <g id="frond-far">
+          <path
+            d="M 0 0 C 6 50 18 110 48 190 C 58 215 68 232 82 248"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            fill="none"
+          ></path>
+          <use href="#tuft-far" transform="translate(3 34) rotate(-14) scale(0.6)"></use>
+          <use href="#tuft-far" transform="translate(9 66) rotate(18) scale(0.75)"></use>
+          <use href="#tuft-far" transform="translate(17 98) rotate(-10) scale(0.85)"></use>
+          <use href="#tuft-far" transform="translate(27 128) rotate(24) scale(0.95)"></use>
+          <use href="#tuft-far" transform="translate(38 158) rotate(-18) scale(0.8)"></use>
+          <use href="#tuft-far" transform="translate(52 188) rotate(12) scale(1)"></use>
+          <use href="#tuft-far" transform="translate(66 216) rotate(-8) scale(0.9)"></use>
+          <use href="#tuft-far" transform="translate(82 248) rotate(16) scale(1.1)"></use>
+        </g>
+      </defs>
+      <g fill="#3f3f46" color="#3f3f46">
+        <!-- Tall frond over the left third -->
+        <use href="#frond-far" transform="translate(200 -70) scale(3) rotate(10)"></use>
+        <!-- Center frond, mirrored so it droops toward the title -->
+        <use href="#frond-far" transform="translate(1060 -90) scale(-3.4 3.4) rotate(-4)"></use>
+        <!-- Right-edge frond, partly out of frame -->
+        <use href="#frond-far" transform="translate(1500 -50) scale(2.8) rotate(-8)"></use>
+      </g>
+    </svg>
+  </div>
+  <div class="dappled-layer dappled-near">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <path
+          id="leaf-near"
+          d="M0 0 C 5 -12 7 -46 2.5 -104 C 1 -114 -1 -114 -2.5 -104 C -7 -46 -5 -12 0 0 Z"
+        ></path>
+        <g id="tuft-near">
+          <use href="#leaf-near" transform="rotate(176)"></use>
+          <use href="#leaf-near" transform="rotate(148) scale(0.85)"></use>
+          <use href="#leaf-near" transform="rotate(207) scale(0.9)"></use>
+          <use href="#leaf-near" transform="rotate(124) scale(0.6)"></use>
+        </g>
+        <g id="frond-near">
+          <path
+            d="M 0 0 C 6 50 18 110 48 190 C 58 215 68 232 82 248"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            fill="none"
+          ></path>
+          <use href="#tuft-near" transform="translate(4 38) rotate(-12) scale(0.6)"></use>
+          <use href="#tuft-near" transform="translate(11 72) rotate(20) scale(0.75)"></use>
+          <use href="#tuft-near" transform="translate(20 106) rotate(-14) scale(0.85)"></use>
+          <use href="#tuft-near" transform="translate(32 140) rotate(18) scale(0.95)"></use>
+          <use href="#tuft-near" transform="translate(46 174) rotate(-10) scale(0.8)"></use>
+          <use href="#tuft-near" transform="translate(62 208) rotate(14) scale(0.95)"></use>
+          <use href="#tuft-near" transform="translate(82 248) rotate(-6) scale(1.05)"></use>
+        </g>
+      </defs>
+      <g fill="#52525b" color="#52525b">
+        <!-- Sharper frond hanging left of the title column -->
+        <use href="#frond-near" transform="translate(560 -60) scale(2.1) rotate(6)"></use>
+        <!-- Mirrored frond dropping past the title's right side -->
+        <use href="#frond-near" transform="translate(1320 -40) scale(-2.3 2.3) rotate(-6)"></use>
+        <!-- Small frond at the far left edge -->
+        <use href="#frond-near" transform="translate(40 -30) scale(1.7) rotate(14)"></use>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<style>
+  .dappled-light {
+    /* Cover only the first screen and scroll away with it, so the dense
+       content below stays undisturbed; fade out near the bottom edge
+       instead of cutting off hard. */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    z-index: 9999;
+    pointer-events: none;
+    overflow: hidden;
+    mix-blend-mode: multiply;
+    mask-image: linear-gradient(to bottom, black 78%, transparent);
+  }
+
+  /* Gray shadows multiplied onto near-black do nothing but smear — skip at night */
+  :global(.dark) .dappled-light {
+    display: none;
+  }
+
+  .dappled-layer {
+    /* Bleed past the viewport so blur never reveals a hard SVG edge */
+    position: absolute;
+    inset: -12%;
+    will-change: transform;
+  }
+
+  .dappled-layer svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Far fronds: heavier blur, fainter, slower — the canopy high above */
+  .dappled-far {
+    filter: blur(38px);
+    opacity: 0.2;
+    transform-origin: 50% -80%;
+    animation: dappled-sway 13s ease-in-out infinite alternate;
+  }
+
+  /* Near fronds: crisper, darker, quicker — leaves closest to the paper */
+  .dappled-near {
+    filter: blur(13px);
+    opacity: 0.28;
+    transform-origin: 50% -100%;
+    animation: dappled-sway 8.5s ease-in-out -4s infinite alternate-reverse;
+  }
+
+  @keyframes dappled-sway {
+    from {
+      transform: rotate(-0.7deg) skewX(0.4deg);
+    }
+    to {
+      transform: rotate(0.9deg) skewX(-0.6deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dappled-layer {
+      animation: none;
+    }
+  }
+</style>

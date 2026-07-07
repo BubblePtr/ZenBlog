@@ -1,5 +1,6 @@
 ---
 import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
+import DappledLight from '@/features/home/components/DappledLight.astro';
 import { HomeLanding } from '@/features/home';
 import { getBlogListByLang } from '@/features/blog/server';
 import { getPhotographyForHome } from '@/features/photography/server/queries.server';
@@ -17,5 +18,6 @@ const [homePosts, homePhotos, homeProjects] = await Promise.all([
 ---
 
 <PageShell lang={lang} title={SITE_TITLE} description={SITE_DESCRIPTION} currentPath="/zh">
+  <DappledLight />
   <HomeLanding client:load posts={homePosts} photos={homePhotos} projects={homeProjects} lang={lang} t={t} />
 </PageShell>
