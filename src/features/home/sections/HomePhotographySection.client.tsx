@@ -1,13 +1,60 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import type { PhotographyPhotoItem } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
+import { Skeleton } from '@/components/ui/skeleton';
+import ImageWithSkeleton from '@/shared/components/media/ImageWithSkeleton.client';
 import { withTrailingSlash } from '@/shared/urls';
 
 interface HomePhotographySectionProps {
   photos: PhotographyPhotoItem[];
   lang: Language;
   t: TranslationDictionary;
+}
+
+function HomePhotoPreview({ photo, href }: { photo: PhotographyPhotoItem; href: string }) {
+  const [imageReady, setImageReady] = useState(false);
+  const ratio =
+    photo.data.imageWidth && photo.data.imageHeight
+      ? `${photo.data.imageWidth} / ${photo.data.imageHeight}`
+      : '4 / 3';
+
+  return (
+    <a href={href} className="group relative block overflow-hidden">
+      <ImageWithSkeleton
+        src={photo.data.imageSrc}
+        srcSet={photo.data.imageSrcSet}
+        sizes="(min-width: 640px) 33vw, 100vw"
+        width={photo.data.imageWidth}
+        height={photo.data.imageHeight}
+        alt={photo.data.title}
+        loading="lazy"
+        decoding="async"
+        frameClassName="w-full"
+        frameStyle={{ aspectRatio: ratio }}
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+        onStatusChange={(status) => setImageReady(status !== 'loading')}
+      />
+      {!imageReady ? (
+        // shadcn Card-style caption bars over the media while loading
+        <div className="absolute inset-x-0 bottom-0 space-y-2 p-3" aria-hidden="true">
+          <Skeleton className="h-3 w-2/3 bg-white/35 dark:bg-white/20" />
+          <Skeleton className="h-3 w-1/2 bg-white/25 dark:bg-white/15" />
+        </div>
+      ) : (
+        <>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-3">
+            <p className="text-xs leading-snug tracking-tight text-white/90">{photo.data.title}</p>
+            {photo.data.location && (
+              <p className="mt-0.5 text-[11px] text-white/60">{photo.data.location}</p>
+            )}
+          </div>
+        </>
+      )}
+    </a>
+  );
 }
 
 export default function HomePhotographySection({ photos, lang, t }: HomePhotographySectionProps) {
@@ -25,7 +72,6 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
       transition={{ duration: 0.5 }}
       className="mb-24 sm:mb-32"
     >
-      {/* 区块标题：标题+View All 全宽，描述限宽 */}
       <div className="mb-10">
         <p className="kicker mb-4">No. 03 / Photography</p>
         <div className="flex items-baseline justify-between">
@@ -47,31 +93,10 @@ export default function HomePhotographySection({ photos, lang, t }: HomePhotogra
         </p>
       </div>
 
-      {/* Content area: rail divider and photo preview grid */}
       <div className="mx-[var(--page-bleed)] rail-line-t px-[var(--rail-line-pad)] pt-8 sm:pt-10">
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3">
           {photos.slice(0, 6).map((photo) => (
-            <a
-              key={photo.slug}
-              href={getPhotographyUrl()}
-              className="group relative block overflow-hidden"
-            >
-              <img
-                src={photo.data.imageSrc}
-                alt={photo.data.title}
-                loading="lazy"
-                className="block aspect-[4/3] h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04] sm:aspect-auto sm:h-auto"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-3">
-                <p className="text-xs leading-snug tracking-tight text-white/90">
-                  {photo.data.title}
-                </p>
-                {photo.data.location && (
-                  <p className="mt-0.5 text-[11px] text-white/60">{photo.data.location}</p>
-                )}
-              </div>
-            </a>
+            <HomePhotoPreview key={photo.slug} photo={photo} href={getPhotographyUrl()} />
           ))}
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import type { Language } from '@/i18n/config';
+import { buildPhotographyImageVariants } from '@/features/photography/photography-image-variants';
 import type { PhotographyPhotoItem } from '@/types/content';
 
 export type PhotographyEntry = CollectionEntry<'photography'>;
@@ -37,7 +38,9 @@ export function mapPhotographyPhotoItem(
   entry: PhotographyEntry,
   lang: Language,
 ): PhotographyPhotoItem {
-  const imageSrc = typeof entry.data.image === 'string' ? entry.data.image : entry.data.image.src;
+  const rawImageSrc =
+    typeof entry.data.image === 'string' ? entry.data.image : entry.data.image.src;
+  const variants = buildPhotographyImageVariants(rawImageSrc);
   const imageWidth =
     typeof entry.data.image === 'string' ? entry.data.imageWidth : entry.data.image.width;
   const imageHeight =
@@ -49,7 +52,9 @@ export function mapPhotographyPhotoItem(
       title: entry.data.title[lang],
       location: entry.data.location?.[lang],
       shotDate: entry.data.shotDate,
-      imageSrc,
+      imageSrc: variants.src,
+      imageSrcSet: variants.srcSet,
+      imageOriginalSrc: variants.originalSrc,
       imageWidth,
       imageHeight,
       exif: entry.data.exif,
