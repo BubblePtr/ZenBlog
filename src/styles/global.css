@@ -671,6 +671,90 @@ body {
     background-color: var(--rail-color);
   }
 
+  /* 首页斑驳光影（Dappled Light）— 仅浅色模式 */
+  .dappled-light {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .dappled-light__defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .dappled-light__layer {
+    position: absolute;
+    inset: -25%;
+    width: 150%;
+    height: 150%;
+  }
+
+  .dappled-light__layer--filter {
+    background: oklch(88% 0.07 78);
+    filter: url(#home-dappled-light-filter);
+    opacity: 0.42;
+    animation: dappled-light-drift-a 52s ease-in-out infinite alternate;
+  }
+
+  .dappled-light__layer--warmth {
+    background:
+      radial-gradient(ellipse 140px 100px at 18% 22%, oklch(86% 0.08 80 / 0.28), transparent 72%),
+      radial-gradient(ellipse 120px 150px at 62% 18%, oklch(89% 0.05 72 / 0.22), transparent 68%),
+      radial-gradient(ellipse 160px 110px at 82% 38%, oklch(85% 0.09 85 / 0.24), transparent 70%),
+      radial-gradient(ellipse 100px 130px at 35% 48%, oklch(88% 0.06 75 / 0.18), transparent 65%);
+    filter: blur(10px);
+    mix-blend-mode: soft-light;
+    opacity: 0.85;
+    animation: dappled-light-drift-b 68s ease-in-out infinite alternate-reverse;
+  }
+
+  .dappled-light__fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 28%,
+      oklch(98% 0.006 60 / 0.35) 52%,
+      oklch(98% 0.006 60 / 0.82) 72%,
+      oklch(98% 0.006 60) 88%
+    );
+  }
+
+  .dark .dappled-light {
+    display: none;
+  }
+
+  @keyframes dappled-light-drift-a {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(-2.5%, 1.8%, 0) scale(1.04);
+    }
+  }
+
+  @keyframes dappled-light-drift-b {
+    from {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    to {
+      transform: translate3d(2%, -1.5%, 0) rotate(1.5deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dappled-light__layer--filter,
+    .dappled-light__layer--warmth {
+      animation: none;
+    }
+  }
+
   .rail-line-t {
     background-image: linear-gradient(var(--rail-color), var(--rail-color));
     background-size: auto 1px;
