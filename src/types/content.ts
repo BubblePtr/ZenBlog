@@ -49,7 +49,12 @@ export interface PhotographyPhotoItem {
     title: string;
     location?: string;
     shotDate: Date;
+    /** Display src (WebP variant when available). */
     imageSrc: string;
+    /** Responsive srcset for display variants; omit when unavailable. */
+    imageSrcSet?: string;
+    /** Full-resolution original CDN URL. */
+    imageOriginalSrc?: string;
     imageWidth?: number;
     imageHeight?: number;
     exif?: PhotoExif;
