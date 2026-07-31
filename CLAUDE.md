@@ -70,6 +70,13 @@ jj undo                              # 撤销上一次 jj 操作（万能后悔�
 - jj 没有暂存区，所有工作区改动都属于 `@`；需要拆分改动时用 `jj split`。
 - `.jj/` 已通过 `.jj/.gitignore` 对 Git 隐藏，勿手动提交。
 
+### 与 gh CLI 配合的注意点
+
+jj 无内置 forge 集成，PR 的创建/合并仍用 `gh`。但 jj 下 git 始终处于 detached HEAD，`gh` 无法推断"当前分支"：
+
+- `gh pr create` 必须显式指定 `--head <书签名>`（以及 `--base main`）。
+- `gh pr merge` 不要加 `--delete-branch`（会报 `not on any branch`）；改用 jj 删除远端分支：`jj bookmark delete <书签名>` 后 `jj git push --bookmark <书签名>`（推送删除）。
+
 ## 核心架构
 
 ### Feature 模块化架构
