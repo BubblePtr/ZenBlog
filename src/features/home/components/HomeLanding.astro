@@ -8,7 +8,7 @@
 import type { BlogListItem, ProjectListItem } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
-import { groupPostsByYear } from '@/features/home/group-posts-by-year';
+import PostIndex from '@/shared/components/content/PostIndex.astro';
 import { withTrailingSlash } from '@/shared/urls';
 
 interface Props {
@@ -23,13 +23,7 @@ const translate = (key: TranslationKey) => t[key] || key;
 const isZh = lang === 'zh';
 
 const AVATAR_URL = 'https://cdn.ninthbit.org/avatar.jpg';
-const blogHref = (slug: string) => withTrailingSlash(isZh ? `/zh/blog/${slug}` : `/blog/${slug}`);
 const projectsHref = withTrailingSlash(isZh ? '/zh/projects' : '/projects');
-
-const yearGroups = groupPostsByYear(posts);
-
-const formatDay = (date: Date) =>
-  `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 ---
 
 <div class="home-min mx-auto max-w-[34rem] px-6 pb-24 pt-24 sm:pt-28">
@@ -59,33 +53,7 @@ const formatDay = (date: Date) =>
 
   {/* Writing index, grouped by year */}
   <section class="mt-16" aria-label={translate('home.writing')}>
-    {
-      yearGroups.map((group) => (
-        <div class="mt-8 first:mt-0">
-          <p class="year-label">{group.year}</p>
-          <ul class="mt-2 list-none space-y-0 p-0">
-            {group.posts.map((post) => (
-              <li>
-                <a
-                  href={blogHref(post.slug)}
-                  class="post-row group flex items-baseline justify-between gap-8 py-2 no-underline focus-ring"
-                >
-                  <span class="post-title text-[0.9375rem] leading-relaxed text-zinc-900 transition-colors dark:text-zinc-100">
-                    {post.data.title}
-                  </span>
-                  <time
-                    datetime={post.data.pubDate.toISOString()}
-                    class="shrink-0 font-mono text-[0.7rem] tabular-nums text-zinc-400 dark:text-zinc-500"
-                  >
-                    {formatDay(post.data.pubDate)}
-                  </time>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))
-    }
+    <PostIndex posts={posts} lang={lang} />
   </section>
 
   {/* Projects */}
@@ -138,8 +106,6 @@ const formatDay = (date: Date) =>
     color: var(--color-text-tertiary, #b3b3ae);
   }
 
-  .post-row:hover .post-title,
-  .post-row:focus-visible .post-title,
   .group:hover .post-title {
     color: var(--color-accent);
   }
