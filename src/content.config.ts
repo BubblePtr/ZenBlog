@@ -42,6 +42,7 @@ const projects = defineCollection({
       stack: z.array(z.string()),
       github: z.string().optional(),
       demo: z.string().optional(),
+      status: z.enum(['building', 'shipped']).optional(),
     }),
 });
 

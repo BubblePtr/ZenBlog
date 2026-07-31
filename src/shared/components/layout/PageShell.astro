@@ -39,6 +39,7 @@ const normalizedCurrentPath = withTrailingSlash(currentPath);
 <html lang={lang}>
   <head>
     <BaseHead title={title} description={description} slug={slug} />
+    <slot name="head" />
   </head>
   <body class={bodyClass}>
     <SiteHeader client:load currentPath={normalizedCurrentPath} lang={lang} t={t} localizedPaths={localizedPaths} />

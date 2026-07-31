@@ -5,6 +5,7 @@ order: 1
 stack: ['Astro', 'React', 'Tailwind', 'Framer Motion']
 github: 'https://github.com/BubblePtr/ZenBlog'
 demo: 'https://kieran.build'
+status: 'shipped'
 ---
 
 Here is a detailed breakdown of how I built this theme...

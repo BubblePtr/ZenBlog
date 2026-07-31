@@ -15,6 +15,7 @@ export const zh = {
   'home.writing': '博客',
   'home.hero.name': 'Kieran Zhang',
   'home.hero.tagline': '软件工程师 & 独立开发者',
+  'home.hero.bio': 'Agentic 工程师，独立开发者。正在构建 Voily——一款 AI 语音输入法。',
   'home.hero.intro': '记录软件工程、AI 产品与独立开发，也把一些正在发生的项目和观察留在这里。',
   'home.photography': '摄影',
   'home.projects': '项目',
