@@ -2,7 +2,7 @@
 import BaseHead from '@/components/BaseHead.astro';
 import type { Language } from '@/i18n/config';
 import SiteHeader from '@/shared/components/navigation/SiteHeader.client';
-import SiteFooter from '@/shared/components/layout/SiteFooter.client';
+import SiteFooter from '@/shared/components/layout/SiteFooter.astro';
 import { getTranslationDictionary } from '@/shared/i18n/types';
 import { withTrailingSlash } from '@/shared/urls';
 
@@ -43,19 +43,9 @@ const normalizedCurrentPath = withTrailingSlash(currentPath);
   </head>
   <body class={bodyClass}>
     <SiteHeader client:load currentPath={normalizedCurrentPath} lang={lang} t={t} localizedPaths={localizedPaths} />
-    <div class="px-[var(--page-gutter)]" aria-hidden="true">
-      <div class="mx-[var(--page-bleed)] section-rule"></div>
-    </div>
     <main class={mainClass}>
       <slot />
     </main>
-    {showFooter && (
-      <>
-        <div class="px-[var(--page-gutter)]" aria-hidden="true">
-          <div class="mx-[var(--page-bleed)] section-rule"></div>
-        </div>
-        <SiteFooter client:visible lang={lang} t={t} />
-      </>
-    )}
+    {showFooter && <SiteFooter />}
   </body>
 </html>

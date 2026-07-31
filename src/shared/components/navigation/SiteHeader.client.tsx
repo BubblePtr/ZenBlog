@@ -56,19 +56,19 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
 
       <div className="relative px-[var(--page-gutter)] h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          {/* 刊头字标：兼作首页链接，桌面端替代 HOME 导航项 */}
+          {/* 字标：兼作首页链接，桌面端替代 HOME 导航项 */}
           <a
             href={homeHref}
-            className={`font-mono text-[13px] font-semibold tracking-[0.18em] no-underline transition-colors focus-ring ${
+            className={`text-sm font-semibold tracking-tight no-underline transition-colors focus-ring ${
               currentPath === '/' || currentPath === '/zh'
                 ? 'text-zinc-900 dark:text-zinc-100'
                 : 'text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100'
             }`}
           >
-            KIERAN<span className="text-[var(--color-accent)]">·</span>ZHANG
+            Kieran Zhang
           </a>
 
-          <nav className="hidden sm:flex items-center gap-5 font-mono text-xs uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
+          <nav className="hidden sm:flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400">
             {navItems.map((item) => {
               const active = isActive(item.key);
               const href = getHref(item.key);
@@ -77,20 +77,13 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
                 <a
                   key={item.key}
                   href={href}
-                  className={`block px-2 py-2 transition-colors relative group no-underline focus-ring ${
+                  className={`block px-2.5 py-2 transition-colors no-underline focus-ring ${
                     active
-                      ? 'text-zinc-900 dark:text-zinc-100'
+                      ? 'text-[var(--color-accent)]'
                       : 'hover:text-zinc-900 dark:hover:text-zinc-100'
                   }`}
                 >
                   {item.label}
-                  <span
-                    className={`absolute bottom-1 left-2 h-px transition-all ${
-                      active
-                        ? 'w-[calc(100%-16px)] bg-[var(--color-accent)]'
-                        : 'w-0 group-hover:w-[calc(100%-16px)] bg-zinc-900 opacity-50 dark:bg-zinc-100'
-                    }`}
-                  />
                 </a>
               );
             })}

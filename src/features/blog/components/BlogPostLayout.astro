@@ -6,7 +6,7 @@ import { getTranslationDictionary } from '@/shared/i18n/types';
 import { Image } from 'astro:assets';
 import BaseHead from '@/components/BaseHead.astro';
 import SiteHeader from '@/shared/components/navigation/SiteHeader.client';
-import SiteFooter from '@/shared/components/layout/SiteFooter.client';
+import SiteFooter from '@/shared/components/layout/SiteFooter.astro';
 import ArticleToc from '@/features/blog/components/ArticleToc.astro';
 import type { TocHeading } from '@/features/blog/toc';
 import GiscusComments from '@/features/blog/components/GiscusComments.client';
@@ -197,10 +197,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
       </section>
     </main>
 
-    <div class="px-[var(--page-gutter)]" aria-hidden="true">
-      <div class="mx-[var(--page-bleed)] section-rule"></div>
-    </div>
-    <SiteFooter client:visible lang={lang} t={t} />
+    <SiteFooter />
     <BlogImageLightbox lang={lang} />
   </body>
 </html>

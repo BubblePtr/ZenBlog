@@ -25,7 +25,6 @@ const isZh = lang === 'zh';
 const AVATAR_URL = 'https://cdn.ninthbit.org/avatar.jpg';
 const blogHref = (slug: string) => withTrailingSlash(isZh ? `/zh/blog/${slug}` : `/blog/${slug}`);
 const projectsHref = withTrailingSlash(isZh ? '/zh/projects' : '/projects');
-const photographyHref = withTrailingSlash(isZh ? '/zh/photography' : '/photography');
 
 const yearGroups = groupPostsByYear(posts);
 
@@ -128,31 +127,10 @@ const formatDay = (date: Date) =>
     )
   }
 
-  {/* Footer links */}
-  <footer class="mt-20 flex gap-6 text-[0.8rem] text-zinc-500 dark:text-zinc-400">
-    <a href={photographyHref} class="foot-link">{translate('home.photography')}</a>
-    <a href="/rss.xml" class="foot-link">RSS</a>
-    <a
-      href="https://github.com/BubblePtr"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="foot-link"
-    >
-      GitHub
-    </a>
-  </footer>
 </div>
 
 <style>
-  .home-min {
-    /* Bamboo green: this page's only accent, scoped so the site-wide
-       drafting-blue wayfinding accent stays untouched. */
-    --home-accent: #3d5a48;
-  }
-  :global(.dark) .home-min {
-    --home-accent: #8fb39e;
-  }
-
+  /* Accent comes from the site-wide bamboo token (--color-accent). */
   .year-label {
     font-family: var(--font-mono, ui-monospace, monospace);
     font-size: 0.7rem;
@@ -163,21 +141,11 @@ const formatDay = (date: Date) =>
   .post-row:hover .post-title,
   .post-row:focus-visible .post-title,
   .group:hover .post-title {
-    color: var(--home-accent);
+    color: var(--color-accent);
   }
 
   .project-status {
-    color: var(--home-accent);
+    color: var(--color-accent);
   }
 
-  .foot-link {
-    color: inherit;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
-    transition: color 150ms ease;
-  }
-  .foot-link:hover {
-    color: var(--home-accent);
-  }
 </style>

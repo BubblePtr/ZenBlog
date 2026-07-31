@@ -1,10 +1,10 @@
 export const en = {
   // Navigation
-  'nav.home': 'HOME',
-  'nav.blog': 'BLOG',
-  'nav.photography': 'PHOTOGRAPHY',
-  'nav.projects': 'PROJECTS',
-  'nav.about': 'ABOUT ME',
+  'nav.home': 'Home',
+  'nav.blog': 'Blog',
+  'nav.photography': 'Photography',
+  'nav.projects': 'Projects',
+  'nav.about': 'About',
 
   // Home
   'home.title': 'Kieran Zhang',

@@ -50,9 +50,10 @@
     /* 内容导轨颜色 */
     --rail-color: rgba(0, 0, 0, 0.14);
 
-    /* 图纸蓝：全站唯一强调色（wayfinding only —— kicker、链接 hover、active 态） */
-    --color-accent: #1d4ed8;
-    --color-accent-strong: #1e3a8a;
+    /* 青竹：全站唯一强调色（wayfinding only：链接 hover、focus、active 态、状态字）。
+       竹与玉之色，皆象征君子。纸面上 7.1:1（AAA）。 */
+    --color-accent: oklch(0.439 0.046 156.7);
+    --color-accent-strong: oklch(0.36 0.046 157);
 
     /* Rails track the 84rem content column edge (50vw ± 42rem) on wide screens,
        so they keep the original generous margin from the viewport edge. On
@@ -88,9 +89,9 @@
     /* 暗色导轨颜色 */
     --rail-color: rgba(255, 255, 255, 0.14);
 
-    /* 暗色图纸蓝：提亮以保证对比度 */
-    --color-accent: #60a5fa;
-    --color-accent-strong: #93c5fd;
+    /* 暗色青竹：提高 L 保证对比度（墨底上 8.6:1，AAA），色相与浅色同 */
+    --color-accent: oklch(0.734 0.049 159.3);
+    --color-accent-strong: oklch(0.8 0.049 158);
   }
 
   html {
@@ -115,26 +116,8 @@
     min-height: 100vh;
   }
 
-  body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    z-index: 9999;
-    background-image:
-      linear-gradient(var(--rail-color), var(--rail-color)),
-      linear-gradient(var(--rail-color), var(--rail-color));
-    background-size:
-      1px 100%,
-      1px 100%;
-    background-position:
-      var(--rail-left-position) 0,
-      var(--rail-right-position) 0;
-    background-repeat: repeat-y, repeat-y;
-  }
+  /* 双导轨页框已随杂志系统退役（DESIGN.md「留白」）；
+     --rail-* 变量保留，供尚未迁移的 feature 页内 rail-line 工具类使用 */
 
   @media (max-width: 767px) {
     /* Mobile: rails stay visible at a tighter 24px inset with a small gap. */
@@ -639,7 +622,7 @@ body {
     overflow: hidden;
   }
 
-  /* 选中文本用图纸蓝反白：全站强调色的最小签名 */
+  /* 选中文本用青竹反白：全站强调色的最小签名 */
   ::selection {
     background: var(--color-accent);
     color: #faf7f2;
