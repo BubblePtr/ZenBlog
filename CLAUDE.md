@@ -29,6 +29,47 @@ bun run r2:images:upload       # 扫描 content 中外部图片上传到 R2
 bun run r2:images:replace      # 批量替换 content 中的图片宿主域名
 ```
 
+## 版本管理（jj + Git 共存）
+
+本仓库使用 [jj（Jujutsu）](https://jj-vcs.github.io/jj/)与 Git colocated 模式（`.jj/` 与 `.git/` 共存）。两套命令可混用，jj 会在下次运行时自动同步 Git 侧的变化。优先使用 jj 命令。
+
+### 常用工作流
+
+```bash
+# 开始新工作（相当于 git checkout -b）
+jj new main                          # 在 main 之上新建 working-copy commit
+
+# 提交（无需 git add，工作区改动自动跟踪）
+jj commit -m "feat: ..."             # 提交当前改动并新建空 working copy
+jj describe -m "feat: ..."           # 只改当前 commit 的描述，不新建
+
+# 创建分支并推送（PR 工作流）
+jj bookmark create feat/xxx -r @-    # 在刚提交的 commit 上建书签
+jj git push --bookmark feat/xxx
+
+# 同步远端
+jj git fetch                         # 相当于 git fetch（main 书签已 track origin）
+jj rebase -d main                    # 把当前工作 rebase 到最新 main
+
+# 查看状态
+jj status                            # 工作区状态
+jj log                               # 提交图（@ 为当前 working copy）
+jj diff                              # 当前 commit 的改动
+
+# 修改历史
+jj squash                            # 把 @ 的改动合入父 commit
+jj edit <rev>                        # 直接编辑历史上某个 commit
+jj undo                              # 撤销上一次 jj 操作（万能后悔药）
+```
+
+### 约定
+
+- 提交信息仍遵循 Conventional Commits。
+- 不直接推送 `main` 书签；一律通过 feature 书签（`feat/...`、`fix/...`、`chore/...`）+ PR 合并。
+- PR 合并后：`jj git fetch`，然后 `jj bookmark delete feat/xxx` 清理本地书签。
+- jj 没有暂存区，所有工作区改动都属于 `@`；需要拆分改动时用 `jj split`。
+- `.jj/` 已通过 `.jj/.gitignore` 对 Git 隐藏，勿手动提交。
+
 ## 核心架构
 
 ### Feature 模块化架构
