@@ -3,21 +3,20 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
 import DappledLight from '@/features/home/components/DappledLight.astro';
 import { HomeLanding } from '@/features/home';
 import { getBlogListByLang } from '@/features/blog/server';
-import { getPhotographyForHome } from '@/features/photography/server/queries.server';
 import { getProjectsForHome } from '@/features/projects/server/queries.server';
 import PageShell from '@/shared/components/layout/PageShell.astro';
 import { getTranslationDictionary } from '@/shared/i18n/types';
 
 const lang = 'zh' as const;
 const t = getTranslationDictionary(lang);
-const [homePosts, homePhotos, homeProjects] = await Promise.all([
-  getBlogListByLang(lang, { homeOnly: true, limit: 10 }),
-  getPhotographyForHome(lang, 6),
+const [homePosts, homeProjects] = await Promise.all([
+  getBlogListByLang(lang),
   getProjectsForHome(4),
 ]);
 ---
 
 <PageShell lang={lang} title={SITE_TITLE} description={SITE_DESCRIPTION} currentPath="/zh">
+  <link slot="head" rel="preload" as="image" href="https://cdn.ninthbit.org/avatar.jpg" />
   <DappledLight />
-  <HomeLanding client:load posts={homePosts} photos={homePhotos} projects={homeProjects} lang={lang} t={t} />
+  <HomeLanding posts={homePosts} projects={homeProjects} lang={lang} t={t} />
 </PageShell>

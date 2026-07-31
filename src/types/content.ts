@@ -30,6 +30,7 @@ export interface ProjectListItem {
     stack: string[];
     github?: string;
     demo?: string;
+    status?: 'building' | 'shipped';
   };
 }
 

@@ -14,6 +14,7 @@ export function mapProjectListItem(project: ProjectEntry): ProjectListItem {
       stack: project.data.stack,
       github: project.data.github,
       demo: project.data.demo,
+      status: project.data.status,
     },
   };
 }
