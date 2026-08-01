@@ -1,9 +1,12 @@
 ---
+/**
+ * Minimal about page (DESIGN.md "Ma"): one quiet column — identity line
+ * (avatar keeps the hero-avatar view-transition), statement, plain-text
+ * contact links, then mono-labelled reading and life sections.
+ */
 import type { TranslationDictionary } from '@/shared/i18n/types';
 import type { Language } from '@/i18n/config';
-import IdentityBand from '@/features/about/components/IdentityBand.astro';
-import PersonalDetails from '@/features/about/components/PersonalDetails.astro';
-import ConnectAside from '@/features/about/components/ConnectAside.astro';
+import { getAboutContent, getAboutSocialLinks } from '@/features/about/content';
 
 interface Props {
   t: TranslationDictionary;
@@ -11,20 +14,115 @@ interface Props {
 }
 
 const { t, lang } = Astro.props;
+const isZh = lang === 'zh';
+
+const AVATAR_URL = 'https://cdn.ninthbit.org/avatar.jpg';
+const { reading } = getAboutContent(lang);
+const socialLinks = getAboutSocialLinks();
 ---
 
-<div class="px-[var(--page-gutter)] relative z-10">
-  <div class="mx-auto w-full max-w-5xl">
+<div class="mx-auto max-w-[34rem] px-6 pb-24 pt-16 sm:pt-20">
+  {/* Identity */}
+  <div class="flex items-center gap-3.5">
     <div
-      class="grid grid-cols-1 gap-y-10 pt-[clamp(3rem,7vw,5.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(20.875rem,21rem)] lg:items-start lg:gap-x-14 xl:gap-x-16"
+      class="h-11 w-11 shrink-0 overflow-hidden rounded-full"
+      style="view-transition-name: hero-avatar"
     >
-      <ConnectAside t={t} lang={lang} class="order-1 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-2" />
-
-      <IdentityBand t={t} lang={lang} class="order-2 lg:order-none lg:col-start-1 lg:row-start-1" />
-
-      <div class="order-3 lg:order-none lg:col-start-1 lg:row-start-2">
-        <PersonalDetails t={t} lang={lang} />
-      </div>
+      <img
+        src={AVATAR_URL}
+        alt={t['about.name']}
+        width="44"
+        height="44"
+        loading="eager"
+        fetchpriority="high"
+        class="h-full w-full object-cover"
+      />
+    </div>
+    <div>
+      <h1 class="text-[1.05rem] font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+        {t['about.name']}
+      </h1>
+      <p class="mt-0.5 text-[0.8125rem] text-zinc-500 dark:text-zinc-400">
+        {t['about.identity.role']} · {t['about.location']}
+      </p>
     </div>
   </div>
+
+  {/* Statement */}
+  <p
+    class="mt-8 whitespace-pre-line text-[0.9375rem] font-light leading-7 text-[var(--color-text-primary)]"
+  >
+    {t['about.identity.statement']}
+  </p>
+
+  {/* Contact links */}
+  <p class="mt-6 flex gap-5 text-[0.8rem] text-zinc-500 dark:text-zinc-400">
+    {
+      socialLinks.map((link) => (
+        <a
+          href={link.href}
+          class="about-link"
+          {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
+          {t[link.labelKey]}
+        </a>
+      ))
+    }
+  </p>
+
+  {/* Reading */}
+  <section class="mt-16" aria-label={t['about.reading.title']}>
+    <p class="section-label">{t['about.reading.title']}</p>
+    <ul class="mt-4 flex list-none flex-col gap-y-5 p-0">
+      {
+        reading.map((item) => (
+          <li class="text-[0.9375rem] leading-relaxed">
+            <span class="text-zinc-900 dark:text-zinc-100">
+              {item.href ? (
+                <a href={item.href} target="_blank" rel="noopener noreferrer" class="about-link">
+                  {item.title}
+                </a>
+              ) : (
+                item.title
+              )}
+            </span>
+            <span class="mx-1.5 opacity-40" aria-hidden="true">
+              ·
+            </span>
+            <span class="font-light text-[var(--color-text-primary)]">{item.author}</span>
+            <span class="mt-0.5 block text-sm font-light leading-6 text-zinc-500 dark:text-zinc-400">
+              {item.note}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* Life */}
+  <section class="mt-14" aria-label={t['about.around.title']}>
+    <p class="section-label">{t['about.around.title']}</p>
+    <p class="mt-4 text-[0.9375rem] font-light leading-7 text-[var(--color-text-primary)]">
+      {t['about.around.body']}
+    </p>
+  </section>
 </div>
+
+<style>
+  .section-label {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.7rem;
+    color: var(--color-text-tertiary, #b3b3ae);
+  }
+
+  .about-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+    transition: color 150ms ease;
+  }
+  .about-link:hover {
+    color: var(--color-accent);
+  }
+</style>
