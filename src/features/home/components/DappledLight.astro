@@ -1,16 +1,19 @@
 ---
 /**
- * Dappled light overlay — bamboo-frond shadows draping down from the top,
- * modeled on the dany.works atmospheric overlay.
+ * Dappled light overlay — a bamboo-grove shadow cast over the first screen.
  *
- * Pure static markup, zero JS. Each SVG defines one reusable frond — a
- * drooping stem with leaves pinnately attached along its whole length —
- * and instances it across the top edge, so every silhouette reads as a
- * whole branch hanging into frame, never as floating leaves. Two layers
- * at different blur depths sway around a far off-canvas pivot; `multiply`
- * blending darkens the warm paper like a real shadow. Extends under the
- * sticky header so home nav and content share one field; sits under
- * HomeLanding (z-10). Hidden in dark mode; frozen under prefers-reduced-motion.
+ * Pure static markup, zero JS. The grove is built bottom-up so every
+ * silhouette stays physically connected: segmented culms rise through the
+ * full frame with pronounced node breaks (gap + collar + a slight kink,
+ * so the pole never reads as a smooth cylinder), short branches spring
+ * from every node at ~40° upward — real bamboo foliage grows up and out,
+ * hugging the culm — and leaf tufts fan from twig tips with blades
+ * pointing up. Culms cluster unevenly (a close pair, then a gap) like a
+ * real grove. Two layers at different blur depths sway around a pivot
+ * below the frame (bamboo bends from its base); `multiply` blending
+ * darkens the warm paper like a real shadow. Extends under the sticky
+ * header so home nav and content share one field; sits under HomeLanding
+ * (z-10). Hidden in dark mode; frozen under prefers-reduced-motion.
  */
 ---
 
@@ -21,83 +24,142 @@
         <!-- One bamboo leaf blade, tip pointing up (-y), stem end at origin -->
         <path
           id="leaf-far"
-          d="M0 0 C 5 -12 7 -46 2.5 -104 C 1 -114 -1 -114 -2.5 -104 C -7 -46 -5 -12 0 0 Z"
+          d="M0 0 C 5 -10 8 -38 3 -88 C 1.5 -97 -1.5 -97 -3 -88 C -8 -38 -5 -10 0 0 Z"
         ></path>
-        <!-- A tuft of overlapping blades, the unit bamboo foliage grows in -->
+        <!-- Leaf tuft at a twig tip: blades fan upward and outward -->
         <g id="tuft-far">
-          <use href="#leaf-far" transform="rotate(176)"></use>
-          <use href="#leaf-far" transform="rotate(148) scale(0.85)"></use>
-          <use href="#leaf-far" transform="rotate(207) scale(0.9)"></use>
-          <use href="#leaf-far" transform="rotate(124) scale(0.6)"></use>
+          <use href="#leaf-far" transform="rotate(14) scale(0.9)"></use>
+          <use href="#leaf-far" transform="rotate(46)"></use>
+          <use href="#leaf-far" transform="rotate(78) scale(0.85)"></use>
+          <use href="#leaf-far" transform="rotate(-18) scale(0.7)"></use>
         </g>
-        <!-- A whole drooping frond: thin stem arcing down-right, dense leaf
-             tufts at every node so the foliage buries the stem -->
-        <g id="frond-far">
+        <!-- Short twig ending in one tuft, so leaves always hang off wood -->
+        <g id="sprig-far">
           <path
-            d="M 0 0 C 6 50 18 110 48 190 C 58 215 68 232 82 248"
+            d="M0 0 C 8 -8 17 -14 28 -19"
             stroke="currentColor"
-            stroke-width="2"
+            stroke-width="2.5"
             stroke-linecap="round"
             fill="none"
           ></path>
-          <use href="#tuft-far" transform="translate(3 34) rotate(-14) scale(0.6)"></use>
-          <use href="#tuft-far" transform="translate(9 66) rotate(18) scale(0.75)"></use>
-          <use href="#tuft-far" transform="translate(17 98) rotate(-10) scale(0.85)"></use>
-          <use href="#tuft-far" transform="translate(27 128) rotate(24) scale(0.95)"></use>
-          <use href="#tuft-far" transform="translate(38 158) rotate(-18) scale(0.8)"></use>
-          <use href="#tuft-far" transform="translate(52 188) rotate(12) scale(1)"></use>
-          <use href="#tuft-far" transform="translate(66 216) rotate(-8) scale(0.9)"></use>
-          <use href="#tuft-far" transform="translate(82 248) rotate(16) scale(1.1)"></use>
+          <use href="#tuft-far" transform="translate(28 -19) rotate(8)"></use>
+        </g>
+        <!-- Branch as it leaves a culm node: short, rising ~40°, foliage
+             packed along its whole length so leaves stay near the pole -->
+        <g id="branch-far">
+          <path
+            d="M0 0 C 16 -18 34 -36 52 -50 C 64 -59 76 -66 90 -71"
+            stroke="currentColor"
+            stroke-width="3.5"
+            stroke-linecap="round"
+            fill="none"
+          ></path>
+          <use href="#sprig-far" transform="translate(12 -14) rotate(14) scale(0.7)"></use>
+          <use href="#sprig-far" transform="translate(30 -33) rotate(6) scale(0.85)"></use>
+          <use href="#sprig-far" transform="translate(58 -54) rotate(-8) scale(0.9)"></use>
+          <use href="#tuft-far" transform="translate(90 -71) rotate(10) scale(1.05)"></use>
+        </g>
+        <!-- Segmented culm, base at origin rising ~990. Each internode
+             starts slightly offset from where the last one ended (the
+             kink at a real node) and a collar band bridges the gap, so
+             the node rhythm survives the blur. Drawn darker than the
+             foliage so the pole reads as the grove's signature. -->
+        <g id="culm-far" stroke="oklch(0.34 0.02 60)" fill="oklch(0.34 0.02 60)">
+          <path
+            d="M 0 0 C 4 -75 8 -150 12 -222 M 10 -246 C 12 -312 14 -380 15 -442 M 18 -466 C 22 -530 27 -594 30 -648 M 28 -672 C 29 -722 30 -774 30 -818 M 33 -842 C 35 -890 36 -940 37 -992"
+            stroke-width="32"
+            stroke-linecap="round"
+            fill="none"
+          ></path>
+          <ellipse cx="11" cy="-234" rx="24" ry="7"></ellipse>
+          <ellipse cx="16.5" cy="-454" rx="23" ry="7"></ellipse>
+          <ellipse cx="29" cy="-660" rx="22" ry="6.5"></ellipse>
+          <ellipse cx="31.5" cy="-830" rx="21.5" ry="6.5"></ellipse>
+        </g>
+        <!-- One whole plant: culm plus a short branch at every node,
+             alternating sides, so foliage hugs the pole top to bottom -->
+        <g id="bamboo-far">
+          <use href="#culm-far"></use>
+          <use href="#sprig-far" transform="translate(11 -240) rotate(-12) scale(1.15)"></use>
+          <use href="#branch-far" transform="translate(16 -460) scale(-1 1)"></use>
+          <use href="#branch-far" transform="translate(29 -666) rotate(-8)"></use>
+          <use href="#branch-far" transform="translate(31 -836) scale(-0.9 0.9) rotate(6)"></use>
         </g>
       </defs>
       <!-- Warm neutral (hue ~60) so multiply matches the paper, not cool zinc -->
       <g fill="oklch(0.42 0.02 60)" color="oklch(0.42 0.02 60)">
-        <!-- Tall frond over the left third -->
-        <use href="#frond-far" transform="translate(200 -70) scale(3) rotate(10)"></use>
-        <!-- Center frond, mirrored so it droops toward the title -->
-        <use href="#frond-far" transform="translate(1060 -90) scale(-3.4 3.4) rotate(-4)"></use>
-        <!-- Right-edge frond, partly out of frame -->
-        <use href="#frond-far" transform="translate(1500 -50) scale(2.8) rotate(-8)"></use>
+        <use href="#bamboo-far" transform="translate(130 980) rotate(2) scale(1.5)"></use>
+        <use href="#bamboo-far" transform="translate(520 990) scale(-1.4 1.4) rotate(-2.5)"></use>
+        <use href="#bamboo-far" transform="translate(1010 975) rotate(1.5) scale(1.6)"></use>
+        <use href="#bamboo-far" transform="translate(1330 990) scale(-1.5 1.5) rotate(-3)"></use>
       </g>
     </svg>
   </div>
   <div class="dappled-layer dappled-near">
     <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
       <defs>
+        <!-- Near blades run ~1.3x the far ones: the close layer carries the
+             recognizable leaf shapes, so they must survive the blur -->
         <path
           id="leaf-near"
-          d="M0 0 C 5 -12 7 -46 2.5 -104 C 1 -114 -1 -114 -2.5 -104 C -7 -46 -5 -12 0 0 Z"
+          d="M0 0 C 6.5 -13 10 -49 4 -114 C 2 -126 -2 -126 -4 -114 C -10 -49 -6.5 -13 0 0 Z"
         ></path>
         <g id="tuft-near">
-          <use href="#leaf-near" transform="rotate(176)"></use>
-          <use href="#leaf-near" transform="rotate(148) scale(0.85)"></use>
-          <use href="#leaf-near" transform="rotate(207) scale(0.9)"></use>
-          <use href="#leaf-near" transform="rotate(124) scale(0.6)"></use>
+          <use href="#leaf-near" transform="rotate(14) scale(0.9)"></use>
+          <use href="#leaf-near" transform="rotate(46)"></use>
+          <use href="#leaf-near" transform="rotate(78) scale(0.85)"></use>
+          <use href="#leaf-near" transform="rotate(-18) scale(0.7)"></use>
         </g>
-        <g id="frond-near">
+        <g id="sprig-near">
           <path
-            d="M 0 0 C 6 50 18 110 48 190 C 58 215 68 232 82 248"
+            d="M0 0 C 8 -8 17 -14 28 -19"
             stroke="currentColor"
-            stroke-width="1.8"
+            stroke-width="2.2"
             stroke-linecap="round"
             fill="none"
           ></path>
-          <use href="#tuft-near" transform="translate(4 38) rotate(-12) scale(0.6)"></use>
-          <use href="#tuft-near" transform="translate(11 72) rotate(20) scale(0.75)"></use>
-          <use href="#tuft-near" transform="translate(20 106) rotate(-14) scale(0.85)"></use>
-          <use href="#tuft-near" transform="translate(32 140) rotate(18) scale(0.95)"></use>
-          <use href="#tuft-near" transform="translate(46 174) rotate(-10) scale(0.8)"></use>
-          <use href="#tuft-near" transform="translate(62 208) rotate(14) scale(0.95)"></use>
-          <use href="#tuft-near" transform="translate(82 248) rotate(-6) scale(1.05)"></use>
+          <use href="#tuft-near" transform="translate(28 -19) rotate(8)"></use>
+        </g>
+        <g id="branch-near">
+          <path
+            d="M0 0 C 16 -18 34 -36 52 -50 C 64 -59 76 -66 90 -71"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            fill="none"
+          ></path>
+          <use href="#sprig-near" transform="translate(12 -14) rotate(14) scale(0.7)"></use>
+          <use href="#sprig-near" transform="translate(30 -33) rotate(6) scale(0.85)"></use>
+          <use href="#sprig-near" transform="translate(58 -54) rotate(-8) scale(0.9)"></use>
+          <use href="#tuft-near" transform="translate(90 -71) rotate(10) scale(1.05)"></use>
+        </g>
+        <g id="culm-near" stroke="oklch(0.40 0.025 70)" fill="oklch(0.40 0.025 70)">
+          <path
+            d="M 0 0 C 4 -75 8 -150 12 -222 M 10 -246 C 12 -312 14 -380 15 -442 M 18 -466 C 22 -530 27 -594 30 -648 M 28 -672 C 29 -722 30 -774 30 -818 M 33 -842 C 35 -890 36 -940 37 -992"
+            stroke-width="22"
+            stroke-linecap="round"
+            fill="none"
+          ></path>
+          <ellipse cx="11" cy="-234" rx="17.5" ry="5.5"></ellipse>
+          <ellipse cx="16.5" cy="-454" rx="17" ry="5.5"></ellipse>
+          <ellipse cx="29" cy="-660" rx="16.5" ry="5"></ellipse>
+          <ellipse cx="31.5" cy="-830" rx="16" ry="5"></ellipse>
+        </g>
+        <g id="bamboo-near">
+          <use href="#culm-near"></use>
+          <use href="#sprig-near" transform="translate(11 -240) rotate(-12) scale(1.15)"></use>
+          <use href="#branch-near" transform="translate(16 -460) scale(-1 1)"></use>
+          <use href="#branch-near" transform="translate(29 -666) rotate(-8)"></use>
+          <use href="#branch-near" transform="translate(31 -836) scale(-0.9 0.9) rotate(6)"></use>
         </g>
       </defs>
       <g fill="oklch(0.48 0.025 70)" color="oklch(0.48 0.025 70)">
-        <!-- Sharper frond hanging left of the title column -->
-        <use href="#frond-near" transform="translate(560 -60) scale(2.1) rotate(6)"></use>
-        <!-- Mirrored frond dropping past the title's right side -->
-        <use href="#frond-near" transform="translate(1320 -40) scale(-2.3 2.3) rotate(-6)"></use>
-        <!-- Small frond at the far left edge -->
-        <use href="#frond-near" transform="translate(40 -30) scale(1.7) rotate(14)"></use>
+        <!-- A close pair on the open paper left of the content column —
+             uneven spacing is what makes it read as a grove -->
+        <use href="#bamboo-near" transform="translate(415 985) rotate(-2) scale(1.05)"></use>
+        <use href="#bamboo-near" transform="translate(545 995) scale(-0.92 0.92) rotate(2.5)"></use>
+        <!-- Lone culm along the right edge, leaning the other way -->
+        <use href="#bamboo-near" transform="translate(1390 990) scale(-1.12 1.12) rotate(3)"></use>
       </g>
     </svg>
   </div>
@@ -118,7 +180,17 @@
     pointer-events: none;
     overflow: hidden;
     mix-blend-mode: multiply;
-    mask-image: linear-gradient(to bottom, black 78%, transparent);
+    /* Long eased dissolve: the shadow is the edge of a pool of light, so
+       it must melt away over the lower half instead of being chopped off
+       when the hero scrolls past */
+    mask-image: linear-gradient(
+      to bottom,
+      black 45%,
+      rgba(0, 0, 0, 0.72) 62%,
+      rgba(0, 0, 0, 0.38) 78%,
+      rgba(0, 0, 0, 0.14) 90%,
+      transparent 100%
+    );
   }
 
   /* Gray shadows multiplied onto near-black do nothing but smear — skip at night */
@@ -138,28 +210,30 @@
     height: 100%;
   }
 
-  /* Far fronds: heavier blur, fainter, slower — the canopy high above */
+  /* Far culms: heavier blur, fainter, slower — the grove a few paces back */
   .dappled-far {
     filter: blur(38px);
     opacity: 0.14;
-    transform-origin: 50% -80%;
+    transform-origin: 50% 115%;
     animation: dappled-sway 13s ease-in-out infinite alternate;
   }
 
-  /* Near fronds: crisper, darker, quicker — leaves closest to the paper */
+  /* Near culms: crisper, darker, quicker — the stalks closest to the paper */
   .dappled-near {
-    filter: blur(13px);
+    filter: blur(10px);
     opacity: 0.16;
-    transform-origin: 50% -100%;
+    transform-origin: 50% 125%;
     animation: dappled-sway 8.5s ease-in-out -4s infinite alternate-reverse;
   }
 
+  /* Pivot sits below the frame: bamboo bends from its base, so tops sweep
+     furthest while the rooted culms barely shift */
   @keyframes dappled-sway {
     from {
-      transform: rotate(-0.7deg) skewX(0.4deg);
+      transform: rotate(-0.5deg) skewX(0.35deg);
     }
     to {
-      transform: rotate(0.9deg) skewX(-0.6deg);
+      transform: rotate(0.65deg) skewX(-0.45deg);
     }
   }
 
