@@ -54,23 +54,6 @@ export function getAboutSocialLinks(): SocialLink[] {
   return SOCIAL_LINKS;
 }
 
-/** Profile card copy — English UI except `bio`, shared across locales. */
-export const PROFILE_CARD = {
-  banner: 'Design + Code',
-  handle: '@ninthbit_ai',
-  bio: 'AI Native · Indie Developer. 💻Collaborated with Douyin, Feishu, BiliBili and Meituan. 🐱梦想是养一只三花。📚道理全在书上，做人却在书外。',
-  location: 'Nanjing, China',
-  followingLabel: 'Following',
-  followersLabel: 'Followers',
-  /** Update manually when X counts change. */
-  following: 574,
-  followers: 917,
-  followLabel: 'Follow',
-  website: 'kieran.build',
-  websiteHref: 'https://kieran.build',
-  twitterHref: 'https://twitter.com/ninthbit_ai',
-} as const;
-
 const en: AboutContent = {
   reading: [
     {
