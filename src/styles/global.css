@@ -86,18 +86,13 @@
            transition-colors duration-300;
     letter-spacing: var(--letter-spacing-normal);
     line-height: var(--line-height-normal);
-    /* 亚像素渲染让细字体更清晰饱满 */
-    -webkit-font-smoothing: subpixel-antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     position: relative;
     min-height: 100vh;
-  }
-
-  /* 深色模式下使用默认渲染，避免彩边 */
-  .dark body {
-    -webkit-font-smoothing: auto;
   }
 
   /* 标题样式：使用无衬线字体 */
@@ -149,26 +144,36 @@ body {
 @layer components {
   /* ==================== 文章正文样式（替代 @tailwindcss/typography）==================== */
 
-  /* 基础样式 */
+  /* 基础样式。中文正文走系统黑体；英文正文由 :lang(en) 切换为衬线阅读体 */
   .prose {
     font-family: var(--font-body);
     font-size: var(--font-size-body);
-    font-weight: var(--font-weight-light); /* 300 */
+    font-weight: var(--font-weight-normal); /* 400 */
     line-height: var(--line-height-relaxed);
     letter-spacing: var(--letter-spacing-normal);
     color: var(--color-text-primary); /* rgba(0,0,0,0.87) */
+    /* No faux bold (a missing weight must surface as a regression);
+       style synthesis stays on so CJK italics can still slant */
+    font-synthesis: style;
+  }
+
+  .prose:lang(en) {
+    font-family: var(--font-serif-en-stack);
+    /* Serif reading text sits comfortably tighter than CJK */
+    line-height: 1.65;
   }
 
   /* 段落 */
   .prose p {
     margin-top: 1.5em;
     margin-bottom: 1.5em;
+    text-wrap: pretty;
   }
 
-  /* 加粗文字：400 字重，颜色稍深 */
+  /* 加粗文字 */
   .prose strong,
   .prose b {
-    font-weight: var(--font-weight-normal); /* 400 */
+    font-weight: var(--font-weight-semibold); /* 600 */
     color: var(--color-text-emphasis);
   }
 
@@ -183,13 +188,14 @@ body {
     margin-bottom: 2rem;
   }
 
-  /* 正文中的标题：无衬线 + 正常字重 */
+  /* 正文中的标题：随正文字族（英文衬线/中文黑体），600 字重拉开层级 */
   .prose h2 {
     position: relative;
     scroll-margin-top: 6rem;
-    font-family: var(--font-heading);
+    font-family: inherit;
     font-size: var(--font-size-prose-heading);
-    font-weight: var(--font-weight-normal); /* 400 */
+    font-weight: var(--font-weight-semibold); /* 600 */
+    text-wrap: balance;
     line-height: var(--line-height-tight);
     color: var(--color-text-emphasis);
     margin-top: 3rem;
@@ -199,9 +205,10 @@ body {
   .prose h3 {
     position: relative;
     scroll-margin-top: 6rem;
-    font-family: var(--font-heading);
+    font-family: inherit;
     font-size: 1.25rem; /* 20px */
-    font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-semibold);
+    text-wrap: balance;
     line-height: var(--line-height-tight);
     color: var(--color-text-emphasis);
     margin-top: 2rem;
@@ -211,9 +218,10 @@ body {
   .prose h4 {
     position: relative;
     scroll-margin-top: 6rem;
-    font-family: var(--font-heading);
+    font-family: inherit;
     font-size: 1.125rem; /* 18px */
-    font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-semibold);
+    text-wrap: balance;
     line-height: var(--line-height-tight);
     color: var(--color-text-emphasis);
     margin-top: 1.5rem;

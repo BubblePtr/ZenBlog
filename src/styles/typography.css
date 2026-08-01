@@ -14,8 +14,9 @@
   /* 衬线字体栈（中文文章标题专用） */
   --font-serif-stack: 'Noto Serif SC', 'Source Han Serif SC', Georgia, 'Times New Roman', serif;
 
-  /* 英文衬线字体栈（英文文章标题专用） */
-  --font-serif-en-stack: 'Shippori Mincho', Georgia, 'Times New Roman', serif;
+  /* 英文衬线字体栈（英文文章标题与正文）。
+     Source Serif 4：可变字体（wght 400–700 + opsz），阅读型衬线 */
+  --font-serif-en-stack: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 
   /* 等宽字体栈 */
   --font-mono-stack:
@@ -39,7 +40,7 @@
   /* ==================== 字号系统 ==================== */
 
   /* 正文 */
-  --font-size-body: 1.0625rem; /* 17px */
+  --font-size-body: 1rem; /* 16px */
   --font-size-body-lg: 1.25rem; /* 20px */
 
   /* 正文中的标题 */
@@ -59,7 +60,8 @@
 
   /* ==================== 字重系统 ==================== */
 
-  --font-weight-light: 300;
+  /* Body text floor is 400: light weights are size-dependent and only
+     belong on large display type, never on 17px reading text. */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
