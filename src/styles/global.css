@@ -72,9 +72,10 @@
     --line: oklch(0.92 0.004 286);
 
     /* 青竹：全站唯一强调色（wayfinding only：链接 hover、focus、active 态、状态字）。
-       竹与玉之色，皆象征君子。纸面上 7.1:1（AAA）。 */
-    --accent: oklch(0.439 0.046 156.7);
-    --accent-strong: oklch(0.36 0.046 157);
+       竹与玉之色，皆象征君子。纸面上 7.1:1（AAA）。
+       C 0.075 是可辨认门槛：更低会沉进墨字里读作灰（2026-08 三档对比后定档）。 */
+    --accent: oklch(0.44 0.075 157);
+    --accent-strong: oklch(0.36 0.075 157);
   }
 
   .dark {
@@ -86,9 +87,9 @@
     --ink-tertiary: oklch(0.552 0.016 286); /* zinc-500 */
     --line: oklch(0.37 0.013 286); /* zinc-700 */
 
-    /* 暗色青竹：提高 L 保证对比度（墨底上 8.6:1，AAA），色相与浅色同 */
-    --accent: oklch(0.734 0.049 159.3);
-    --accent-strong: oklch(0.8 0.049 158);
+    /* 暗色青竹：提高 L 保证对比度（墨底上 8.6:1，AAA），色相与浅色同，彩度与浅色同档 */
+    --accent: oklch(0.734 0.08 159);
+    --accent-strong: oklch(0.8 0.08 158);
   }
 
   html {

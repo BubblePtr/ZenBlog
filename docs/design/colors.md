@@ -15,12 +15,12 @@
 | 墨（次） | `--color-ink-secondary` | `text-ink-secondary` | 黑 60% | zinc-400 实色 | 次要文字、引用、锚点 |
 | 墨（弱） | `--color-ink-tertiary` | `text-ink-tertiary` | 黑 38% | zinc-500 | 日期戳、最弱 meta |
 | 线 | `--color-line` | `border-line` | zinc-200 | zinc-700 | 默认分隔线/描边 |
-| 青竹 | `--color-accent` | `text-accent` 等 | `oklch(0.439 0.046 156.7)` | `oklch(0.734 0.049 159.3)` | 唯一强调色，见下 |
-| 青竹（强） | `--color-accent-strong` | — | `oklch(0.36 0.046 157)` | `oklch(0.8 0.049 158)` | 强调色的加深/加亮态（预留） |
+| 青竹 | `--color-accent` | `text-accent` 等 | `oklch(0.44 0.075 157)` | `oklch(0.734 0.08 159)` | 唯一强调色，见下 |
+| 青竹（强） | `--color-accent-strong` | — | `oklch(0.36 0.075 157)` | `oklch(0.8 0.08 158)` | 强调色的加深/加亮态（预留） |
 
 ## 关键约定
 
-1. **青竹只做 wayfinding**：链接 hover、focus ring、导航激活态、TOC 激活项、kicker、::selection。不做大面积填充。竹与玉之色，象征君子。纸面上 7.1:1（AAA），墨底上 8.6:1（AAA）。
+1. **青竹只做 wayfinding**：链接 hover、focus ring、导航激活态、TOC 激活项、kicker、::selection。不做大面积填充。竹与玉之色，象征君子。纸面上 7.1:1（AAA），墨底上 8.6:1（AAA）。彩度定在 C 0.075（浅）/ 0.08（深）——这是「一眼可辨是绿」的门槛，最初的 C 0.046 会沉进墨字里读作灰；再往上（C≥0.10）则开始抢戏（2026-08 三档截图对比后定档）。
 2. **墨用透明度分级**（墨分浓淡）：黑/白 + alpha，叠在纸和面上都自然成立。唯二例外是深色模式的次/弱两级用 zinc 实色——带一点色温，比透明白更有质感。
 3. **明暗切换是重映射不是重绘**：所有 token 在 `.dark` 下翻转取值，组件用 `bg-paper` / `text-ink` 等类即可，**不需要写 `dark:` 变体**。
 4. **zinc 是唯一允许的中性灰 family**：局部一次性的中性色（如照片卡边框、图库骨架）可直接用 `zinc-*` 工具类，但禁止引入 neutral/stone/gray/slate。
