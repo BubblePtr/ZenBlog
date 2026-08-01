@@ -78,6 +78,32 @@ jj 无内置 forge 集成，PR 的创建/合并仍用 `gh`。但 jj 下 git 始�
 - `gh pr create` 必须显式指定 `--head <书签名>`（以及 `--base main`）。
 - `gh pr merge` 不要加 `--delete-branch`（会报 `not on any branch`）；改用 jj 删除远端分支：`jj bookmark delete <书签名>` 后 `jj git push --bookmark <书签名>`（推送删除）。
 
+### 多层改动：GitHub Stacked PRs（gh-stack extension）
+
+多个相互依赖的 PR 用 GitHub 原生 stacked PR（public preview，`gh extension install github/gh-stack`）。本地照常 jj 叠层，成栈只走 `gh stack link`（2026-08 已实测与 jj 兼容）：
+
+```bash
+# 1. 本地叠层（正常 jj 工作流，每层一个书签）
+jj new main && ...改动... && jj commit -m "feat: layer 1"
+jj bookmark create feat/layer-1 -r @-
+...改动... && jj commit -m "feat: layer 2"
+jj bookmark create feat/layer-2 -r @-
+jj git push --bookmark feat/layer-1 --bookmark feat/layer-2
+
+# 2. 关联成栈（按栈序从底到顶传参；自动建 PR 并正确设置 base 链）
+gh stack link feat/layer-1 feat/layer-2
+
+# 3. 合并整栈（原子操作；也可传 PR 号只合到中间某层）
+gh stack merge <栈编号> --yes
+
+# 解除栈（不合并、走 API，不依赖本地分支）
+gh stack unstack <栈编号>
+```
+
+- 想要自定义 PR 标题/正文，先 `gh pr create` 建好 PR，再 `link`（已有 PR 会被收编；否则 link 自动创建的 PR 标题取自分支名）。
+- **只用 API 直连的子命令**：`link`、`unstack`、带编号的 `merge`。`view`/`checkout`/`submit`/`sync` 等依赖"当前分支"的命令在 detached HEAD 下报 `not on any branch`（v0.1.0），查看栈用 GitHub 网页 UI。
+- 底层 PR 合并后 GitHub 会对上层做服务端级联 rebase；合并后照常 `jj git fetch` + `jj bookmark delete` 清理。
+
 ## 核心架构
 
 ### Feature 模块化架构
