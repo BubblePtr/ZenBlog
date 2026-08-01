@@ -77,15 +77,44 @@ export function mapBlogListItem(post: BlogEntry, lang: Language): BlogListItem {
   };
 }
 
-export async function getBlogListByLang(
-  lang: Language,
+/**
+ * One list across both languages: posts are grouped by base slug, so a
+ * translated pair collapses into a single row. The version matching the
+ * UI language wins the row (title, URL, date); a post that only exists
+ * in the other language keeps its own URL and gets flagged via
+ * `languages` so the list can badge it.
+ */
+export async function getUnifiedBlogList(
+  uiLang: Language,
   options: BlogListOptions = {},
 ): Promise<BlogListItem[]> {
-  const entries = (await getCollection('blog'))
-    .filter((post) => post.id.startsWith(`${lang}/`))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const entries = await getCachedBlogEntries();
+  const groups = new Map<string, BlogEntry[]>();
 
-  const allPosts = entries.map((post) => mapBlogListItem(post, lang));
+  for (const post of entries) {
+    const slug = extractBlogSlug(post.id, getEntryLang(post));
+    const group = groups.get(slug);
+    if (group) {
+      group.push(post);
+    } else {
+      groups.set(slug, [post]);
+    }
+  }
+
+  const allPosts = [...groups.values()]
+    .map((versions) => {
+      const preferred = versions.find((post) => getEntryLang(post) === uiLang) ?? versions[0];
+      const preferredLang = getEntryLang(preferred);
+      const slug = extractBlogSlug(preferred.id, preferredLang);
+      const languages = versions.map(getEntryLang).sort();
+
+      return {
+        ...mapBlogListItem(preferred, preferredLang),
+        url: buildBlogUrl(slug, preferredLang),
+        languages,
+      };
+    })
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   const filtered = options.homeOnly
     ? allPosts.filter((post) => post.data.showOnHome === true)

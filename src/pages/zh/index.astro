@@ -2,7 +2,7 @@
 import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
 import DappledLight from '@/features/home/components/DappledLight.astro';
 import { HomeLanding } from '@/features/home';
-import { getBlogListByLang } from '@/features/blog/server';
+import { getUnifiedBlogList } from '@/features/blog/server';
 import { getProjectsForHome } from '@/features/projects/server/queries.server';
 import PageShell from '@/shared/components/layout/PageShell.astro';
 import { getTranslationDictionary } from '@/shared/i18n/types';
@@ -10,7 +10,7 @@ import { getTranslationDictionary } from '@/shared/i18n/types';
 const lang = 'zh' as const;
 const t = getTranslationDictionary(lang);
 const [homePosts, homeProjects] = await Promise.all([
-  getBlogListByLang(lang),
+  getUnifiedBlogList(lang),
   getProjectsForHome(4),
 ]);
 ---

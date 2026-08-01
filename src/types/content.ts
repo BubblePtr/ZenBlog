@@ -8,6 +8,11 @@ export interface BlogAuthor {
 
 export interface BlogListItem {
   slug: string;
+  /* Unified (cross-language) list fields: the row's target URL — which may
+     point into the other language tree — and every language the post
+     exists in. Absent on single-language lists. */
+  url?: string;
+  languages?: ('en' | 'zh')[];
   data: {
     title: string;
     description: string;

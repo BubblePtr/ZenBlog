@@ -17,8 +17,18 @@ interface Props {
 
 const { posts, lang } = Astro.props;
 
-const blogHref = (slug: string) =>
-  withTrailingSlash(lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`);
+const blogHref = (post: BlogListItem) =>
+  post.url ?? withTrailingSlash(lang === 'zh' ? `/zh/blog/${post.slug}` : `/blog/${post.slug}`);
+
+/* Badge only what the reader can't get in the UI language: a row whose
+   post has no version in the current language shows that language's tag.
+   Rows readable in the UI language stay unmarked — near-zero noise. */
+const foreignLangLabel = (post: BlogListItem): string | undefined => {
+  if (!post.languages || post.languages.includes(lang)) {
+    return undefined;
+  }
+  return post.languages[0] === 'zh' ? '中' : 'EN';
+};
 
 const vtName = (slug: string) => `bt-${slug.replace(/[^a-zA-Z0-9]/g, '-')}`;
 
@@ -37,14 +47,17 @@ const formatDay = (date: Date) =>
           {group.posts.map((post) => (
             <li>
               <a
-                href={blogHref(post.slug)}
+                href={blogHref(post)}
                 class="post-row group flex items-baseline justify-between gap-8 py-2 no-underline focus-ring"
               >
-                <span
-                  class="post-title text-[0.9375rem] leading-relaxed text-zinc-900 transition-colors dark:text-zinc-100"
-                  style={`view-transition-name: ${vtName(post.slug)}`}
-                >
-                  {post.data.title}
+                <span class="flex min-w-0 items-baseline gap-2">
+                  <span
+                    class="post-title text-[0.9375rem] leading-relaxed text-zinc-900 transition-colors dark:text-zinc-100"
+                    style={`view-transition-name: ${vtName(post.slug)}`}
+                  >
+                    {post.data.title}
+                  </span>
+                  {foreignLangLabel(post) && <span class="lang-badge">{foreignLangLabel(post)}</span>}
                 </span>
                 <time
                   datetime={post.data.pubDate.toISOString()}
@@ -72,5 +85,16 @@ const formatDay = (date: Date) =>
   .post-row:hover .post-title,
   .post-row:focus-visible .post-title {
     color: var(--color-accent);
+  }
+
+  .lang-badge {
+    flex-shrink: 0;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.625rem;
+    line-height: 1;
+    padding: 0.1875rem 0.3125rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.25rem;
+    color: var(--color-ink-tertiary);
   }
 </style>
