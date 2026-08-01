@@ -15,7 +15,6 @@ import BlogPostFollowCTA from '@/features/blog/components/BlogPostFollowCTA.astr
 import BlogImageLightbox from '@/features/blog/components/BlogImageLightbox.astro';
 import { resolveBlogAuthor } from '@/features/blog/authors';
 import { isIndieDevWeeklyPost } from '@/features/blog/series';
-import { RiCalendarLine, RiTimeLine } from '@remixicon/react';
 import { withTrailingSlash } from '@/shared/urls';
 
 
@@ -66,7 +65,6 @@ const readTimeLabel =
     ? `${Math.max(1, readTimeMinutes ?? 5)} 分钟阅读`
     : `${Math.max(1, readTimeMinutes ?? 5)} min read`;
 
-const sectionLabel = 'WORK INSIGHTS';
 const resolvedAuthor = resolveBlogAuthor(author, lang);
 ---
 
@@ -77,34 +75,20 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
 
   <body class="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-500 antialiased font-sans">
     <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} localizedPaths={localizedPaths} />
-    <div class="px-[var(--page-gutter)]" aria-hidden="true">
-      <div class="mx-[var(--page-bleed)] section-rule"></div>
-    </div>
-
     <main class="px-[var(--page-gutter)] py-12 sm:py-20 relative z-10">
       <article data-blog-article>
-        <header class="mx-auto w-full max-w-3xl mb-12">
-          <div class="flex items-center justify-between gap-6 mb-6">
-            <div>
-              <p class="kicker mb-6">{sectionLabel}</p>
-              <div class="flex items-center gap-4 text-xs font-mono text-zinc-400 uppercase tracking-wider">
-                <span class="flex items-center gap-1">
-                  <RiTimeLine size={12} /> {readTimeLabel}
-                </span>
-                <span class="w-px h-3 bg-zinc-200 dark:bg-zinc-800"></span>
-                <span class="flex items-center gap-1">
-                  <RiCalendarLine size={12} />
-                  {formattedDate}
-                </span>
-              </div>
-            </div>
+        <header class="mx-auto w-full max-w-xl mb-12">
+          <div class="flex items-start justify-between gap-6 mb-5">
+            <p class="font-mono text-[0.7rem] tabular-nums text-zinc-400 dark:text-zinc-500">
+              {formattedDate} · {readTimeLabel}
+            </p>
             {showIndieDevWeeklyColophon && (
-              <BlogColophon lang={lang} width={180} class="shrink-0 hidden sm:flex" />
+              <BlogColophon lang={lang} width={160} class="shrink-0 hidden sm:flex" />
             )}
           </div>
 
           {showIndieDevWeeklyColophon && (
-            <BlogColophon lang={lang} width={160} class="sm:hidden mb-6" />
+            <BlogColophon lang={lang} width={140} class="sm:hidden mb-5" />
           )}
 
           <h1
@@ -117,8 +101,8 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
 
         {
           heroImage && (
-            <figure class="mb-12" data-blog-hero-image>
-              <div class="relative aspect-[16/10] sm:aspect-[21/9] w-full overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
+            <figure class="mx-auto mb-12 w-full max-w-3xl" data-blog-hero-image>
+              <div class="relative aspect-[16/10] sm:aspect-[21/9] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                 <Image src={heroImage} alt={title} class="object-cover w-full h-full" inferSize loading="eager" />
               </div>
               {heroImageCredit && (
@@ -170,7 +154,6 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
             </div>
           </div>
 
-          <div aria-hidden="true" class="-mx-[calc(50vw-50%)] section-rule mt-6" />
         </section>
 
         <div class="flex justify-center">
@@ -185,12 +168,8 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
         <BlogPostFollowCTA lang={lang} />
       </article>
 
-      <section class="mx-auto w-full max-w-xl mt-16 pt-12">
-        <div aria-hidden="true" class="-mx-[calc(50vw-50%)] section-rule mb-12" />
-        <h2
-          class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-8"
-          style={lang === 'zh' ? 'font-family: var(--font-serif)' : 'font-family: var(--font-serif-en)'}
-        >
+      <section class="mx-auto w-full max-w-xl mt-20">
+        <h2 class="text-[1.05rem] font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 mb-6">
           {lang === 'zh' ? '评论' : 'Comments'}
         </h2>
         <GiscusComments client:load lang={lang} />
