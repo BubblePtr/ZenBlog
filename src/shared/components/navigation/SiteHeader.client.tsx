@@ -1,6 +1,6 @@
 import { RiMenuLine, RiCloseLine } from '@remixicon/react';
 import { AnimatePresence } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary } from '@/shared/i18n/types';
 import LanguageSwitcher from './LanguageSwitcher.client';
@@ -14,13 +14,71 @@ interface SiteHeaderProps {
   localizedPaths?: Partial<Record<Language, string>>;
 }
 
-type NavItemKey = 'blog' | 'photography' | 'about';
+type NavItemKey = 'home' | 'blog' | 'photography' | 'about';
+
+/** Home (en + zh). Path is trailing-slash normalized by PageShell. */
+function isHomePath(path: string): boolean {
+  return path === '/' || path === '/zh' || path === '/zh/';
+}
+
+/** Scroll distance (px) over which home frost eases from 0 → full (matches blog). */
+const HOME_FROST_RANGE_PX = 160;
+/** Peak fill opacity — same as non-home `bg-…/80`. */
+const HOME_FROST_MAX_OPACITY = 0.8;
+/** Peak blur (px) — same as Tailwind `backdrop-blur-md`. */
+const HOME_FROST_MAX_BLUR_PX = 12;
+
+function clamp01(n: number) {
+  return Math.min(1, Math.max(0, n));
+}
+
+/** Ease-out so early scroll stays soft; full frost arrives near end of range. */
+function easeOutQuad(t: number) {
+  return 1 - (1 - t) * (1 - t);
+}
+
+function homeFrostFromScroll(scrollY: number) {
+  return easeOutQuad(clamp01(scrollY / HOME_FROST_RANGE_PX));
+}
 
 export default function SiteHeader({ currentPath, lang, t, localizedPaths }: SiteHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const getHref = (item: NavItemKey) => (lang === 'zh' ? `/zh/${item}` : `/${item}`);
+  const isHome = isHomePath(currentPath);
+  // 0 = continuous paper; 1 = same frosted bar as blog. Driven by scroll on home only.
+  const [homeFrost, setHomeFrost] = useState(0);
+
+  useEffect(() => {
+    if (!isHome) {
+      setHomeFrost(0);
+      return;
+    }
+
+    let raf = 0;
+    const update = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const next = homeFrostFromScroll(window.scrollY);
+        setHomeFrost((prev) => (Math.abs(prev - next) < 0.008 ? prev : next));
+      });
+    };
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', update);
+    };
+  }, [isHome]);
+
+  const homeHref = lang === 'zh' ? '/zh' : '/';
+
+  const getHref = (item: NavItemKey) => {
+    if (item === 'home') return homeHref;
+    return lang === 'zh' ? `/zh/${item}` : `/${item}`;
+  };
 
   const isActive = (item: NavItemKey) => {
+    if (item === 'home') return isHome;
     const path = currentPath.toLowerCase();
     const itemPath = lang === 'zh' ? `/zh/${item}` : `/${item}`;
     return path === itemPath || path.startsWith(`${itemPath}/`);
@@ -28,6 +86,7 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
 
   const navItems = useMemo(
     () => [
+      { key: 'home' as const, label: t['nav.home'] || 'nav.home' },
       { key: 'blog' as const, label: t['nav.blog'] || 'nav.blog' },
       { key: 'photography' as const, label: t['nav.photography'] || 'nav.photography' },
       { key: 'about' as const, label: t['nav.about'] || 'nav.about' },
@@ -35,60 +94,72 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
     [t],
   );
 
-  const homeHref = lang === 'zh' ? '/zh' : '/';
-  const mobileItems = [
-    {
-      key: 'home',
-      label: t['nav.home'] || 'HOME',
-      href: homeHref,
-      active: currentPath === homeHref,
-    },
-    ...navItems.map((item) => ({
-      ...item,
-      href: getHref(item.key),
-      active: isActive(item.key),
-    })),
-  ];
+  const mobileItems = navItems.map((item) => ({
+    ...item,
+    href: getHref(item.key),
+    active: isActive(item.key),
+  }));
+
+  // Frost recipe must match blog: alpha lives in the *color* (bg/80), element stays
+  // fully opaque, then backdrop-filter. Element-level opacity multiplies the blur
+  // pass and reads thinner than the same nominal /80 on article pages.
+  // When fully on, reuse the exact blog class string so compositing is identical.
+  const frostFullyOn = !isHome || homeFrost >= 0.995;
+  const frostAlpha = HOME_FROST_MAX_OPACITY * homeFrost;
+  // Full blur once any frost starts; only fill alpha eases (closer to blog glass).
+  const frostBlurPx = homeFrost > 0.01 ? HOME_FROST_MAX_BLUR_PX : 0;
 
   return (
-    <header className="relative z-40 w-full transition-all duration-300">
-      <div className="absolute inset-0 bg-[oklch(98%_0.006_60)]/80 dark:bg-zinc-950/80 backdrop-blur-md" />
+    <header className="sticky top-0 z-40 w-full">
+      {frostFullyOn ? (
+        <div className="absolute inset-0 bg-[oklch(98%_0.006_60)]/80 backdrop-blur-md dark:bg-zinc-950/80" />
+      ) : (
+        <>
+          {/* Progressive: same alpha-in-color recipe; dual layers for light/dark. */}
+          <div
+            className="absolute inset-0 dark:hidden"
+            style={{
+              backgroundColor: `oklch(98% 0.006 60 / ${frostAlpha})`,
+              backdropFilter: frostBlurPx > 0 ? `blur(${frostBlurPx}px)` : undefined,
+              WebkitBackdropFilter: frostBlurPx > 0 ? `blur(${frostBlurPx}px)` : undefined,
+            }}
+          />
+          <div
+            className="absolute inset-0 hidden dark:block"
+            style={{
+              backgroundColor: `rgb(9 9 11 / ${frostAlpha})`,
+              backdropFilter: frostBlurPx > 0 ? `blur(${frostBlurPx}px)` : undefined,
+              WebkitBackdropFilter: frostBlurPx > 0 ? `blur(${frostBlurPx}px)` : undefined,
+            }}
+          />
+        </>
+      )}
 
       <div className="relative mx-auto max-w-content px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-8">
-          {/* 字标：兼作首页链接，桌面端替代 HOME 导航项 */}
-          <a
-            href={homeHref}
-            className={`text-sm font-semibold tracking-tight no-underline transition-colors focus-ring ${
-              currentPath === '/' || currentPath === '/zh'
-                ? 'text-zinc-900 dark:text-zinc-100'
-                : 'text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100'
-            }`}
-          >
-            Kieran Zhang
-          </a>
+        <nav
+          className="hidden sm:flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400"
+          aria-label="Primary"
+        >
+          {navItems.map((item) => {
+            const active = isActive(item.key);
+            const href = getHref(item.key);
 
-          <nav className="hidden sm:flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400">
-            {navItems.map((item) => {
-              const active = isActive(item.key);
-              const href = getHref(item.key);
-
-              return (
-                <a
-                  key={item.key}
-                  href={href}
-                  className={`block px-2.5 py-2 transition-colors no-underline focus-ring ${
-                    active
-                      ? 'text-[var(--color-accent)]'
-                      : 'hover:text-zinc-900 dark:hover:text-zinc-100'
-                  }`}
-                >
-                  {item.label}
-                </a>
-              );
-            })}
-          </nav>
-        </div>
+            return (
+              <a
+                key={item.key}
+                href={href}
+                className={`block px-2.5 py-2 transition-colors no-underline focus-ring ${
+                  active
+                    ? 'text-[var(--color-accent)]'
+                    : 'hover:text-zinc-900 dark:hover:text-zinc-100'
+                }`}
+                aria-current={active ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            );
+          })}
+        </nav>
 
         <div className="flex items-center gap-3">
           <LanguageSwitcher
