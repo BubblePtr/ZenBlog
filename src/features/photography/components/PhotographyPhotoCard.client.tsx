@@ -67,7 +67,7 @@ export default function PhotographyPhotoCard({ photo, index }: PhotographyPhotoC
         alt={photo.data.title}
         loading="lazy"
         decoding="async"
-        frameClassName="w-full border border-[#e5e5e5] dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900"
+        frameClassName="w-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900"
         frameStyle={{ aspectRatio: ratio }}
         className="object-cover"
         onStatusChange={(status) => setImageReady(status !== 'loading')}
@@ -87,7 +87,7 @@ export default function PhotographyPhotoCard({ photo, index }: PhotographyPhotoC
               {photo.data.location}
             </p>
           )}
-          <h3 className="font-heading text-[15px] font-semibold leading-[1.4] text-[#0c0a09] dark:text-zinc-100">
+          <h3 className="font-heading text-[15px] font-semibold leading-[1.4] text-zinc-900 dark:text-zinc-100">
             {photo.data.title}
           </h3>
           {exifLine && (
@@ -102,7 +102,7 @@ export default function PhotographyPhotoCard({ photo, index }: PhotographyPhotoC
                   />
                 </span>
               )}
-              <p className="m-0 font-mono text-xs uppercase tracking-[0.02em] leading-none text-[#78716c] dark:text-zinc-400">
+              <p className="m-0 font-mono text-xs uppercase tracking-[0.02em] leading-none text-zinc-500 dark:text-zinc-400">
                 {exifLine}
               </p>
             </div>
