@@ -27,6 +27,11 @@
 
 @import 'tailwindcss';
 
+/* Prose in docs/ mentions utility-class syntax as example text (e.g.
+   `text-[var(...)]`), which the automatic source scanner would compile
+   into invalid CSS — docs are never rendered, so skip them entirely */
+@source not '../../docs';
+
 /* Tailwind CSS 4: 使用 class 策略的暗色模式（基于 .dark 类） */
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -170,11 +175,26 @@ body {
     line-height: 1.65;
   }
 
-  /* 段落 */
+  /* 段落。1.25em 让段间隙（20px）明显小于块间隙（24px）与节间隙（48px），
+     通篇形成 16 < 20 < 24 < 48 的间距阶梯，而不是全部 24px 一档 */
   .prose p {
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
     text-wrap: pretty;
+  }
+
+  /* 分组关系（proximity）：引导段和它引出的代码块/列表/引用互相靠拢——
+     间隙收到 16px，小于段间距；块结束后回到 24px，归属关系一眼可读。
+     :has() 不支持时优雅退化为对称间距 */
+  .prose p:has(+ pre, + ul, + ol, + blockquote) {
+    margin-bottom: 1rem;
+  }
+
+  .prose p + pre,
+  .prose p + ul,
+  .prose p + ol,
+  .prose p + blockquote {
+    margin-top: 1rem;
   }
 
   /* 加粗文字 */
