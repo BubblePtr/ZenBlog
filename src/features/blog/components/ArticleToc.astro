@@ -33,14 +33,3 @@ const items = headings.map((heading) => ({
     className="article-toc"
   />
 </aside>
-
-<script>
-  import {
-    initArticleCrispTocLayout,
-    teardownArticleCrispTocLayout,
-  } from '@/features/blog/article-crisp-toc.client';
-
-  initArticleCrispTocLayout();
-  document.addEventListener('astro:page-load', initArticleCrispTocLayout);
-  document.addEventListener('astro:before-swap', teardownArticleCrispTocLayout);
-</script>

@@ -102,8 +102,17 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
         {
           heroImage && (
             <figure class="mx-auto mb-12 w-full max-w-3xl px-6" data-blog-hero-image>
-              <div class="relative aspect-[16/10] sm:aspect-[21/9] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900">
-                <Image src={heroImage} alt={title} class="object-cover w-full h-full" inferSize loading="eager" />
+              <div class="relative aspect-[16/10] sm:aspect-[2/1] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900">
+                <Image
+                  src={heroImage}
+                  alt={title}
+                  class="object-cover w-full h-full"
+                  inferSize
+                  loading="eager"
+                  fetchpriority="high"
+                  widths={[768, 1536]}
+                  sizes="(min-width: 640px) 720px, calc(100vw - 48px)"
+                />
               </div>
               {heroImageCredit && (
                 <figcaption class="mt-2 text-right text-xs text-zinc-400 dark:text-zinc-500">

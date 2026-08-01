@@ -2,6 +2,7 @@
 title: 'OKLCH：把颜色变成可以推理的参数'
 description: '博客改版换主题色时，我把全站色彩系统迁到了 OKLCH。这篇文章聊聊这个色彩模型对前端到底好在哪：感知均匀意味着什么，以及换色相、调彩度、翻转深色模式为什么都变成了可预测的参数调整。'
 pubDate: '2026-08-01'
+heroImage: '../images/oklch-in-practice-hero.jpg'
 showOnHome: true
 lang: zh
 tags: ['css', 'design', 'frontend']
