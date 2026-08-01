@@ -27,6 +27,11 @@
 
 @import 'tailwindcss';
 
+/* Prose in docs/ mentions utility-class syntax as example text (e.g.
+   `text-[var(...)]`), which the automatic source scanner would compile
+   into invalid CSS — docs are never rendered, so skip them entirely */
+@source not '../../docs';
+
 /* Tailwind CSS 4: 使用 class 策略的暗色模式（基于 .dark 类） */
 @custom-variant dark (&:where(.dark, .dark *));
 
