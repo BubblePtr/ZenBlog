@@ -1,0 +1,76 @@
+---
+/**
+ * Year-grouped post index (DESIGN.md "Ma"): the shared list language for
+ * the homepage and the blog index. One row per post — title plus a
+ * right-aligned tabular date — with the title carrying the bt-{slug}
+ * view-transition name so it morphs into the article heading.
+ */
+import type { BlogListItem } from '@/types/content';
+import type { Language } from '@/i18n/config';
+import { groupPostsByYear } from '@/shared/content/group-posts-by-year';
+import { withTrailingSlash } from '@/shared/urls';
+
+interface Props {
+  posts: BlogListItem[];
+  lang: Language;
+}
+
+const { posts, lang } = Astro.props;
+
+const blogHref = (slug: string) =>
+  withTrailingSlash(lang === 'zh' ? `/zh/blog/${slug}` : `/blog/${slug}`);
+
+const vtName = (slug: string) => `bt-${slug.replace(/[^a-zA-Z0-9]/g, '-')}`;
+
+const yearGroups = groupPostsByYear(posts);
+
+const formatDay = (date: Date) =>
+  `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+---
+
+<div>
+  {
+    yearGroups.map((group) => (
+      <div class="mt-8 first:mt-0">
+        <p class="year-label">{group.year}</p>
+        <ul class="mt-2 list-none space-y-0 p-0">
+          {group.posts.map((post) => (
+            <li>
+              <a
+                href={blogHref(post.slug)}
+                class="post-row group flex items-baseline justify-between gap-8 py-2 no-underline focus-ring"
+              >
+                <span
+                  class="post-title text-[0.9375rem] leading-relaxed text-zinc-900 transition-colors dark:text-zinc-100"
+                  style={`view-transition-name: ${vtName(post.slug)}`}
+                >
+                  {post.data.title}
+                </span>
+                <time
+                  datetime={post.data.pubDate.toISOString()}
+                  class="shrink-0 font-mono text-[0.7rem] tabular-nums text-zinc-400 dark:text-zinc-500"
+                >
+                  {formatDay(post.data.pubDate)}
+                </time>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .year-label {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.7rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-tertiary, #b3b3ae);
+  }
+
+  .post-row:hover .post-title,
+  .post-row:focus-visible .post-title {
+    color: var(--color-accent);
+  }
+</style>
