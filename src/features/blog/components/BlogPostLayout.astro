@@ -75,9 +75,9 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
 
   <body class="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-500 antialiased font-sans">
     <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} localizedPaths={localizedPaths} />
-    <main class="px-[var(--page-gutter)] py-12 sm:py-20 relative z-10">
+    <main class="py-12 sm:py-20 relative z-10">
       <article data-blog-article>
-        <header class="mx-auto w-full max-w-xl mb-12">
+        <header class="mx-auto w-full max-w-content px-6 mb-12">
           <div class="flex items-start justify-between gap-6 mb-5">
             <p class="font-mono text-[0.7rem] tabular-nums text-zinc-400 dark:text-zinc-500">
               {formattedDate} · {readTimeLabel}
@@ -101,7 +101,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
 
         {
           heroImage && (
-            <figure class="mx-auto mb-12 w-full max-w-3xl" data-blog-hero-image>
+            <figure class="mx-auto mb-12 w-full max-w-3xl px-6" data-blog-hero-image>
               <div class="relative aspect-[16/10] sm:aspect-[21/9] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                 <Image src={heroImage} alt={title} class="object-cover w-full h-full" inferSize loading="eager" />
               </div>
@@ -131,7 +131,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
           )
         }
 
-        <section class="mx-auto w-full max-w-xl">
+        <section class="mx-auto w-full max-w-content px-6">
           <p
             class="text-xl sm:text-2xl leading-relaxed text-zinc-900 dark:text-zinc-100 mb-7"
             style={lang === 'zh' ? 'font-family: var(--font-serif)' : 'font-family: var(--font-serif-en)'}
@@ -157,7 +157,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
         </section>
 
         <div class="flex justify-center">
-          <div class="article-body-shell relative w-full max-w-xl">
+          <div class="article-body-shell relative w-full max-w-content px-6">
             <ArticleToc lang={lang} headings={tocHeadings} />
             <div class="article-prose prose">
               <slot />
@@ -168,7 +168,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
         <BlogPostFollowCTA lang={lang} />
       </article>
 
-      <section class="mx-auto w-full max-w-xl mt-20">
+      <section class="mx-auto w-full max-w-content px-6 mt-20">
         <h2 class="text-[1.05rem] font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 mb-6">
           {lang === 'zh' ? '评论' : 'Comments'}
         </h2>

@@ -16,8 +16,8 @@ const groups = await getPhotographyDateGroups(lang);
   description={t['photography.description']}
   currentPath="/photography"
 >
-  <div class="mx-auto max-w-6xl px-6 pb-24 pt-16 sm:pt-20">
-    <header class="mx-auto max-w-[34rem]">
+  <div class="pb-24 pt-16 sm:pt-20">
+    <header class="mx-auto max-w-content px-6">
       <h1 class="text-[1.05rem] font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
         {t['photography.title']}
       </h1>
@@ -25,7 +25,8 @@ const groups = await getPhotographyDateGroups(lang);
         {t['photography.description']}
       </p>
     </header>
-    <div class="mt-14">
+    {/* Deliberate breakout: gallery runs wider than the max-w-content text column */}
+    <div class="mt-14 mx-auto max-w-6xl px-6">
       <PhotographyGallery client:load groups={groups} t={t} />
     </div>
   </div>
