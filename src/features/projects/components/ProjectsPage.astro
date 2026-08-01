@@ -1,0 +1,121 @@
+---
+/**
+ * Minimal projects page (DESIGN.md "Ma"): a single quiet column, one
+ * stacked entry per project — screenshot, name with status word, prose,
+ * a mono stack line, and plain-text links. Server-rendered only.
+ */
+import type { ProjectListItem } from '@/types/content';
+import type { Language } from '@/i18n/config';
+import type { TranslationDictionary } from '@/shared/i18n/types';
+
+interface Props {
+  projects: ProjectListItem[];
+  lang: Language;
+  t: TranslationDictionary;
+}
+
+const { projects, lang, t } = Astro.props;
+const isZh = lang === 'zh';
+
+function getParagraphs(content: string) {
+  return content
+    .split(/\n\s*\n+/)
+    .map((paragraph) => paragraph.replace(/\n/g, ' ').trim())
+    .filter(Boolean)
+    .filter((paragraph) => !/^#+\s/.test(paragraph));
+}
+---
+
+<div class="mx-auto max-w-[34rem] px-6 pb-24 pt-16 sm:pt-20">
+  <h1 class="text-[1.05rem] font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+    {t['nav.projects']}
+  </h1>
+  <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
+    {t['home.projects.description']}
+  </p>
+
+  <div class="mt-14 space-y-16">
+    {
+      projects.map((project) => {
+        const paragraphs = getParagraphs(project.data.content);
+
+        return (
+          <article>
+            {project.data.heroImage && (
+              <div class="aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
+                <img
+                  src={project.data.heroImage}
+                  alt={project.data.title}
+                  loading="lazy"
+                  decoding="async"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+            )}
+
+            <div class="mt-4 flex items-baseline gap-2.5">
+              <h2 class="text-[0.9375rem] font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                {project.data.title}
+              </h2>
+              {project.data.status && (
+                <span class="ml-auto shrink-0 font-mono text-[0.65rem] text-[var(--color-accent)]">
+                  {project.data.status}
+                </span>
+              )}
+            </div>
+
+            <p class="mt-1.5 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+              {project.data.description}
+            </p>
+
+            <div class="mt-4 space-y-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+              {paragraphs.slice(0, 3).map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+            </div>
+
+            <p class="mt-4 font-mono text-[0.7rem] text-zinc-400 dark:text-zinc-500">
+              {project.data.stack.slice(0, 5).join(' · ')}
+            </p>
+
+            <p class="mt-3 flex gap-5 text-[0.8rem] text-zinc-500 dark:text-zinc-400">
+              {project.data.github && (
+                <a
+                  href={project.data.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="proj-link"
+                >
+                  GitHub
+                </a>
+              )}
+              {project.data.demo && (
+                <a
+                  href={project.data.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="proj-link"
+                >
+                  {isZh ? '网站' : 'Website'}
+                </a>
+              )}
+            </p>
+          </article>
+        );
+      })
+    }
+  </div>
+</div>
+
+<style>
+  .proj-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+    transition: color 150ms ease;
+  }
+  .proj-link:hover {
+    color: var(--color-accent);
+  }
+</style>
