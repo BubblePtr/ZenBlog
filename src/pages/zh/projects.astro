@@ -1,11 +1,13 @@
 ---
 import { SITE_TITLE } from '@/consts';
-import ProjectsLanding from '@/features/projects/components/ProjectsLanding';
+import ProjectsPage from '@/features/projects/components/ProjectsPage.astro';
+import { getProjects } from '@/features/projects/server/queries.server';
 import PageShell from '@/shared/components/layout/PageShell.astro';
 import { getTranslationDictionary } from '@/shared/i18n/types';
 
 const lang = 'zh' as const;
 const t = getTranslationDictionary(lang);
+const projects = await getProjects();
 ---
 
 <PageShell
@@ -13,7 +15,6 @@ const t = getTranslationDictionary(lang);
   title={`${t['nav.projects']} | ${SITE_TITLE}`}
   description={t['projects.description']}
   currentPath="/zh/projects"
-  mainClass="px-[var(--page-gutter)] py-12 sm:py-20 relative z-10"
 >
-  <ProjectsLanding lang={lang} />
+  <ProjectsPage projects={projects} lang={lang} t={t} />
 </PageShell>
