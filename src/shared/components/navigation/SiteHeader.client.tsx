@@ -112,27 +112,18 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
   return (
     <header className="sticky top-0 z-40 w-full">
       {frostFullyOn ? (
-        <div className="absolute inset-0 bg-[oklch(98%_0.006_60)]/80 backdrop-blur-md dark:bg-zinc-950/80" />
+        <div className="absolute inset-0 bg-paper/80 backdrop-blur-md" />
       ) : (
-        <>
-          {/* Progressive: same alpha-in-color recipe; dual layers for light/dark. */}
-          <div
-            className="absolute inset-0 dark:hidden"
-            style={{
-              backgroundColor: `oklch(98% 0.006 60 / ${frostAlpha})`,
-              backdropFilter: frostBlurPx > 0 ? `blur(${frostBlurPx}px)` : undefined,
-              WebkitBackdropFilter: frostBlurPx > 0 ? `blur(${frostBlurPx}px)` : undefined,
-            }}
-          />
-          <div
-            className="absolute inset-0 hidden dark:block"
-            style={{
-              backgroundColor: `rgb(9 9 11 / ${frostAlpha})`,
-              backdropFilter: frostBlurPx > 0 ? `blur(${frostBlurPx}px)` : undefined,
-              WebkitBackdropFilter: frostBlurPx > 0 ? `blur(${frostBlurPx}px)` : undefined,
-            }}
-          />
-        </>
+        // Progressive: same alpha-in-color recipe; --color-paper flips with .dark
+        // so one layer covers both modes.
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundColor: `color-mix(in oklab, var(--color-paper) ${frostAlpha * 100}%, transparent)`,
+            backdropFilter: frostBlurPx > 0 ? `blur(${frostBlurPx}px)` : undefined,
+            WebkitBackdropFilter: frostBlurPx > 0 ? `blur(${frostBlurPx}px)` : undefined,
+          }}
+        />
       )}
 
       <div className="relative mx-auto max-w-content px-6 h-16 flex items-center justify-between">
@@ -149,9 +140,7 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
                 key={item.key}
                 href={href}
                 className={`block px-2.5 py-2 transition-colors no-underline focus-ring ${
-                  active
-                    ? 'text-[var(--color-accent)]'
-                    : 'hover:text-zinc-900 dark:hover:text-zinc-100'
+                  active ? 'text-accent' : 'hover:text-zinc-900 dark:hover:text-zinc-100'
                 }`}
                 aria-current={active ? 'page' : undefined}
               >

@@ -1,5 +1,4 @@
 @import './typography.css';
-@import './_variables.scss';
 @import './_keyframe-animations.scss';
 @import 'katex/dist/katex.min.css';
 
@@ -8,7 +7,7 @@
 .dark .katex-display,
 .dark .katex .katex-html,
 .dark .katex .base {
-  color: #e5e7eb !important;
+  color: var(--color-ink) !important;
 }
 
 .dark .katex .frac-line,
@@ -17,12 +16,13 @@
 .dark .katex .hline,
 .dark .katex .hdashline,
 .dark .katex .rule {
-  border-color: #71717a !important;
+  /* Fraction/rule lines need more presence than --color-line on dark ink */
+  border-color: oklch(0.552 0.016 286) !important;
 }
 
 .dark .katex .box {
   background-color: transparent !important;
-  border-color: #52525b !important;
+  border-color: oklch(0.442 0.017 286) !important;
 }
 
 @import 'tailwindcss';
@@ -37,42 +37,58 @@
   --container-content: 40rem;
 }
 
+/* ==================== 色彩系统 ====================
+   纸 / 墨 / 线 / 面 / 青竹 —— 全站只有这五个角色（见 docs/design/colors.md）。
+   底层值定义在 @layer base 的 :root / .dark 里，这里通过 @theme inline
+   映射为 Tailwind 工具类（bg-paper、text-ink、text-accent…），同一个类
+   在明暗两个模式下自动取对应值，无需写 dark: 变体。
+   局部一次性的中性色仍可直接用 zinc-*（全站唯一允许的灰阶family）。 */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink-strong: var(--ink-strong);
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-tertiary: var(--ink-tertiary);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+}
+
 @layer base {
   :root {
-    --background: 255 255 255;
-    --foreground: 24 24 27;
-    --rainbow-color-1: #ff6b6b;
-    --rainbow-color-2: #8b5cf6;
-    --rainbow-color-3: #3b82f6;
-    --rainbow-color-4: #06b6d4;
-    --rainbow-color-5: #84cc16;
     /* 字体变量已在 typography.css 的 @theme 中定义 */
 
-    /* 文字颜色系统（RGBA 方案，减少视觉疲劳） */
-    --color-text-primary: rgba(0, 0, 0, 0.87); /* 正文、标题 */
-    --color-text-secondary: rgba(0, 0, 0, 0.6); /* 次要文字 */
-    --color-text-disabled: rgba(0, 0, 0, 0.38); /* 禁用文字 */
-    --color-text-emphasis: rgba(0, 0, 0, 0.92); /* 强调文字 */
+    /* 纸：全站唯一底色，微暖宣纸感 */
+    --paper: oklch(0.98 0.006 60);
+    /* 面：轻微抬起的表面（代码块、卡片、TOC 面板） */
+    --surface: oklch(0.985 0 0);
+    /* 墨：文字四级。黑 + 透明度（墨分浓淡），叠加在任何纸/面上都成立 */
+    --ink-strong: oklch(0 0 0 / 0.92); /* 标题、strong */
+    --ink: oklch(0 0 0 / 0.87); /* 正文 */
+    --ink-secondary: oklch(0 0 0 / 0.6); /* 次要文字、引用 */
+    --ink-tertiary: oklch(0 0 0 / 0.38); /* 日期戳、最弱 meta */
+    /* 线：默认分隔线与描边 */
+    --line: oklch(0.92 0.004 286);
 
     /* 青竹：全站唯一强调色（wayfinding only：链接 hover、focus、active 态、状态字）。
        竹与玉之色，皆象征君子。纸面上 7.1:1（AAA）。 */
-    --color-accent: oklch(0.439 0.046 156.7);
-    --color-accent-strong: oklch(0.36 0.046 157);
+    --accent: oklch(0.439 0.046 156.7);
+    --accent-strong: oklch(0.36 0.046 157);
   }
 
   .dark {
-    --background: 9 9 11;
-    --foreground: 250 250 250;
-
-    /* 暗色模式文字颜色 */
-    --color-text-primary: rgba(255, 255, 255, 0.87);
-    --color-text-secondary: #a1a1aa; /* zinc-400，有色温，比透明白更有质感 */
-    --color-text-disabled: rgba(255, 255, 255, 0.38);
-    --color-text-emphasis: rgba(255, 255, 255, 0.92);
+    --paper: oklch(0.141 0.005 286); /* zinc-950，墨色纸面 */
+    --surface: oklch(0.21 0.006 286); /* zinc-900 */
+    --ink-strong: oklch(1 0 0 / 0.92);
+    --ink: oklch(1 0 0 / 0.87);
+    --ink-secondary: oklch(0.705 0.015 286); /* zinc-400 实色，有色温，比透明白更有质感 */
+    --ink-tertiary: oklch(0.552 0.016 286); /* zinc-500 */
+    --line: oklch(0.37 0.013 286); /* zinc-700 */
 
     /* 暗色青竹：提高 L 保证对比度（墨底上 8.6:1，AAA），色相与浅色同 */
-    --color-accent: oklch(0.734 0.049 159.3);
-    --color-accent-strong: oklch(0.8 0.049 158);
+    --accent: oklch(0.734 0.049 159.3);
+    --accent-strong: oklch(0.8 0.049 158);
   }
 
   html {
@@ -82,8 +98,7 @@
   body {
     /* 界面默认使用无衬线字体 */
     font-family: var(--font-ui);
-    @apply bg-[oklch(98%_0.006_60)] text-zinc-800 dark:bg-zinc-950 dark:text-zinc-200
-           transition-colors duration-300;
+    @apply bg-paper text-ink transition-colors duration-300;
     letter-spacing: var(--letter-spacing-normal);
     line-height: var(--line-height-normal);
     -webkit-font-smoothing: antialiased;
@@ -114,15 +129,6 @@
     font-family: var(--font-mono);
     font-size: var(--font-size-code);
   }
-
-  @keyframes rainbow {
-    0% {
-      background-position: 0%;
-    }
-    100% {
-      background-position: 200%;
-    }
-  }
 }
 
 /* 隐藏滚动条 (全局生效，不放在 layer 中以免被 purge) */
@@ -151,7 +157,7 @@ body {
     font-weight: var(--font-weight-normal); /* 400 */
     line-height: var(--line-height-relaxed);
     letter-spacing: var(--letter-spacing-normal);
-    color: var(--color-text-primary); /* rgba(0,0,0,0.87) */
+    color: var(--color-ink);
     /* No faux bold (a missing weight must surface as a regression);
        style synthesis stays on so CJK italics can still slant */
     font-synthesis: style;
@@ -174,7 +180,7 @@ body {
   .prose strong,
   .prose b {
     font-weight: var(--font-weight-semibold); /* 600 */
-    color: var(--color-text-emphasis);
+    color: var(--color-ink-strong);
   }
 
   /* 文章大标题：衬线 + 粗体 */
@@ -183,7 +189,7 @@ body {
     font-size: var(--font-size-article-title);
     font-weight: var(--font-weight-bold); /* 700 */
     line-height: var(--line-height-tight);
-    color: var(--color-text-emphasis);
+    color: var(--color-ink-strong);
     margin-top: 0;
     margin-bottom: 2rem;
   }
@@ -197,7 +203,7 @@ body {
     font-weight: var(--font-weight-semibold); /* 600 */
     text-wrap: balance;
     line-height: var(--line-height-tight);
-    color: var(--color-text-emphasis);
+    color: var(--color-ink-strong);
     margin-top: 3rem;
     margin-bottom: 1.5rem;
   }
@@ -210,7 +216,7 @@ body {
     font-weight: var(--font-weight-semibold);
     text-wrap: balance;
     line-height: var(--line-height-tight);
-    color: var(--color-text-emphasis);
+    color: var(--color-ink-strong);
     margin-top: 2rem;
     margin-bottom: 1rem;
   }
@@ -223,7 +229,7 @@ body {
     font-weight: var(--font-weight-semibold);
     text-wrap: balance;
     line-height: var(--line-height-tight);
-    color: var(--color-text-emphasis);
+    color: var(--color-ink-strong);
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
   }
@@ -234,7 +240,7 @@ body {
     width: 1em;
     text-align: center;
     text-decoration: none;
-    color: var(--color-text-secondary);
+    color: var(--color-ink-secondary);
     opacity: 0;
     transition:
       color 150ms ease,
@@ -271,7 +277,7 @@ body {
   }
 
   .article-toc.crisp-toc--article .crisp-toc-item {
-    color: var(--color-text-secondary);
+    color: var(--color-ink-secondary);
     text-decoration: none;
     transition:
       color 320ms ease,
@@ -305,7 +311,7 @@ body {
   }
 
   .article-toc.crisp-toc--article .crisp-toc-item:hover {
-    color: var(--color-text-emphasis);
+    color: var(--color-ink-strong);
   }
 
   .article-toc.crisp-toc--article .crisp-toc-item.is-active {
@@ -358,7 +364,7 @@ body {
   .prose blockquote {
     @apply border-l-4 border-zinc-300 dark:border-zinc-600 pl-4 my-6;
 
-    color: var(--color-text-secondary);
+    color: var(--color-ink-secondary);
 
     font-style: normal;
   }
@@ -405,7 +411,7 @@ body {
     font-size: var(--font-size-code);
     font-weight: var(--font-weight-normal);
     line-height: var(--line-height-normal);
-    color: var(--color-text-primary);
+    color: var(--color-ink);
   }
 
   /* 移除行内代码前后的反引号 */
@@ -425,16 +431,16 @@ body {
   .prose pre code {
     @apply bg-transparent border-0 p-0 rounded-none;
     font-size: var(--font-size-code);
-    color: var(--color-text-primary);
+    color: var(--color-ink);
   }
 
-  /* 代码块 Mac 窗口风格 - 红黄绿三个点 */
+  /* 代码块 Mac 窗口风格 - 红黄绿三个点（与 DemoBrowser 同用 red/amber/emerald-400） */
   .prose pre::before {
     content: '';
     @apply absolute top-4 left-4 w-3 h-3 rounded-full bg-red-400;
     box-shadow:
-      20px 0 0 #facc15,
-      40px 0 0 #4ade80;
+      20px 0 0 oklch(0.828 0.189 84.429),
+      40px 0 0 oklch(0.765 0.177 163.223);
   }
 
   /* 图片 */
@@ -513,7 +519,7 @@ body {
 
   .prose th {
     @apply py-3 px-4 font-medium;
-    color: var(--color-text-emphasis);
+    color: var(--color-ink-strong);
   }
 
   .prose td {
@@ -534,7 +540,7 @@ body {
   .prose del,
   .prose s {
     @apply line-through;
-    color: var(--color-text-secondary);
+    color: var(--color-ink-secondary);
   }
 
   /* 标记高亮 */
@@ -598,18 +604,13 @@ body {
     overflow: hidden;
   }
 
-  /* 选中文本用青竹反白：全站强调色的最小签名 */
+  /* 选中文本用青竹反白：全站强调色的最小签名。反白字取纸色，明暗自动成立 */
   ::selection {
     background: var(--color-accent);
-    color: #faf7f2;
+    color: var(--color-paper);
   }
 
-  .dark ::selection {
-    background: var(--color-accent);
-    color: #09090b;
-  }
-
-  /* 杂志 kicker（栏目眉线）：mono 大写小字 + 图纸蓝 */
+  /* 杂志 kicker（栏目眉线）：mono 大写小字 + 青竹 */
   .kicker {
     font-family: var(--font-mono);
     font-size: 0.6875rem; /* 11px */
@@ -619,9 +620,9 @@ body {
     color: var(--color-accent);
   }
 
-  /* 统一焦点指示器样式 */
+  /* 统一焦点指示器样式：焦点属于 wayfinding，用青竹（与 :root 强调色策略一致） */
   .focus-ring {
-    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-400 dark:focus-visible:outline-zinc-500;
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
   }
 }
 
@@ -699,15 +700,10 @@ body {
   width: min(100%, 24rem);
   padding: 2rem 1.5rem;
   font-family: var(--font-mono);
-  color: #111;
-  background: #f4f4f5;
+  color: var(--color-ink-strong);
+  background: var(--color-surface);
   border-radius: 0.75rem;
   outline: none;
-}
-
-.dark .crisp-toc {
-  color: #fafafa;
-  background: #18181b;
 }
 
 .crisp-toc-theme-bar {
@@ -724,7 +720,7 @@ body {
   font: inherit;
   font-size: 0.75rem;
   letter-spacing: 0.02em;
-  color: #a1a1aa;
+  color: var(--color-ink-tertiary);
   background: transparent;
   cursor: pointer;
   transition:
@@ -733,13 +729,8 @@ body {
 }
 
 .crisp-toc-theme-pill.is-active {
-  color: #fff;
-  background: #09090b;
-}
-
-.dark .crisp-toc-theme-pill.is-active {
-  color: #09090b;
-  background: #fafafa;
+  color: var(--color-paper);
+  background: var(--color-ink-strong);
 }
 
 .crisp-toc-body {
@@ -787,8 +778,9 @@ body {
   left: var(--crisp-toc-lane-left);
   height: 2px;
   border-radius: 9999px;
-  --crisp-tick-base: #d4d4d8;
-  --crisp-tick-ink: #09090b;
+  /* Tick base sits one step heavier than --color-line so the scale stays legible */
+  --crisp-tick-base: oklch(0.871 0.006 286);
+  --crisp-tick-ink: var(--color-ink-strong);
   /* --crisp-tick-heat (0..1) is set inline per frame from ball proximity. */
   background: color-mix(
     in oklab,
@@ -805,8 +797,7 @@ body {
 }
 
 .dark .crisp-toc-tick {
-  --crisp-tick-base: #52525b;
-  --crisp-tick-ink: #fafafa;
+  --crisp-tick-base: oklch(0.442 0.017 286);
 }
 
 .crisp-toc-tick.crisp-toc-line {
@@ -820,12 +811,8 @@ body {
   width: var(--crisp-toc-dot-size);
   height: var(--crisp-toc-dot-size);
   border-radius: 9999px;
-  background: #09090b;
+  background: var(--color-ink-strong);
   transform: translateY(-50%);
-}
-
-.dark .crisp-toc-origin-dot {
-  background: #fafafa;
 }
 
 .crisp-toc-list {
@@ -850,32 +837,22 @@ body {
   font: inherit;
   font-size: 0.95rem;
   line-height: 1.35;
-  color: rgba(24, 24, 27, 0.28);
+  /* Resting items are deliberately fainter than --color-ink-tertiary:
+     the scale reads as texture until hover/active pulls one line forward */
+  color: color-mix(in oklab, var(--color-ink-strong) 30%, transparent);
   background: transparent;
   cursor: pointer;
   transition: color 220ms ease;
   will-change: transform;
 }
 
-.dark .crisp-toc-item {
-  color: rgba(250, 250, 250, 0.28);
-}
-
 .crisp-toc-item:hover {
-  color: rgba(24, 24, 27, 0.55);
-}
-
-.dark .crisp-toc-item:hover {
-  color: rgba(250, 250, 250, 0.55);
+  color: color-mix(in oklab, var(--color-ink-strong) 60%, transparent);
 }
 
 .crisp-toc-item.is-active {
-  color: #09090b;
+  color: var(--color-ink-strong);
   font-weight: 600;
-}
-
-.dark .crisp-toc-item.is-active {
-  color: #fafafa;
 }
 
 .crisp-toc-footer {
@@ -890,9 +867,9 @@ body {
   justify-content: center;
   width: 1.75rem;
   height: 1.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid color-mix(in oklab, var(--color-ink-strong) 14%, transparent);
   border-radius: 9999px;
-  color: #71717a;
+  color: var(--color-ink-secondary);
   background: transparent;
   cursor: pointer;
   transition:
@@ -901,19 +878,9 @@ body {
     opacity 180ms ease;
 }
 
-.dark .crisp-toc-nav-button {
-  border-color: rgba(255, 255, 255, 0.16);
-  color: #a1a1aa;
-}
-
 .crisp-toc-nav-button:hover:not(:disabled) {
-  border-color: rgba(0, 0, 0, 0.28);
-  color: #09090b;
-}
-
-.dark .crisp-toc-nav-button:hover:not(:disabled) {
-  border-color: rgba(255, 255, 255, 0.28);
-  color: #fafafa;
+  border-color: color-mix(in oklab, var(--color-ink-strong) 30%, transparent);
+  color: var(--color-ink-strong);
 }
 
 .crisp-toc-nav-button:disabled {
@@ -924,7 +891,7 @@ body {
 .crisp-toc-hint {
   font-size: 0.68rem;
   letter-spacing: 0.14em;
-  color: #a1a1aa;
+  color: var(--color-ink-tertiary);
 }
 
 @media (prefers-reduced-motion: reduce) {

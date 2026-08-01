@@ -73,7 +73,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
     <BaseHead title={title} description={description} slug={ogSlug} />
   </head>
 
-  <body class="bg-[oklch(98%_0.006_60)] dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-500 antialiased font-sans">
+  <body class="bg-paper text-ink transition-colors duration-500 antialiased font-sans">
     <SiteHeader client:load currentPath={currentPath} lang={lang} t={t} localizedPaths={localizedPaths} />
     <main class="py-12 sm:py-20 relative z-10">
       <article data-blog-article>
