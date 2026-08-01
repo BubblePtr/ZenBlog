@@ -149,6 +149,7 @@ Astro 页面在构建时调用 server 查询获取数据，通过 props 传递�
 - 翻译文件：`src/i18n/translations/en.ts` 和 `zh.ts`
 - 页面层：`src/pages/` 和 `src/pages/zh/` 镜像结构，每个页面顶部硬编码 `const lang`
 - 博客文章按语言分目录：`src/content/blog/en/`、`src/content/blog/zh/`
+- **博客列表是跨语言统一列表**（2026-08 起）：`getUnifiedBlogList()` 按基础 slug 合并两语言目录，成对翻译合并为一条、界面语言版本优先；只有单语版本的文章在另一语言界面挂"中"/"EN"徽标并直链原文。文章**不要求**双语成对，中文为主、选择性翻译
 - 摄影集合的多语言通过 frontmatter 内嵌字段实现（`title: { en, zh }`），不分目录
 
 ### Content Collections

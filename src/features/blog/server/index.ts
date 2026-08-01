@@ -1,5 +1,5 @@
 export {
-  getBlogListByLang,
+  getUnifiedBlogList,
   getBlogLocalizedPaths,
   getBlogStaticPathsByLang,
   getBlogTocHeadings,
