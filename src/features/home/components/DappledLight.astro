@@ -8,9 +8,9 @@
  * and instances it across the top edge, so every silhouette reads as a
  * whole branch hanging into frame, never as floating leaves. Two layers
  * at different blur depths sway around a far off-canvas pivot; `multiply`
- * blending darkens the page like a real shadow. Covers only the first
- * screen and scrolls away with it. Hidden in dark mode and frozen under
- * prefers-reduced-motion.
+ * blending darkens the warm paper like a real shadow. Extends under the
+ * sticky header so home nav and content share one field; sits under
+ * HomeLanding (z-10). Hidden in dark mode; frozen under prefers-reduced-motion.
  */
 ---
 
@@ -50,7 +50,8 @@
           <use href="#tuft-far" transform="translate(82 248) rotate(16) scale(1.1)"></use>
         </g>
       </defs>
-      <g fill="#3f3f46" color="#3f3f46">
+      <!-- Warm neutral (hue ~60) so multiply matches the paper, not cool zinc -->
+      <g fill="oklch(0.42 0.02 60)" color="oklch(0.42 0.02 60)">
         <!-- Tall frond over the left third -->
         <use href="#frond-far" transform="translate(200 -70) scale(3) rotate(10)"></use>
         <!-- Center frond, mirrored so it droops toward the title -->
@@ -90,7 +91,7 @@
           <use href="#tuft-near" transform="translate(82 248) rotate(-6) scale(1.05)"></use>
         </g>
       </defs>
-      <g fill="#52525b" color="#52525b">
+      <g fill="oklch(0.48 0.025 70)" color="oklch(0.48 0.025 70)">
         <!-- Sharper frond hanging left of the title column -->
         <use href="#frond-near" transform="translate(560 -60) scale(2.1) rotate(6)"></use>
         <!-- Mirrored frond dropping past the title's right side -->
@@ -104,15 +105,16 @@
 
 <style>
   .dappled-light {
-    /* Cover only the first screen and scroll away with it, so the dense
-       content below stays undisturbed; fade out near the bottom edge
-       instead of cutting off hard. */
+    /* Cover the first screen including the sticky header strip (h-16),
+       so the transparent home nav and content share one paper field.
+       Scrolls away with main; fades before the dense list. z-0 sits under
+       HomeLanding (z-10) so shadows multiply onto paper, not type. */
     position: absolute;
-    top: 0;
+    top: -4rem;
     left: 0;
     right: 0;
-    height: 100vh;
-    z-index: 9999;
+    height: calc(100vh + 4rem);
+    z-index: 0;
     pointer-events: none;
     overflow: hidden;
     mix-blend-mode: multiply;
@@ -139,7 +141,7 @@
   /* Far fronds: heavier blur, fainter, slower — the canopy high above */
   .dappled-far {
     filter: blur(38px);
-    opacity: 0.2;
+    opacity: 0.14;
     transform-origin: 50% -80%;
     animation: dappled-sway 13s ease-in-out infinite alternate;
   }
@@ -147,7 +149,7 @@
   /* Near fronds: crisper, darker, quicker — leaves closest to the paper */
   .dappled-near {
     filter: blur(13px);
-    opacity: 0.28;
+    opacity: 0.16;
     transform-origin: 50% -100%;
     animation: dappled-sway 8.5s ease-in-out -4s infinite alternate-reverse;
   }
