@@ -140,7 +140,7 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
                 key={item.key}
                 href={href}
                 className={`block px-2.5 py-2 transition-colors no-underline focus-ring ${
-                  active ? 'text-accent' : 'hover:text-zinc-900 dark:hover:text-zinc-100'
+                  active ? 'text-accent' : 'hover:text-accent'
                 }`}
                 aria-current={active ? 'page' : undefined}
               >

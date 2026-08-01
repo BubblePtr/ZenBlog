@@ -86,7 +86,7 @@ export default function MobileNavMenu({ items, onItemClick, onClose }: MobileNav
               className={`block px-6 py-4 rounded-2xl text-lg font-normal transition-colors no-underline focus-ring ${
                 item.active
                   ? 'bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-100'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 hover:text-accent'
               }`}
             >
               {item.label}
