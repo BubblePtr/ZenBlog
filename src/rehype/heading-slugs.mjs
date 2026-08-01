@@ -84,6 +84,13 @@ const translatedHeadings = new Map(
     agentteam深入使用体验: ['agent', 'team', 'deep', 'dive'],
     一个动态agent工作流的设计: ['dynamic', 'agent', 'workflow', 'design'],
     一个自动化内容系统的搭建: ['automated', 'content', 'system', 'setup'],
+    hsl的亮度是骗人的: ['hsl', 'lightness', 'lies'],
+    案例一换主题色只动h: ['case', '1', 'swap', 'hue', 'only'],
+    案例二彩度是一根可以精确拨动的旋钮: ['case', '2', 'chroma', 'is', 'a', 'precise', 'dial'],
+    案例三深色模式是重映射不是重绘: ['case', '3', 'dark', 'mode', 'is', 'remapping'],
+    顺手的部分: ['everyday', 'wins'],
+    一个要注意的坑: ['one', 'gotcha'],
+    小结: ['takeaways'],
   }),
 );
 
