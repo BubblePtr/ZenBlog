@@ -69,6 +69,7 @@ jj undo                              # 撤销上一次 jj 操作（万能后悔�
 - PR 合并后：`jj git fetch`，然后 `jj bookmark delete feat/xxx` 清理本地书签。
 - jj 没有暂存区，所有工作区改动都属于 `@`；需要拆分改动时用 `jj split`。
 - `.jj/` 已通过 `.jj/.gitignore` 对 Git 隐藏，勿手动提交。
+- **大文件警告不可忽略**：jj 默认拒绝快照 >1MiB 的新文件（只打 Warning，不报错），此时提交里会静默缺文件。提交含图片等资源后，用 `gh pr view --json files` 或 `jj diff --stat` 确认文件真的进了提交；图片应先压缩到 1MiB 以下。
 
 ### 与 gh CLI 配合的注意点
 
