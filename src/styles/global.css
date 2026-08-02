@@ -200,6 +200,15 @@ body {
     text-wrap: pretty;
   }
 
+  /* 中文正文两端对齐：CJK 字符等宽，justify 后右缘整齐且几乎不产生词间大空隙；
+     英文保持左对齐（窄列 justify 会出现 river 空隙）。break-word 兜底长英文
+     词/URL，避免其撑出大间隙或溢出 */
+  [lang='zh'] .prose p,
+  [lang='zh'] .prose li {
+    text-align: justify;
+    overflow-wrap: break-word;
+  }
+
   /* 分组关系（proximity）：引导段和它引出的代码块/列表/引用互相靠拢——
      间隙收到 16px，小于段间距；块结束后回到 24px，归属关系一眼可读。
      :has() 不支持时优雅退化为对称间距 */
@@ -302,10 +311,10 @@ body {
     }
   }
 
-  .article-toc.crisp-toc--article {
-    margin: 0 auto 2rem;
-    width: 100%;
-    max-width: 36rem;
+  /* TOC 只有 ≥1280px 的侧栏形态；窄屏的正文前内联目录已删（移动端没人用，
+     且占首屏）。配合 ArticleToc 的 client:media，窄屏连 hydration 都不发生 */
+  .article-toc-aside {
+    display: none;
   }
 
   .article-toc.crisp-toc--article .crisp-toc-list {
@@ -324,6 +333,7 @@ body {
 
   @media (min-width: 1280px) {
     .article-toc-aside {
+      display: block;
       position: absolute;
       top: 0;
       bottom: 0;
