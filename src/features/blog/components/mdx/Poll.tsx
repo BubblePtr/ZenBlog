@@ -23,7 +23,7 @@ export default function Poll({ question, options }: PollProps) {
   };
 
   return (
-    <div className="my-8 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900 shadow-sm">
+    <div className="my-8 p-6 rounded-xl bg-surface [box-shadow:var(--elevation-raised)]">
       <h3 className="font-heading text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4">
         {question}
       </h3>

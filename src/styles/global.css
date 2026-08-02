@@ -81,6 +81,19 @@
        C 0.075 是可辨认门槛：更低会沉进墨字里读作灰（2026-08 三档对比后定档）。 */
     --accent: oklch(0.44 0.075 157);
     --accent-strong: oklch(0.36 0.075 157);
+
+    /* 抬升：卡片类表面统一用半透明阴影（1px 环替代实线边框 + 两层柔影），
+       透明度天然适配任意底色。--elevation-depth 单独可组合：hover 换环色时
+       复用柔影层（如 accent 环 + depth）。 */
+    --elevation-depth: 0 1px 3px rgb(0 0 0 / 0.05), 0 4px 10px -4px rgb(0 0 0 / 0.05);
+    --elevation-raised: 0 0 0 1px rgb(0 0 0 / 0.05), var(--elevation-depth);
+
+    /* 高密度屏上的分隔线细到 0.5px，普通屏回退 1px */
+    --border-hairline: 1px;
+
+    @media only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi) {
+      --border-hairline: 0.5px;
+    }
   }
 
   .dark {
@@ -95,6 +108,10 @@
     /* 暗色青竹：提高 L 保证对比度（墨底上 8.6:1，AAA），色相与浅色同，彩度与浅色同档 */
     --accent: oklch(0.734 0.08 159);
     --accent-strong: oklch(0.8 0.08 158);
+
+    /* 暗色下柔影不可见：抬升塌缩为一道 1px 低透明度白环 */
+    --elevation-depth: 0 0 rgb(0 0 0 / 0);
+    --elevation-raised: 0 0 0 1px rgb(255 255 255 / 0.09);
   }
 
   html {
@@ -427,7 +444,7 @@ body {
 
   /* 行内代码 */
   .prose code:not(pre code) {
-    @apply bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md px-1.5 py-0.5;
+    @apply bg-zinc-100 dark:bg-zinc-800 border border-line rounded-md px-1.5 py-0.5;
     font-family: var(--font-mono);
     font-size: var(--font-size-code);
     font-weight: var(--font-weight-normal);
@@ -441,12 +458,12 @@ body {
     content: none;
   }
 
-  /* 代码块 */
+  /* 代码块 — 抬升面：边框由 elevation 环承担，暗色自动塌缩为白环 */
   .prose pre {
     @apply bg-zinc-50 dark:bg-zinc-900 overflow-x-auto;
     @apply relative pt-12 pb-4 px-4 rounded-xl;
-    @apply border border-zinc-200 dark:border-zinc-700 shadow-sm;
     @apply my-6;
+    box-shadow: var(--elevation-raised);
   }
 
   .prose pre code {
@@ -464,7 +481,19 @@ body {
       40px 0 0 oklch(0.765 0.177 163.223);
   }
 
-  /* 图片 */
+  /* 图片：统一 1px 低透明度内描边（明:纯黑 10% / 暗:纯白 10%，不做色调中性灰——
+     带色相的描边会吃进背景色，看起来像脏边）。outline 不占布局空间。 */
+  .prose img,
+  .img-edge {
+    outline: 1px solid rgb(0 0 0 / 0.1);
+    outline-offset: -1px;
+  }
+
+  .dark .prose img,
+  .dark .img-edge {
+    outline-color: rgb(255 255 255 / 0.1);
+  }
+
   .prose img {
     @apply my-8;
   }
@@ -479,17 +508,20 @@ body {
 
   .prose a.github-repo-card,
   .prose a.link-card {
-    @apply my-8 block overflow-hidden rounded-lg border border-zinc-200 bg-white no-underline shadow-sm;
-
-    @apply transition-colors transition-shadow hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900;
+    @apply my-8 block overflow-hidden rounded-lg bg-surface no-underline;
 
     color: inherit;
     text-decoration: none;
+    box-shadow: var(--elevation-raised);
+    transition: box-shadow 150ms ease-out;
   }
 
+  /* Hover 保留青竹环做 wayfinding：换环色、复用柔影层 */
   .prose a.github-repo-card:hover,
   .prose a.link-card:hover {
-    border-color: var(--color-accent);
+    box-shadow:
+      0 0 0 1px var(--color-accent),
+      var(--elevation-depth);
     color: inherit;
   }
 
@@ -502,7 +534,7 @@ body {
   }
 
   .prose a.link-card .link-card-image {
-    @apply my-0 block w-32 shrink-0 self-stretch border-r border-zinc-200 object-cover sm:w-40 dark:border-zinc-800;
+    @apply my-0 block w-32 shrink-0 self-stretch border-r border-line object-cover sm:w-40;
   }
 
   .prose a.link-card .link-card-body {
@@ -544,7 +576,9 @@ body {
   }
 
   .prose td {
-    @apply py-3 px-4 border-b border-zinc-200 dark:border-zinc-700;
+    @apply py-3 px-4 border-b border-line;
+    /* 行线走高密度屏 0.5px；表头线保持 1px 更重，维持层级 */
+    border-bottom-width: var(--border-hairline);
   }
 
   .prose tbody tr:last-child td {

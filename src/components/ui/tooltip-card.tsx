@@ -168,7 +168,7 @@ export const Tooltip = ({
               stiffness: 200,
               damping: 20,
             }}
-            className="absolute z-50 min-w-[15rem] overflow-hidden rounded-md border border-transparent bg-white shadow-sm ring-1 shadow-black/5 ring-black/5 dark:bg-neutral-900 dark:shadow-white/10 dark:ring-white/5"
+            className="absolute z-50 min-w-[15rem] overflow-hidden rounded-md bg-surface [box-shadow:var(--elevation-raised)]"
             style={{
               top: position.y,
               left: position.x,
