@@ -150,7 +150,9 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
           })}
         </nav>
 
-        <div className="flex items-center gap-3">
+        {/* ml-auto: below `sm` the primary nav is display:none, leaving this as the
+            only flex child — justify-between alone would park it at the left edge */}
+        <div className="ml-auto flex items-center gap-3">
           <LanguageSwitcher
             currentLang={lang}
             currentPath={currentPath}
@@ -176,6 +178,7 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
           <MobileNavMenu
             key="mobile-nav"
             items={mobileItems}
+            appearanceLabel={t['nav.appearance'] || 'Appearance'}
             onItemClick={() => setMobileMenuOpen(false)}
             onClose={() => setMobileMenuOpen(false)}
           />

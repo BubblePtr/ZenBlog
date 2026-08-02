@@ -5,6 +5,7 @@ export const en = {
   'nav.photography': 'Photography',
   'nav.projects': 'Projects',
   'nav.about': 'About',
+  'nav.appearance': 'Appearance',
 
   // Home
   'home.title': 'Kieran Zhang',

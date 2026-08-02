@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
+import ThemeToggle from '@/shared/components/theme/ThemeToggle.client';
 
 interface MobileNavItem {
   key: string;
@@ -10,11 +11,17 @@ interface MobileNavItem {
 
 interface MobileNavMenuProps {
   items: MobileNavItem[];
+  appearanceLabel: string;
   onItemClick: () => void;
   onClose: () => void;
 }
 
-export default function MobileNavMenu({ items, onItemClick, onClose }: MobileNavMenuProps) {
+export default function MobileNavMenu({
+  items,
+  appearanceLabel,
+  onItemClick,
+  onClose,
+}: MobileNavMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
   // 菜单打开时自动聚焦第一个链接
@@ -73,8 +80,8 @@ export default function MobileNavMenu({ items, onItemClick, onClose }: MobileNav
       transition={{ duration: 0.18, ease: [0.25, 1, 0.5, 1] }}
       className="sm:hidden bg-paper relative z-50"
     >
-      <div className="max-w-content mx-auto px-6 py-8">
-        <div className="bg-zinc-100 dark:bg-zinc-900 rounded-3xl p-4 space-y-2">
+      <div className="max-w-content mx-auto px-6 pb-4">
+        <nav aria-label="Primary" className="divide-y divide-line border-y border-line">
           {items.map((item, i) => (
             <motion.a
               key={item.key}
@@ -83,16 +90,28 @@ export default function MobileNavMenu({ items, onItemClick, onClose }: MobileNav
               initial={{ opacity: 0, x: -6 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.04, duration: 0.2, ease: 'easeOut' }}
-              className={`block px-6 py-4 rounded-2xl text-lg font-normal transition-colors no-underline focus-ring ${
-                item.active
-                  ? 'bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 hover:text-accent'
+              className={`block py-4 text-lg transition-colors no-underline focus-ring ${
+                item.active ? 'text-accent' : 'text-ink-secondary hover:text-accent'
               }`}
+              aria-current={item.active ? 'page' : undefined}
             >
               {item.label}
             </motion.a>
           ))}
-        </div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -6 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: items.length * 0.04, duration: 0.2, ease: 'easeOut' }}
+            className="flex items-center justify-between py-2"
+          >
+            <span className="text-sm text-ink-tertiary">{appearanceLabel}</span>
+            <ThemeToggle
+              className="flex items-center justify-center min-w-11 min-h-11 rounded-full text-ink-secondary hover:text-ink-strong transition-colors focus-ring"
+              aria-label="Toggle theme"
+            />
+          </motion.div>
+        </nav>
       </div>
     </motion.div>
   );
