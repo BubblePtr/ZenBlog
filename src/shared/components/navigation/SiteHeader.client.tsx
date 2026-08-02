@@ -127,8 +127,10 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
       )}
 
       <div className="relative mx-auto max-w-content px-6 h-16 flex items-center justify-between">
+        {/* -mx-2.5 eats the first/last link's hit-area padding so the visible
+            text edge lines up with the max-w-content column below */}
         <nav
-          className="hidden sm:flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400"
+          className="hidden sm:flex items-center gap-1 -mx-2.5 text-sm text-zinc-500 dark:text-zinc-400"
           aria-label="Primary"
         >
           {navItems.map((item) => {
@@ -152,7 +154,9 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
 
         {/* ml-auto: below `sm` the primary nav is display:none, leaving this as the
             only flex child — justify-between alone would park it at the left edge */}
-        <div className="ml-auto flex items-center gap-3">
+        {/* -mr-3 pulls the round buttons' hit-area padding past the column edge
+            so the icon's visual edge aligns with the content column */}
+        <div className="ml-auto flex items-center gap-3 -mr-3">
           <LanguageSwitcher
             currentLang={lang}
             currentPath={currentPath}
