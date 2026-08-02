@@ -29,7 +29,9 @@ const {
   type = slug ? 'article' : 'website',
 } = Astro.props;
 
-const ogImage = `${SITE_URL}/og/brand.png`;
+// Version suffix in the filename busts scraper/CDN caches (X, WeChat) that
+// may strip query strings — bump it whenever the artwork changes.
+const ogImage = `${SITE_URL}/og/brand-v2.png`;
 
 const pageTitle = slug ? `${title} — Kieran Zhang` : title;
 const descriptionText = description.trim();
