@@ -5,6 +5,7 @@ export const zh = {
   'nav.photography': '摄影',
   'nav.projects': '项目',
   'nav.about': '关于我',
+  'nav.appearance': '外观',
 
   // 首页
   'home.title': 'Kieran Zhang',
