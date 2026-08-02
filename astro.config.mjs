@@ -18,6 +18,13 @@ const headingAnchorOptions = {
   include: ['/src/content/blog/'],
 };
 
+// Dual-theme code blocks: shiki emits both palettes as CSS variables
+// (defaultColor: false) and global.css switches them via the .dark class.
+const shikiConfig = {
+  themes: { light: 'github-light', dark: 'github-dark' },
+  defaultColor: false,
+};
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://kieran.build',
@@ -34,10 +41,14 @@ export default defineConfig({
     domains: ['gravatar.com', 'cdn.ninthbit.org', 'opengraph.githubassets.com'],
   },
   markdown: {
+    // The custom processor handles .md; the top-level shikiConfig is what
+    // the MDX integration reads. Both must carry the same theme pair.
     processor: unified({
       remarkPlugins: [stripLeadingHeadingOne, remarkCjkFriendly, remarkMath],
       rehypePlugins: [rehypeKatex, [anchorHeadings, headingAnchorOptions]],
+      shikiConfig,
     }),
+    shikiConfig,
   },
   integrations: [
     mdx(),

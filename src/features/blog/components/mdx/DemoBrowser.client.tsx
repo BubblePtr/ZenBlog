@@ -41,11 +41,11 @@ export default function DemoBrowser({ src, title, height = 680 }: DemoBrowserPro
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-      className="my-8 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm dark:shadow-none"
+      className="my-8 rounded-xl overflow-hidden bg-white dark:bg-zinc-950 [box-shadow:var(--elevation-raised)]"
       style={isFullscreen ? { height: '100vh', borderRadius: 0 } : undefined}
     >
       {/* 浏览器标题栏 */}
-      <div className="flex items-center gap-3 px-4 py-2.5 bg-zinc-50 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800 select-none">
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-zinc-50 dark:bg-zinc-900/80 border-b border-line select-none">
         {/* 窗口控制按钮 */}
         <div className="flex items-center gap-1.5 shrink-0">
           <span className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
@@ -56,7 +56,7 @@ export default function DemoBrowser({ src, title, height = 680 }: DemoBrowserPro
         {/* 地址栏 */}
         <button
           onClick={openInNewTab}
-          className="flex-1 min-w-0 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors cursor-pointer group"
+          className="flex-1 min-w-0 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-800/60 border border-line text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors cursor-pointer group"
           title="在新标签页打开"
         >
           <span className="shrink-0 opacity-50 group-hover:opacity-100 transition-opacity">

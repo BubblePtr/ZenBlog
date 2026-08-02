@@ -67,7 +67,7 @@ export default function PhotographyPhotoCard({ photo, index }: PhotographyPhotoC
         alt={photo.data.title}
         loading="lazy"
         decoding="async"
-        frameClassName="w-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900"
+        frameClassName="img-edge w-full bg-zinc-100 dark:bg-zinc-900"
         frameStyle={{ aspectRatio: ratio }}
         className="object-cover"
         onStatusChange={(status) => setImageReady(status !== 'loading')}
