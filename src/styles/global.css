@@ -458,18 +458,31 @@ body {
     content: none;
   }
 
-  /* 代码块 — 抬升面：边框由 elevation 环承担，暗色自动塌缩为白环 */
+  /* 代码块 — 抬升面：边框由 elevation 环承担，暗色自动塌缩为白环。
+     配色由 shiki 双主题提供（astro.config.mjs，defaultColor: false 只发
+     CSS 变量），这里按站点 .dark 类选用亮/暗一套，替代原先全模式深底。 */
   .prose pre {
-    @apply bg-zinc-50 dark:bg-zinc-900 overflow-x-auto;
+    @apply overflow-x-auto;
     @apply relative pt-12 pb-4 px-4 rounded-xl;
     @apply my-6;
     box-shadow: var(--elevation-raised);
   }
 
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-light);
+    background-color: var(--shiki-light-bg);
+  }
+
+  .dark .astro-code,
+  .dark .astro-code span {
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+  }
+
   .prose pre code {
-    @apply bg-transparent border-0 p-0 rounded-none;
+    @apply border-0 p-0 rounded-none;
     font-size: var(--font-size-code);
-    color: var(--color-ink);
   }
 
   /* 代码块 Mac 窗口风格 - 红黄绿三个点（与 DemoBrowser 同用 red/amber/emerald-400） */
