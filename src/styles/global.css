@@ -317,6 +317,12 @@ body {
     display: none;
   }
 
+  .article-toc.crisp-toc--article {
+    /* Article ToC is site navigation UI, not part of the CrispToc demo:
+       override the demo's mono stack with the site UI font tokens. */
+    font-family: var(--font-ui);
+  }
+
   .article-toc.crisp-toc--article .crisp-toc-list {
     max-height: min(40vh, 18rem);
     overflow-y: auto;
@@ -326,6 +332,7 @@ body {
   .article-toc.crisp-toc--article .crisp-toc-item {
     color: var(--color-ink-secondary);
     text-decoration: none;
+    font-size: var(--font-size-ui-sm);
     transition:
       color 320ms ease,
       transform 0ms linear;
@@ -364,7 +371,7 @@ body {
 
   .article-toc.crisp-toc--article .crisp-toc-item.is-active {
     color: var(--color-accent);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
   }
 
   /* Connector line inherits the article accent so it reads as one unit with the label. */
@@ -746,234 +753,238 @@ body {
   }
 }
 
-/* Crisp TOC — interactive scale navigation */
-.crisp-toc.crisp-toc--article {
-  align-items: stretch;
-  width: 100%;
-  max-width: none;
-  padding: 0;
-  gap: 0;
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  color: inherit;
-  outline: none;
-}
+/* Crisp TOC — interactive scale navigation.
+   Must live in @layer components: the article overrides in the components
+   layer above can only win if these base styles are layered too. */
+@layer components {
+  .crisp-toc.crisp-toc--article {
+    align-items: stretch;
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    gap: 0;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    color: inherit;
+    outline: none;
+  }
 
-.dark .crisp-toc.crisp-toc--article {
-  background: transparent;
-  color: inherit;
-}
+  .dark .crisp-toc.crisp-toc--article {
+    background: transparent;
+    color: inherit;
+  }
 
-.crisp-toc.crisp-toc--article .crisp-toc-body {
-  grid-template-columns: 2.75rem minmax(0, 1fr);
-  width: 100%;
-}
+  .crisp-toc.crisp-toc--article .crisp-toc-body {
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    width: 100%;
+  }
 
-.crisp-toc {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2.5rem;
-  width: min(100%, 24rem);
-  padding: 2rem 1.5rem;
-  font-family: var(--font-mono);
-  color: var(--color-ink-strong);
-  background: var(--color-surface);
-  border-radius: 0.75rem;
-  outline: none;
-}
+  .crisp-toc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    width: min(100%, 24rem);
+    padding: 2rem 1.5rem;
+    font-family: var(--font-mono);
+    color: var(--color-ink-strong);
+    background: var(--color-surface);
+    border-radius: 0.75rem;
+    outline: none;
+  }
 
-.crisp-toc-theme-bar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.35rem;
-}
+  .crisp-toc-theme-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+  }
 
-.crisp-toc-theme-pill {
-  border: 0;
-  border-radius: 9999px;
-  padding: 0.35rem 0.8rem;
-  font: inherit;
-  font-size: 0.75rem;
-  letter-spacing: 0.02em;
-  color: var(--color-ink-tertiary);
-  background: transparent;
-  cursor: pointer;
-  transition:
-    color 180ms ease,
-    background-color 180ms ease;
-}
+  .crisp-toc-theme-pill {
+    border: 0;
+    border-radius: 9999px;
+    padding: 0.35rem 0.8rem;
+    font: inherit;
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    color: var(--color-ink-tertiary);
+    background: transparent;
+    cursor: pointer;
+    transition:
+      color 180ms ease,
+      background-color 180ms ease;
+  }
 
-.crisp-toc-theme-pill.is-active {
-  color: var(--color-paper);
-  background: var(--color-ink-strong);
-}
+  .crisp-toc-theme-pill.is-active {
+    color: var(--color-paper);
+    background: var(--color-ink-strong);
+  }
 
-.crisp-toc-body {
-  position: relative;
-  display: grid;
-  grid-template-columns: 2.75rem minmax(0, 1fr);
-  align-items: start;
-  width: 100%;
-  min-height: 18rem;
-}
+  .crisp-toc-body {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    align-items: start;
+    width: 100%;
+    min-height: 18rem;
+  }
 
-.crisp-toc-rail {
-  position: relative;
-  height: 100%;
-  min-height: inherit;
-  --crisp-toc-lane-left: 0.625rem;
-  --crisp-toc-dot-size: 16px;
-  --crisp-toc-bulge-amplitude: 32px;
-}
+  .crisp-toc-rail {
+    position: relative;
+    height: 100%;
+    min-height: inherit;
+    --crisp-toc-lane-left: 0.625rem;
+    --crisp-toc-dot-size: 16px;
+    --crisp-toc-bulge-amplitude: 32px;
+  }
 
-.crisp-toc-ball {
-  position: absolute;
-  left: var(--crisp-toc-lane-left);
-  top: 0;
-  z-index: 2;
-  width: 0;
-  height: 0;
-  cursor: grab;
-  pointer-events: auto;
-  touch-action: none;
-}
+  .crisp-toc-ball {
+    position: absolute;
+    left: var(--crisp-toc-lane-left);
+    top: 0;
+    z-index: 2;
+    width: 0;
+    height: 0;
+    cursor: grab;
+    pointer-events: auto;
+    touch-action: none;
+  }
 
-.crisp-toc-ball.is-dragging {
-  cursor: grabbing;
-}
+  .crisp-toc-ball.is-dragging {
+    cursor: grabbing;
+  }
 
-.crisp-toc-scale {
-  position: relative;
-  height: 100%;
-  min-height: inherit;
-}
+  .crisp-toc-scale {
+    position: relative;
+    height: 100%;
+    min-height: inherit;
+  }
 
-.crisp-toc-tick {
-  position: absolute;
-  left: var(--crisp-toc-lane-left);
-  height: 2px;
-  border-radius: 9999px;
-  /* Tick base sits one step heavier than --color-line so the scale stays legible */
-  --crisp-tick-base: oklch(0.871 0.006 286);
-  --crisp-tick-ink: var(--color-ink-strong);
-  /* --crisp-tick-heat (0..1) is set inline per frame from ball proximity. */
-  background: color-mix(
-    in oklab,
-    var(--crisp-tick-ink) calc(var(--crisp-tick-heat, 0) * 100%),
-    var(--crisp-tick-base)
-  );
-  transform-origin: left center;
-  will-change: transform;
-  /* Heat flips 0/1 as the ball's center crosses ticks; the fade turns that
-     into a quick ratchet-style crossfade instead of a hard swap. */
-  transition:
-    background-color 140ms ease,
-    height 200ms ease;
-}
-
-.dark .crisp-toc-tick {
-  --crisp-tick-base: oklch(0.442 0.017 286);
-}
-
-.crisp-toc-tick.crisp-toc-line {
-  height: 2.5px;
-}
-
-.crisp-toc-origin-dot {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: var(--crisp-toc-dot-size);
-  height: var(--crisp-toc-dot-size);
-  border-radius: 9999px;
-  background: var(--color-ink-strong);
-  transform: translateY(-50%);
-}
-
-.crisp-toc-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.crisp-toc-item {
-  display: block;
-  width: 100%;
-  border: 0;
-  padding: 0.45rem 0 0.45rem 0.75rem;
-  /* Single line only: wrapping reflows mid-animation and breaks the glide. */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  font: inherit;
-  font-size: 0.95rem;
-  line-height: 1.35;
-  /* Resting items are deliberately fainter than --color-ink-tertiary:
-     the scale reads as texture until hover/active pulls one line forward */
-  color: color-mix(in oklab, var(--color-ink-strong) 30%, transparent);
-  background: transparent;
-  cursor: pointer;
-  transition: color 220ms ease;
-  will-change: transform;
-}
-
-.crisp-toc-item:hover {
-  color: color-mix(in oklab, var(--color-ink-strong) 60%, transparent);
-}
-
-.crisp-toc-item.is-active {
-  color: var(--color-ink-strong);
-  font-weight: 600;
-}
-
-.crisp-toc-footer {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.crisp-toc-nav-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border: 1px solid color-mix(in oklab, var(--color-ink-strong) 14%, transparent);
-  border-radius: 9999px;
-  color: var(--color-ink-secondary);
-  background: transparent;
-  cursor: pointer;
-  transition:
-    border-color 180ms ease,
-    color 180ms ease,
-    opacity 180ms ease;
-}
-
-.crisp-toc-nav-button:hover:not(:disabled) {
-  border-color: color-mix(in oklab, var(--color-ink-strong) 30%, transparent);
-  color: var(--color-ink-strong);
-}
-
-.crisp-toc-nav-button:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-.crisp-toc-hint {
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  color: var(--color-ink-tertiary);
-}
-
-@media (prefers-reduced-motion: reduce) {
   .crisp-toc-tick {
-    will-change: auto;
+    position: absolute;
+    left: var(--crisp-toc-lane-left);
+    height: 2px;
+    border-radius: 9999px;
+    /* Tick base sits one step heavier than --color-line so the scale stays legible */
+    --crisp-tick-base: oklch(0.871 0.006 286);
+    --crisp-tick-ink: var(--color-ink-strong);
+    /* --crisp-tick-heat (0..1) is set inline per frame from ball proximity. */
+    background: color-mix(
+      in oklab,
+      var(--crisp-tick-ink) calc(var(--crisp-tick-heat, 0) * 100%),
+      var(--crisp-tick-base)
+    );
+    transform-origin: left center;
+    will-change: transform;
+    /* Heat flips 0/1 as the ball's center crosses ticks; the fade turns that
+     into a quick ratchet-style crossfade instead of a hard swap. */
+    transition:
+      background-color 140ms ease,
+      height 200ms ease;
+  }
+
+  .dark .crisp-toc-tick {
+    --crisp-tick-base: oklch(0.442 0.017 286);
+  }
+
+  .crisp-toc-tick.crisp-toc-line {
+    height: 2.5px;
+  }
+
+  .crisp-toc-origin-dot {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: var(--crisp-toc-dot-size);
+    height: var(--crisp-toc-dot-size);
+    border-radius: 9999px;
+    background: var(--color-ink-strong);
+    transform: translateY(-50%);
+  }
+
+  .crisp-toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .crisp-toc-item {
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 0.45rem 0 0.45rem 0.75rem;
+    /* Single line only: wrapping reflows mid-animation and breaks the glide. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    font: inherit;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    /* Resting items are deliberately fainter than --color-ink-tertiary:
+     the scale reads as texture until hover/active pulls one line forward */
+    color: color-mix(in oklab, var(--color-ink-strong) 30%, transparent);
+    background: transparent;
+    cursor: pointer;
+    transition: color 220ms ease;
+    will-change: transform;
+  }
+
+  .crisp-toc-item:hover {
+    color: color-mix(in oklab, var(--color-ink-strong) 60%, transparent);
+  }
+
+  .crisp-toc-item.is-active {
+    color: var(--color-ink-strong);
+    font-weight: 600;
+  }
+
+  .crisp-toc-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .crisp-toc-nav-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid color-mix(in oklab, var(--color-ink-strong) 14%, transparent);
+    border-radius: 9999px;
+    color: var(--color-ink-secondary);
+    background: transparent;
+    cursor: pointer;
+    transition:
+      border-color 180ms ease,
+      color 180ms ease,
+      opacity 180ms ease;
+  }
+
+  .crisp-toc-nav-button:hover:not(:disabled) {
+    border-color: color-mix(in oklab, var(--color-ink-strong) 30%, transparent);
+    color: var(--color-ink-strong);
+  }
+
+  .crisp-toc-nav-button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .crisp-toc-hint {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--color-ink-tertiary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .crisp-toc-tick {
+      will-change: auto;
+    }
   }
 }
