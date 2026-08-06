@@ -88,7 +88,7 @@ export const zh = {
   'blog.post.followCta.body':
     '在 GitHub 或 Twitter 关注我，获取更多关于软件工程、AI 与独立开发的思考。',
   'blog.post.followCta.github': 'GitHub',
-  'blog.post.followCta.twitter': 'Twitter / X',
+  'blog.post.followCta.twitter': 'Twitter',
   'blog.post.followCta.email': '邮件',
   'blog.lightbox.prev': '上一张',
   'blog.lightbox.next': '下一张',

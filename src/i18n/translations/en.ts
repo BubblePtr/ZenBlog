@@ -93,7 +93,7 @@ export const en = {
   'blog.post.followCta.body':
     'Follow on GitHub or Twitter for more on software engineering, AI, and indie building.',
   'blog.post.followCta.github': 'GitHub',
-  'blog.post.followCta.twitter': 'Twitter / X',
+  'blog.post.followCta.twitter': 'Twitter',
   'blog.post.followCta.email': 'Email',
   'blog.lightbox.prev': 'Previous image',
   'blog.lightbox.next': 'Next image',
