@@ -725,7 +725,7 @@ body {
   animation-duration: 0.01ms;
 }
 
-/* ② 根元素：完全重置，让主题切换圆形动画（ThemeToggle.client.tsx）正常工作 */
+/* ② 根元素：重置默认动画与混合模式，root 的过渡由下方 ④ 按场景显式定义 */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
@@ -743,7 +743,30 @@ body {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ④ 减少动效偏好：全部使用最短过渡 */
+/* ④ 主题切换（ThemeToggle.client.tsx 挂载 .theme-switching）：整页统一交叉
+      淡化——新快照在静止的旧快照之上淡入，无边界、无局部抢跑。
+      a. 取消所有命名快照组（hero-avatar、bt-*），只保留 root，避免它们按
+         各自的节奏独立过渡；
+      b. 禁用元素自身的颜色 transition——new 快照是实时画面，body 500ms 的
+         transition-colors 会让淡入过程中颜色仍在漂移。
+      故意不放进 @layer：必须压过所有分层样式与内联 view-transition-name。 */
+html.theme-switching * {
+  view-transition-name: none !important;
+  transition: none !important;
+}
+
+/* 快照树内 new 画在 old 之上，只需让 new 淡入即可得到干净的 crossfade */
+html.theme-switching::view-transition-new(root) {
+  animation: theme-cross-fade 300ms ease;
+}
+
+@keyframes theme-cross-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ⑤ 减少动效偏好：全部使用最短过渡 */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),
