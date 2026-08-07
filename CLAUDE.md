@@ -178,9 +178,10 @@ OG 图片使用静态资源（`/public/og/` 或同类静态路径），不再动
 ### View Transitions API
 
 启用了浏览器原生页面过渡动画（`PageShell.astro` 中开启 `<ViewTransitions />`）：
-- 首页头像 → 关于页头像：形态变换（morphing）
 - 博客列表标题 → 文章详情标题：动态 `view-transition-name`（`bt-{slug}`）
+- 主题切换：300ms 整页 crossfade（`ThemeToggle.client.tsx` + `.theme-switching`）
 - 过渡时序配置在 `src/styles/global.css`，支持 `prefers-reduced-motion`
+- （曾有的首页↔关于页头像 morphing 已随首页头像移除而下线，2026-08）
 
 ### 代码规范
 

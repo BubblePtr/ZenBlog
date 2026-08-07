@@ -725,27 +725,16 @@ body {
   animation-duration: 0.01ms;
 }
 
-/* ② 根元素：重置默认动画与混合模式，root 的过渡由下方 ④ 按场景显式定义 */
+/* ② 根元素：重置默认动画与混合模式，root 的过渡由下方 ③ 按场景显式定义 */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
 
-/* ③ 头像变形：延长过渡时间，加入轻微弹性 */
-::view-transition-group(hero-avatar) {
-  animation-duration: 500ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-::view-transition-old(hero-avatar),
-::view-transition-new(hero-avatar) {
-  animation-duration: 400ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ④ 主题切换（ThemeToggle.client.tsx 挂载 .theme-switching）：整页统一交叉
+/* ③ 主题切换（ThemeToggle.client.tsx 挂载 .theme-switching）：整页统一交叉
       淡化——新快照在静止的旧快照之上淡入，无边界、无局部抢跑。
-      a. 取消所有命名快照组（hero-avatar、bt-*），只保留 root，避免它们按
+      a. 取消所有命名快照组（bt-* 文章标题），只保留 root，避免它们按
          各自的节奏独立过渡；
       b. 禁用元素自身的颜色 transition——new 快照是实时画面，body 500ms 的
          transition-colors 会让淡入过程中颜色仍在漂移。
@@ -766,7 +755,7 @@ html.theme-switching::view-transition-new(root) {
   }
 }
 
-/* ⑤ 减少动效偏好：全部使用最短过渡 */
+/* ④ 减少动效偏好：全部使用最短过渡 */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),
