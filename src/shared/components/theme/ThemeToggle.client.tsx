@@ -39,7 +39,7 @@ export default function ThemeToggle({ className = '', ...props }: ThemeTogglePro
 
     // .theme-switching (global.css) drives the whole-page cross-fade. It also
     // collapses all named snapshot groups into root and suppresses per-element
-    // color transitions — without that, named groups (hero-avatar, bt-*) fade
+    // color transitions — without that, named groups (bt-* post titles) fade
     // on their own schedule and the live "new" capture lags behind on its own
     // transitions, breaking the uniform fade.
     const root = document.documentElement;

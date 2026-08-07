@@ -1,8 +1,8 @@
 ---
 /**
- * Minimal about page (DESIGN.md "Ma"): one quiet column — identity line
- * (avatar keeps the hero-avatar view-transition), statement, plain-text
- * contact links, then mono-labelled reading and life sections.
+ * Minimal about page (DESIGN.md "Ma"): one quiet column — identity line,
+ * statement, plain-text contact links, then mono-labelled reading and
+ * life sections.
  */
 import type { TranslationDictionary } from '@/shared/i18n/types';
 import type { Language } from '@/i18n/config';
@@ -24,10 +24,7 @@ const socialLinks = getAboutSocialLinks();
 <div class="mx-auto max-w-content px-6 pb-24 pt-16 sm:pt-20">
   {/* Identity */}
   <div class="flex items-center gap-3.5">
-    <div
-      class="h-11 w-11 shrink-0 overflow-hidden rounded-full"
-      style="view-transition-name: hero-avatar"
-    >
+    <div class="h-11 w-11 shrink-0 overflow-hidden rounded-full">
       <img
         src={AVATAR_URL}
         alt={t['about.name']}
