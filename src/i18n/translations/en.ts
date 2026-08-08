@@ -15,9 +15,8 @@ export const en = {
   'home.readMore': 'Read More',
   'home.writing': 'Selected Writing',
   'home.hero.name': 'Kieran Zhang',
-  'home.hero.tagline': 'Software Engineer & Indie Developer',
   'home.hero.bio':
-    'Agentic engineer and indie developer. Currently building Voily, an AI voice keyboard.',
+    'AI Native Builder, Lifelong Learner. Conviction in words. Reverence for the unknown.',
   'home.hero.intro':
     'Notes on software engineering, AI products, and indie building, alongside a few projects and field observations in progress.',
   'home.photography': 'Photography',
