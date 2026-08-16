@@ -1,0 +1,9 @@
+/**
+ * Xiaomi MiSans (Simplified Chinese subset, woff2).
+ * License: 《MiSans 字体知识产权许可协议》
+ * https://hyperos.mi.com/font-download/MiSans字体知识产权许可协议.pdf
+ *
+ * Optical weights 330/380/520/630 are remapped to 400/500/600/700.
+ * Latin faces stay so UI Western text matches CJK instead of system sans.
+ */
+@import './misans-faces.generated.css';
