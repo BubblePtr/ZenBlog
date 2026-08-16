@@ -91,6 +91,8 @@ const translatedHeadings = new Map(
     顺手的部分: ['everyday', 'wins'],
     一个要注意的坑: ['one', 'gotcha'],
     小结: ['takeaways'],
+    结构化并发的运行时化组件生命周期: ['structured', 'concurrency', 'as', 'component', 'lifecycle'],
+    工程实践与数学推导能否一致: ['practice', 'and', 'formalism'],
   }),
 );
 
