@@ -93,7 +93,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
 
           <h1
             class="text-[2.2rem] sm:text-[2.9rem] font-semibold text-zinc-900 dark:text-zinc-100 leading-[1.2] mb-8"
-            style={`view-transition-name: bt-${(slug ?? '').replace(/[^a-zA-Z0-9]/g, '-')}; ${lang === 'zh' ? 'font-family: var(--font-serif)' : 'font-family: var(--font-serif-en)'}`}
+            style={`view-transition-name: bt-${(slug ?? '').replace(/[^a-zA-Z0-9]/g, '-')}; ${lang === 'zh' ? 'font-family: var(--font-article-title)' : 'font-family: var(--font-serif-en)'}`}
           >
             {title}
           </h1>
@@ -143,7 +143,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
         <section class="mx-auto w-full max-w-content px-6">
           <p
             class="text-xl sm:text-2xl leading-relaxed text-zinc-900 dark:text-zinc-100 mb-7"
-            style={lang === 'zh' ? 'font-family: var(--font-serif)' : 'font-family: var(--font-serif-en)'}
+            style={lang === 'zh' ? 'font-family: var(--font-article-title)' : 'font-family: var(--font-serif-en)'}
           >
             {description}
           </p>

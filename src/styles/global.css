@@ -173,7 +173,7 @@ body {
 @layer components {
   /* ==================== 文章正文样式（替代 @tailwindcss/typography）==================== */
 
-  /* 基础样式。中文正文走系统黑体；英文正文由 :lang(en) 切换为衬线阅读体 */
+  /* 基础样式。中文正文走 MiSans；英文正文由 :lang(en) 切换为衬线阅读体 */
   .prose {
     font-family: var(--font-body);
     font-size: var(--font-size-body);
@@ -230,7 +230,7 @@ body {
     color: var(--color-ink-strong);
   }
 
-  /* 文章大标题：衬线 + 粗体 */
+  /* 文章大标题：中文 Noto Serif SC，英文由 :lang(en) 切到 Source Serif 4 */
   .prose h1 {
     font-family: var(--font-article-title);
     font-size: var(--font-size-article-title);
@@ -239,6 +239,10 @@ body {
     color: var(--color-ink-strong);
     margin-top: 0;
     margin-bottom: 2rem;
+  }
+
+  .prose:lang(en) h1 {
+    font-family: var(--font-article-title-en);
   }
 
   /* 正文中的标题：随正文字族（英文衬线/中文黑体），600 字重拉开层级 */

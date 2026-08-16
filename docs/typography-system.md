@@ -2,12 +2,11 @@
 
 ## 概述
 
-本博客采用**现代系统字体栈（System Font Stack）**方案，完全依赖各平台原生字体，实现：
+本博客的字体定义集中在 `typography.css` 的 `@theme` 块中。中文无衬线加载 **MiSans**（小米，仅 CJK `unicode-range`），中文文章标题走 Noto Serif SC，英文阅读态走 Source Serif 4：
 
-- ✅ **零网络请求**：无需加载 Web Font，首屏加载更快
-- ✅ **原生体验**：使用用户熟悉的系统字体，阅读更舒适
-- ✅ **高兼容性**：支持 macOS、Windows、Android、Linux 等所有平台
 - ✅ **单一数据源**：所有字体定义集中在 `typography.css` 的 `@theme` 块中
+- ✅ **界面中西文统一**：MiSans 同时覆盖拉丁字母和汉字，避免各系统默认黑体不一致
+- ✅ **衬线只用于文章标题**（中文 Noto Serif SC）以及英文正文（Source Serif 4）
 
 ## 架构
 
@@ -26,9 +25,9 @@ src/
 
 | 场景 | 字体类型 | 字号 | 字重 | Tailwind 类 |
 |------|---------|------|------|-------------|
-| 文章大标题 (H1) | 衬线 | 40px | 700 | `font-article-title` |
+| 文章大标题 (H1) | 中文 Noto Serif SC / 英文 Source Serif 4 | 40px | 700 | `font-article-title` / `font-serif-en` |
 | 正文中的标题 (H2/H3/H4) | 无衬线 | 26px | 400 | `font-heading` |
-| 正文段落 | 无衬线 | 17px | 300 | `font-body` |
+| 正文段落 | 中文 MiSans / 英文衬线 | 16px | 400 | `font-body` |
 | 正文加粗 (strong/b) | 无衬线 | 17px | 400 | - |
 | UI 元素 | 无衬线 | 14-16px | 400-500 | `font-ui` |
 | 代码 | 等宽 | 14px | 400 | `font-mono` |
@@ -40,24 +39,21 @@ src/
 用于 UI、标题、正文等。
 
 ```css
---font-sans-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+--font-sans-stack: 'MiSans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
                    "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
                    "Microsoft YaHei", "微软雅黑", sans-serif;
 ```
 
 **平台映射：**
-- macOS/iOS: San Francisco + PingFang SC
-- Windows: Segoe UI + Microsoft YaHei
-- Android: Roboto + Noto Sans CJK SC
-- Linux: Roboto + Noto Sans CJK SC
+- 界面中西文：MiSans（webfont，400/500/600/700），回退系统 sans / PingFang / 雅黑
+- 文章衬线不走这套栈
 
-### 衬线字体栈
+### 英文衬线字体栈
 
-用于文章大标题，增加经典感。
+用于英文文章大标题与正文。
 
 ```css
---font-serif-stack: Georgia, "Noto Serif SC", "Source Han Serif SC",
-                    "PingFang SC", "Microsoft YaHei", serif;
+--font-serif-en-stack: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 ```
 
 ### 等宽字体栈
@@ -76,7 +72,7 @@ src/
 @theme {
   --font-ui: var(--font-sans-stack);           /* UI 元素 */
   --font-heading: var(--font-sans-stack);      /* 通用标题 */
-  --font-article-title: var(--font-serif-stack); /* 文章大标题 */
+  --font-article-title: var(--font-serif-stack); /* 中文文章大标题（Noto Serif SC） */
   --font-body: var(--font-sans-stack);         /* 正文 */
   --font-mono: var(--font-mono-stack);         /* 代码 */
 }
@@ -177,17 +173,16 @@ Tailwind 会自动生成 `font-custom` 工具类。
 3. Android Chrome
 4. iOS Safari
 
-## 性能优势
+## 加载与性能
 
-相比 Web Font 方案：
-
-- **首屏加载时间减少 ~200ms**（无需下载字体文件）
-- **减少 ~100KB 网络传输**（无字体文件）
-- **FOUT/FOIT 问题消失**（无字体加载闪烁）
-- **离线完全可用**（不依赖 CDN）
+- MiSans 通过 `src/styles/misans.css` 自托管（`misans` npm 包，构建期打进 `/_astro`）。
+- 只引入 Regular / Medium / Semibold / Bold 四档；`scripts/sync-misans-css.mjs` 把 Xiaomi 光学字重 330/380/520/630 写成 400/500/600/700。升级 `misans` 后重跑该脚本。
+- `@font-face` 按 Google Fonts 的 CJK unicode-range 切片，浏览器只下载当前页用到的汉字块。
+- Latin 面保留，界面西文也走 MiSans。
+- 中文文章标题走 Google Fonts 的 Noto Serif SC（600/700）；英文阅读体走 Source Serif 4。
 
 ## 参考资料
 
-- [System Font Stack](https://systemfontstack.com/)
-- [Modern Font Stacks](https://modernfontstacks.com/)
+- [MiSans 字库与许可](https://hyperos.mi.com/font/zh/)
+- [dsrkafuu/misans 子集化包](https://github.com/dsrkafuu/misans)
 - [Tailwind CSS v4 @theme](https://tailwindcss.com/docs/theme)

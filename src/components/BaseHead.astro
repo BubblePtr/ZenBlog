@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import "@/styles/misans.css";
 // 1. 引入 ClientRouter (Astro 5.0+)
 import { ClientRouter } from "astro:transitions";
 import OGMeta from "@/components/OGMeta.astro";
@@ -35,9 +36,7 @@ const { title, description, slug } = Astro.props;
   src="https://analytics.ahrefs.com/analytics.js"
   data-key="Z6zThzutxHmhhyZGniD2mw"></script>
 
-<!-- 字体系统 -->
-<!-- Noto Serif SC 用于中文文章标题 -->
-<!-- Source Serif 4（可变字体）用于英文文章标题与正文 -->
+<!-- 字体系统。中文无衬线：MiSans（《MiSans 字体知识产权许可协议》）。中文标题：Noto Serif SC。英文阅读体：Source Serif 4。 -->
 <!-- 配置文件：src/styles/typography.css -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

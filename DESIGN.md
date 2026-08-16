@@ -16,17 +16,17 @@ colors:
   ink-tertiary-dark: "rgba(255,255,255,0.38)"
 typography:
   heading:
-    fontFamily: "-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif"
+    fontFamily: "'MiSans', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif"
     fontWeight: 600
     letterSpacing: "-0.01em"
-    note: "界面层标题一律系统 sans；层级靠字号阶与灰度，不靠字形"
+    note: "界面层中西文都走 MiSans，避免 Windows 雅黑 / 各发行版系统黑体不一致。层级靠字号阶与灰度，不靠第二套无衬线"
   article-display:
-    fontFamily: "'Shippori Mincho', Georgia, serif（英文）/ 'Noto Serif SC', Georgia, serif（中文）"
-    note: "衬线只保留在文章阅读态（详情页大标题与正文），是阅读的仪式感，不是界面的装饰"
+    fontFamily: "'Source Serif 4', Georgia, serif（英文）/ 'Noto Serif SC', Georgia, serif（中文）"
+    note: "衬线只保留在文章阅读态的大标题（及英文正文）。中文正文/界面走 MiSans，不要把标题也换成无衬线"
   body:
-    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif"
+    fontFamily: "'MiSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif"
     fontSize: "1.0625rem"
-    fontWeight: 300
+    fontWeight: 400
     lineHeight: 1.75
   meta:
     fontFamily: "ui-monospace, 'SF Mono', Monaco, monospace"
@@ -51,7 +51,7 @@ typography:
 - 纸面 `oklch(0.977 0.007 80.7)` + 墨字；深色模式 zinc-950 底，同一灰阶反转（夜读）。
 - **青竹（Bamboo）是全站唯一强调色**：浅色 `oklch(0.439 0.046 156.7)`，深色 `oklch(0.734 0.049 159.3)`，CSS 变量 `--color-accent`。
 - 单列窄版心（列表面 34rem，文章面 65–75ch），居中，大留白。
-- 两种字体角色：系统 sans（界面与正文）+ mono（元信息）；衬线只活在文章阅读态。
+- 两种字体角色：sans（界面与中文正文，中西文都是 MiSans）+ mono（元信息）；衬线活在文章大标题，以及英文正文。
 - 零装饰：无卡片边框、无阴影、无分隔线堆叠、无区块编号；图片是唯一的"实"元素（项目缩略图、摄影、文章配图）。
 - 零 scroll 动效：动效只响应用户输入（hover、focus、点击），页面不自己表演。
 
@@ -74,13 +74,15 @@ typography:
 
 ## 3. Typography
 
-- **界面层（导航、列表、卡片、页脚）**：系统 sans。标题 semibold + tracking -0.01em，
-  层级靠字号阶（1.05rem 页面题 / 0.9375rem 条目题 / 0.8125rem 辅文）与灰度，不引入 display 字体。
+- **界面层（导航、列表、卡片、页脚）**：sans。中西文都用 MiSans（小米，见《MiSans 字体知识产权许可协议》），
+  这样 Linux / Windows / macOS 看到的是同一张脸，而不是平方 / 雅黑 / Noto 各一套。
+  标题 semibold + tracking -0.01em，层级靠字号阶
+  （1.05rem 页面题 / 0.9375rem 条目题 / 0.8125rem 辅文）与灰度，不引入 display 字体。
 - **元信息（mono）**：日期、年份、状态字、EXIF。0.65–0.75rem，tabular-nums；
   中文上下文不 uppercase、letter-spacing 不超过 0.1em。
-- **文章阅读态（衬线）**：详情页大标题与长文正文保留 Noto Serif SC / Shippori Mincho
-  （`font-article-title` / `font-serif-en`）。衬线属于"读"，不属于"逛"。
-- 正文 17px / 300 / 1.75，行长 65–75ch；文章标题 `text-wrap: balance`。
+- **文章阅读态**：英文大标题与正文用 Source Serif 4（`font-serif-en`）。
+  中文大标题用 Noto Serif SC（`font-article-title`），中文正文用 MiSans。衬线属于"读"的标题，不进界面层。
+- 正文 16px / 400 / 1.75，行长 65–75ch；文章标题 `text-wrap: balance`。
 
 ## 4. Components
 
