@@ -1,4 +1,5 @@
-export const LIGHTBOX_EXCLUDED_SELECTOR = 'a.link-card, a.github-repo-card, .not-prose';
+export const LIGHTBOX_EXCLUDED_SELECTOR =
+  'a.link-card, a.site-card, a.github-repo-card, .not-prose';
 
 export const BLOG_LIGHTBOX_SCOPE_SELECTOR = '[data-blog-article]';
 
