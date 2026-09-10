@@ -43,6 +43,14 @@ describe('isLightboxEligibleImage', () => {
     expect(LIGHTBOX_EXCLUDED_SELECTOR).toContain('a.link-card');
   });
 
+  test('rejects the OG preview inside a site card so the click navigates', () => {
+    document.body.innerHTML = `
+      <a class="site-card"><img id="og" src="/og.webp" alt="" /></a>
+    `;
+
+    expect(isLightboxEligibleImage(document.getElementById('og')!)).toBe(false);
+  });
+
   test('rejects images explicitly opted out', () => {
     document.body.innerHTML = '<img id="skip" src="/skip.png" alt="" data-lightbox="false" />';
 
