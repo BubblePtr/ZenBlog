@@ -6,6 +6,7 @@ heroImage: './images/subworth-hero.png'
 stack: ['Bun', 'TypeScript', 'Astro', 'Vercel']
 demo: 'https://subworth.vercel.app'
 status: 'building'
+cover: 'dai'
 ---
 
 Check your sub's worth.

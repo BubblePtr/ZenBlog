@@ -7,6 +7,7 @@
 import type { ProjectListItem } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary } from '@/shared/i18n/types';
+import ProjectDeck from '@/shared/components/content/ProjectDeck.astro';
 
 interface Props {
   projects: ProjectListItem[];
@@ -34,13 +35,17 @@ function getParagraphs(content: string) {
     {t['home.projects.description']}
   </p>
 
+  <div class="deck-breakout mt-10">
+    <ProjectDeck projects={projects} href={(slug) => `#${slug}`} />
+  </div>
+
   <div class="mt-14 space-y-16">
     {
       projects.map((project) => {
         const paragraphs = getParagraphs(project.data.content);
 
         return (
-          <article>
+          <article id={project.slug} class="scroll-mt-24">
             {project.data.heroImage && (
               <div class="img-edge overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                 <img
@@ -108,6 +113,11 @@ function getParagraphs(content: string) {
 </div>
 
 <style>
+  .deck-breakout {
+    width: min(var(--container-stage), 100vw - 3rem);
+    margin-left: calc(50% - min(var(--container-stage), 100vw - 3rem) / 2);
+  }
+
   .proj-link {
     color: inherit;
     text-decoration: underline;

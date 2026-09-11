@@ -7,6 +7,7 @@ stack: ['Electron', 'React 19', 'TypeScript', 'Bun', 'Pi SDK']
 github: 'https://github.com/BubblePtr/pace'
 demo: 'https://github.com/BubblePtr/pace/releases'
 status: 'building'
+cover: 'indigo'
 ---
 
 Move at your own pace.

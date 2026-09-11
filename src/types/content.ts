@@ -36,8 +36,11 @@ export interface ProjectListItem {
     github?: string;
     demo?: string;
     status?: 'building' | 'shipped';
+    cover?: CoverColor;
   };
 }
+
+export type CoverColor = 'vermilion' | 'ochre' | 'gamboge' | 'indigo' | 'dai';
 
 export interface PhotoExif {
   brand?: string;

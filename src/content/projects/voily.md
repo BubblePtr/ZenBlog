@@ -7,6 +7,7 @@ stack: ['Swift', 'macOS', 'Sparkle']
 github: 'https://github.com/BubblePtr/Voily'
 demo: 'https://voily.pages.dev'
 status: 'building'
+cover: 'vermilion'
 ---
 
 Just speak. We'll handle the rest.
