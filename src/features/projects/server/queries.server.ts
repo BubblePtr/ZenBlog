@@ -15,6 +15,7 @@ export function mapProjectListItem(project: ProjectEntry): ProjectListItem {
       github: project.data.github,
       demo: project.data.demo,
       status: project.data.status,
+      cover: project.data.cover,
     },
   };
 }

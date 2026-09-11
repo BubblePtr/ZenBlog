@@ -43,6 +43,8 @@ const projects = defineCollection({
       github: z.string().optional(),
       demo: z.string().optional(),
       status: z.enum(['building', 'shipped']).optional(),
+      // v3 cover colour (DESIGN.md §2.3): one object, one colour, declared in content.
+      cover: z.enum(['vermilion', 'ochre', 'gamboge', 'indigo', 'dai']).optional(),
     }),
 });
 

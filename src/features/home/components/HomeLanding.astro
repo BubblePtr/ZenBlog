@@ -9,6 +9,7 @@ import type { BlogListItem, ProjectListItem } from '@/types/content';
 import type { Language } from '@/i18n/config';
 import type { TranslationDictionary, TranslationKey } from '@/shared/i18n/types';
 import PostIndex from '@/shared/components/content/PostIndex.astro';
+import ProjectDeck from '@/shared/components/content/ProjectDeck.astro';
 import { withTrailingSlash } from '@/shared/urls';
 
 interface Props {
@@ -23,6 +24,7 @@ const translate = (key: TranslationKey) => t[key] || key;
 const isZh = lang === 'zh';
 
 const projectsHref = withTrailingSlash(isZh ? '/zh/projects' : '/projects');
+const projectHref = (slug: string) => `${projectsHref}#${slug}`;
 ---
 
 <div class="home-min relative z-10 mx-auto max-w-content px-6 pb-24 pt-24 sm:pt-28">
@@ -69,40 +71,14 @@ const projectsHref = withTrailingSlash(isZh ? '/zh/projects' : '/projects');
     <PostIndex posts={posts} lang={lang} />
   </section>
 
-  {/* Projects */}
+  {/* Projects: objects on the desk (DESIGN.md v3 §5.1). The stage breaks out
+      of the reading column; the label above stays on it. */}
   {
     projects.length > 0 && (
       <section class="mt-16" aria-label={translate('home.projects')}>
         <p class="year-label">{translate('home.projects')}</p>
-        <div class="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          {projects.map((project) => (
-            <a href={projectsHref} class="group block no-underline focus-ring">
-              <span class="img-edge block aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
-                {project.data.heroImage && (
-                  <img
-                    src={project.data.heroImage}
-                    alt={project.data.title}
-                    loading="lazy"
-                    decoding="async"
-                    class="h-full w-full object-cover object-top transition-transform duration-[400ms] ease-out group-hover:scale-[1.03]"
-                  />
-                )}
-              </span>
-              <span class="mt-2.5 flex items-baseline gap-2.5">
-                <span class="post-title min-w-0 truncate text-[0.9375rem] font-semibold tracking-tight text-zinc-900 transition-colors dark:text-zinc-100">
-                  {project.data.title}
-                </span>
-                {project.data.status && (
-                  <span class="project-status ml-auto shrink-0 font-mono text-[0.65rem]">
-                    {project.data.status}
-                  </span>
-                )}
-              </span>
-              <span class="mt-0.5 block truncate text-[0.8125rem] text-zinc-500 dark:text-zinc-400">
-                {project.data.description}
-              </span>
-            </a>
-          ))}
+        <div class="deck-breakout mt-3">
+          <ProjectDeck projects={projects} href={projectHref} />
         </div>
       </section>
     )
@@ -123,8 +99,10 @@ const projectsHref = withTrailingSlash(isZh ? '/zh/projects' : '/projects');
     color: var(--color-accent);
   }
 
-  .project-status {
-    color: var(--color-accent);
+  /* Stage width (--container-stage) centred on the reading column. */
+  .deck-breakout {
+    width: min(var(--container-stage), 100vw - 3rem);
+    margin-left: calc(50% - min(var(--container-stage), 100vw - 3rem) / 2);
   }
 
 </style>

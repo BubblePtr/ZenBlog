@@ -7,6 +7,7 @@ stack: ['Markdown', 'Astro', 'Vercel']
 github: 'https://github.com/BubblePtr/awesome-pi'
 demo: 'https://awesome-pi-list.vercel.app'
 status: 'shipped'
+cover: 'gamboge'
 ---
 
 Make Pi fit you.
