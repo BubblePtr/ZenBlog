@@ -2,6 +2,7 @@
 title: 'Pace'
 description: 'The desktop GUI for the Pi coding agent: sessions, trajectories, token and cost truth, and extension-registered panels.'
 order: 0
+heroImage: './images/pace-hero.png'
 stack: ['Electron', 'React 19', 'TypeScript', 'Bun', 'Pi SDK']
 github: 'https://github.com/BubblePtr/pace'
 demo: 'https://github.com/BubblePtr/pace/releases'
