@@ -19,6 +19,14 @@
      Source Serif 4：可变字体（wght 400–700 + opsz），阅读型衬线 */
   --font-serif-en-stack: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 
+  /* 显示字体栈（v3 书桌：只担任标题角色，不进正文与导航）。
+     Instrument Serif 只有 Regular/Italic，层级靠字号不靠字重；中文回落宋体 */
+  --font-display-stack: 'Instrument Serif', 'Noto Serif SC', 'Source Han Serif SC', Georgia, serif;
+
+  /* 手写字体栈（v3 书桌：只担任旁注角色，≤8 词、一图 ≤4 处）。
+     Caveat 可变字重；中文旁注回落霞鹜文楷 */
+  --font-hand-stack: 'Caveat Variable', 'LXGW WenKai', cursive;
+
   /* 等宽字体栈 */
   --font-mono-stack:
     ui-monospace, 'SF Mono', Monaco, 'Cascadia Code', Consolas, 'Liberation Mono', 'Courier New',
@@ -32,6 +40,8 @@
   --font-article-title-en: var(--font-serif-en-stack);
   --font-body: var(--font-sans-stack);
   --font-mono: var(--font-mono-stack);
+  --font-display: var(--font-display-stack);
+  --font-hand: var(--font-hand-stack);
 
   /* Tailwind 映射 */
   --font-sans: var(--font-sans-stack);
@@ -49,6 +59,11 @@
 
   /* 文章大标题 */
   --font-size-article-title: 2.5rem; /* 40px */
+
+  /* 显示字号阶（v3）：display 字体不靠字重分层，靠这三档 */
+  --font-size-display-xl: 2.5rem; /* 40px：文章标题、首页身份行 */
+  --font-size-display-lg: 1.75rem; /* 28px：页面标题 */
+  --font-size-display-md: 1.25rem; /* 20px：栏目标题、项目卡名 */
 
   /* UI 字号 */
   --font-size-ui-xs: 0.75rem; /* 12px */
