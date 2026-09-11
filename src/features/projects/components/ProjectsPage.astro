@@ -42,13 +42,13 @@ function getParagraphs(content: string) {
         return (
           <article>
             {project.data.heroImage && (
-              <div class="img-edge aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
+              <div class="img-edge overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                 <img
                   src={project.data.heroImage}
                   alt={project.data.title}
                   loading="lazy"
                   decoding="async"
-                  class="h-full w-full object-cover"
+                  class="block h-auto w-full"
                 />
               </div>
             )}
