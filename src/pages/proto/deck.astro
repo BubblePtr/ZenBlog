@@ -144,12 +144,42 @@ const pageTitle = 'Proto · Deck | ' + SITE_TITLE;
     </div>
   </template>
 
+  <!-- Variant 4: Lift (fan + click to raise) -->
+  <template id="v-lift">
+    <div class="lift">
+      <div class="lift-target" aria-hidden="true"></div>
+      <ul class="deck deck-fan deck-lift" style={`--n:${n}`}>
+        {
+          cards.map((c, i) => (
+            <li class="deck-item" style={`--i:${i}`}>
+              <button type="button" class="card focus-ring" data-cover={c.cover} data-href={`/projects/#${c.slug}`} aria-expanded="false">
+                <span class="card-cover">
+                  {c.heroImage ? <img src={c.heroImage} alt="" loading="lazy" /> : <span class="card-blank" />}
+                </span>
+                <span class="card-meta">
+                  <span class="card-title">{c.title}</span>
+                  <span class="card-status">{c.status}</span>
+                </span>
+                <span class="card-more">
+                  <span class="card-desc">{c.description}</span>
+                  <span class="card-cta">Open project →</span>
+                </span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="lift-hint">Click a card to lift it. Click again to open the project. Esc puts it back.</p>
+    </div>
+  </template>
+
   <!-- Picker (verbatim from emil-prototype/PICKER.md) -->
   <nav class="proto-picker" aria-label="Prototype variants">
     <span class="proto-picker-highlight" aria-hidden="true"></span>
     <button class="proto-picker-item" data-active aria-current="true">Fan</button>
     <button class="proto-picker-item">Spread</button>
     <button class="proto-picker-item">Ledger</button>
+    <button class="proto-picker-item">Lift</button>
     <span class="proto-picker-divider" aria-hidden="true"></span>
     <button class="proto-picker-item proto-picker-replay" aria-label="Replay animation (R)">↻</button>
   </nav>
@@ -399,6 +429,71 @@ const pageTitle = 'Proto · Deck | ' + SITE_TITLE;
   .ledger-list .card-status { margin-left: 0; align-self: center; }
   @media (max-width: 720px) {
     .ledger { grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  /* ============ V4 Lift: fan, click raises a card into the stage ============ */
+  .lift { position: relative; }
+  .lift-target {
+    /* where a lifted card lands: 360px wide, centred above the deck */
+    width: 360px;
+    height: 460px;
+    margin: 0 auto;
+  }
+  .lift-hint {
+    text-align: center;
+    font-family: var(--font-hand);
+    font-size: 1.125rem;
+    color: var(--color-ink-tertiary);
+    margin: -40px 0 0;
+  }
+  .deck-lift .card {
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    border: 0;
+    transform-origin: 50% 100%;
+  }
+  .deck-lift .card-more {
+    display: block;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: opacity 150ms ease-out;
+  }
+  .deck-lift .card-cta {
+    display: block;
+    margin: 4px 6px 8px;
+    font-size: 0.8125rem;
+    color: var(--color-accent);
+  }
+  .deck-lift .deck-item[data-open] { z-index: 300; }
+  .deck-lift .deck-item[data-open] .card {
+    /* --lx/--ly computed by JS from the card's deck slot to the target box */
+    transform: translate(var(--lx), var(--ly)) rotate(0deg) scale(1.5);
+    transform-origin: 0 0;
+    box-shadow: var(--shadow-object-raised);
+    transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 320ms ease-out;
+  }
+  .deck-lift .deck-item[data-open] .card-more {
+    max-height: 12rem;
+    opacity: 1;
+    transition: opacity 200ms ease-out 200ms;
+  }
+  .deck-lift .deck-item[data-open] .card-desc {
+    -webkit-line-clamp: 3;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .deck-lift .deck-item[data-open]:hover .card { transform: translate(var(--lx), var(--ly)) rotate(0deg) scale(1.5); }
+  }
+  .deck-lift .deck-item[data-open]:focus-within .card { transform: translate(var(--lx), var(--ly)) rotate(0deg) scale(1.5); }
+  @media (max-width: 720px) {
+    .lift-target { display: none; }
+    .lift-hint { display: none; }
+    .deck-lift .card-more { max-height: none; opacity: 1; }
+    .deck-lift .deck-item[data-open] .card { transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .deck-lift .deck-item[data-open] .card, .deck-lift .card-more { transition: none; }
   }
 
   /* ============ picker (verbatim) ============ */

@@ -1,5 +1,5 @@
 // Prototype harness wiring (emil-prototype PICKER.md contract). Throwaway.
-const variants = ['v-fan', 'v-spread', 'v-ledger'];
+const variants = ['v-fan', 'v-spread', 'v-ledger', 'v-lift'];
 const stage = document.getElementById('stage');
 const picker = document.querySelector('.proto-picker');
 const highlight = picker.querySelector('.proto-picker-highlight');
@@ -26,12 +26,57 @@ function wireLedger(root) {
   });
 }
 
+function wireLift(root) {
+  const target = root.querySelector('.lift-target');
+  const items = [...root.querySelectorAll('.deck-lift .deck-item')];
+  const SCALE = 1.5;
+  const close = () => {
+    items.forEach((li) => {
+      li.removeAttribute('data-open');
+      li.querySelector('.card').setAttribute('aria-expanded', 'false');
+    });
+  };
+  const open = (li) => {
+    close();
+    const card = li.querySelector('.card');
+    // FLIP: measure the card's untransformed slot, aim its top-left at the target box.
+    const prev = card.style.transform;
+    card.style.transform = 'none';
+    const from = card.getBoundingClientRect();
+    card.style.transform = prev;
+    const to = target.getBoundingClientRect();
+    const dx = to.left + (to.width - from.width * SCALE) / 2 - from.left;
+    const dy = to.top - from.top;
+    card.style.setProperty('--lx', dx + 'px');
+    card.style.setProperty('--ly', dy + 'px');
+    li.setAttribute('data-open', '');
+    card.setAttribute('aria-expanded', 'true');
+  };
+  items.forEach((li) => {
+    const card = li.querySelector('.card');
+    card.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 720px)').matches || li.hasAttribute('data-open')) {
+        location.href = card.dataset.href;
+        return;
+      }
+      open(li);
+    });
+  });
+  root.addEventListener('click', (e) => {
+    if (!e.target.closest('.card')) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  });
+}
+
 function mount(i) {
   stage.innerHTML = '';
   requestAnimationFrame(() => {
     const tpl = document.getElementById(variants[i]);
     stage.appendChild(tpl.content.cloneNode(true));
     if (variants[i] === 'v-ledger') wireLedger(stage);
+    if (variants[i] === 'v-lift') wireLift(stage);
   });
 }
 
