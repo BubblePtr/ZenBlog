@@ -1,125 +1,210 @@
 ---
 name: Kieran Zhang
-description: 个人博客与作品集：留白极简（写作优先）+ 青竹强调色的双语个人站
+description: 个人博客与作品集：纸墨底子上的「书桌」系统，写作优先，作品作为桌上的实物出现
+version: 3 (2026-09)
 colors:
-  surface-paper: "oklch(0.977 0.007 80.7)" # #faf7f2 纸面，禁 #fff
-  surface-ink: "oklch(0.141 0.004 285.8)" # zinc-950 深色底，禁 #000
-  accent-bamboo: "oklch(0.439 0.046 156.7)" # 青竹，浅色模式，纸面上 7.1:1
-  accent-bamboo-strong: "oklch(0.36 0.046 157)" # 更深一档，强对比 hover
-  accent-bamboo-dark: "oklch(0.734 0.049 159.3)" # 青竹，深色模式，墨底上 8.6:1
-  accent-bamboo-dark-strong: "oklch(0.8 0.049 158)"
-  ink-primary-light: "rgba(0,0,0,0.87)"
-  ink-primary-dark: "rgba(255,255,255,0.87)"
-  ink-secondary-light: "rgba(0,0,0,0.6)"
-  ink-secondary-dark: "#a1a1aa"
-  ink-tertiary-light: "rgba(0,0,0,0.38)"
-  ink-tertiary-dark: "rgba(255,255,255,0.38)"
+  surface-paper: "oklch(0.98 0.006 60)" # 纸，全站底色，禁 #fff
+  surface-paper-dark: "oklch(0.141 0.005 286)" # 深色纸面（zinc-950），禁 #000
+  accent-bamboo: "oklch(0.44 0.075 157)" # 青竹，wayfinding 专用
+  accent-bamboo-dark: "oklch(0.734 0.08 159)"
+  cover-vermilion: "oklch(0.62 0.16 35)" # 朱砂：封面色，也是标注的默认墨色
+  cover-ochre: "oklch(0.66 0.10 65)" # 赭石
+  cover-gamboge: "oklch(0.82 0.13 90)" # 藤黄
+  cover-indigo: "oklch(0.50 0.12 265)" # 靛
+  cover-dai: "oklch(0.38 0.04 250)" # 黛
 typography:
-  heading:
-    fontFamily: "'MiSans', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif"
-    fontWeight: 600
-    letterSpacing: "-0.01em"
-    note: "界面层中西文都走 MiSans，避免 Windows 雅黑 / 各发行版系统黑体不一致。层级靠字号阶与灰度，不靠第二套无衬线"
-  article-display:
-    fontFamily: "'Source Serif 4', Georgia, serif（英文）/ 'Noto Serif SC', Georgia, serif（中文）"
-    note: "衬线只保留在文章阅读态的大标题（及英文正文）。中文正文/界面走 MiSans，不要把标题也换成无衬线"
-  body:
-    fontFamily: "'MiSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif"
-    fontSize: "1.0625rem"
-    fontWeight: 400
-    lineHeight: 1.75
-  meta:
-    fontFamily: "ui-monospace, 'SF Mono', Monaco, monospace"
-    fontSize: "0.7rem"
-    fontVariantNumeric: "tabular-nums"
-    note: "日期、年份、状态字等一切元信息；中文上下文不 uppercase"
+  display: "'Instrument Serif', 'Noto Serif SC', Georgia, serif"
+  body: "'MiSans', -apple-system, 'PingFang SC', sans-serif"
+  meta: "ui-monospace, 'SF Mono', Monaco, monospace"
+  hand: "'Caveat', 'LXGW WenKai', cursive"
 ---
 
-# Design System: 留白（Ma）
+# Design System v3：书桌（The Desk）
 
-## 1. Overview
+## 0. 这次改版改了什么
 
-**Creative North Star: 「留白」**
+v2「留白」把站点做成一页安静的纸，代价是所有页面都一样平：项目缩略图和文章列表行是同一种存在。
+v3 保留纸墨底子，加进一个隐喻：**书桌**。纸上写字，桌上摆东西。
+文章仍是纸上的文字，作品变成桌上的实物卡，批注是铅笔和朱砂笔写在纸边的旁注。
 
-整个站点是一页安静的纸：内容极少、灰阶为主、层级全部交给字号、灰度与留白。
-写作优先，文章目录即首页。唯一的氛围元素是首屏竹影（DappledLight），
-唯一的彩色是青竹。精神范本是文人书桌，而不是杂志、更不是 SaaS 落地页。
-2026-08 起取代旧「工程师杂志」系统（kicker、folio 编号、双导轨栏线均已退役）。
+放开的三条旧规则（决策见 `docs/adr/0001-design-system-v3.md`）：
 
-**Key Characteristics:**
+| v2 规则 | v3 改为 |
+| --- | --- |
+| 青竹是唯一彩色 | 青竹仍是唯一 **wayfinding** 色；新增五个 **封面色** 只用于实物 |
+| 不引入 display 字体 | 一款显示衬线进界面层，只担任「标题」角色 |
+| 零入场、无阴影、无卡片 | 实物允许阴影与层叠；首屏允许一次性轻入场 |
 
-- 纸面 `oklch(0.977 0.007 80.7)` + 墨字；深色模式 zinc-950 底，同一灰阶反转（夜读）。
-- **青竹（Bamboo）是全站唯一强调色**：浅色 `oklch(0.439 0.046 156.7)`，深色 `oklch(0.734 0.049 159.3)`，CSS 变量 `--color-accent`。
-- 单列窄版心（列表面 34rem，文章面 65–75ch），居中，大留白。
-- 两种字体角色：sans（界面与中文正文，中西文都是 MiSans）+ mono（元信息）；衬线活在文章大标题，以及英文正文。
-- 零装饰：无卡片边框、无阴影、无分隔线堆叠、无区块编号；图片是唯一的"实"元素（项目缩略图、摄影、文章配图）。
-- 零 scroll 动效：动效只响应用户输入（hover、focus、点击），页面不自己表演。
+没动的底子：纸墨灰阶、窄版心、MiSans 正文、mono 元信息、零 scroll 动效、竹影只在首页。
 
-## 2. Colors
+## 1. 隐喻与判断标准
 
-### 青竹（The Bamboo Rule）
+**Creative North Star：「书桌」。** 一张纸铺在桌上，纸上是文字，纸边有旁注，桌上摆着几张作品卡。
 
-青竹取竹与玉之色。竹与玉在中国传统文化里都象征君子，而君子与儒家渊源极深；
-这是站点主人的色彩叙事，不要换成任何"更流行"的颜色。图纸蓝与 orange 都是已废弃的历史强调色，不要复活。
+判断一个元素属于哪一层，用这个问题：**它是写在纸上的，还是摆在桌上的？**
 
-用法沿用 wayfinding-only 原则：链接 hover、focus 态、active 导航、选中文本、状态字（building/shipped）。
-永远不做大面积底色、不做装饰色块。一屏之内青竹出现的位置应屈指可数；
-如果一个组件需要第二种颜色解决层级，先回到字重与灰度。
-状态色（红/绿/黄）仅在有语义时使用。
+- **纸上的**（文字层）：正文、列表、导航、页脚、元信息。规则和 v2 一样：无边框无阴影，层级靠字号、灰度、留白。
+- **桌上的**（实物层）：项目卡、带标注的图、摄影照片。它们有厚度：可以有阴影、层叠、倾斜、封面色。
+- **纸边的**（旁注层）：手写体短注和箭头。它们指向纸上或桌上的某个具体东西，从不独立存在。
 
-- `--color-accent`：浅 `oklch(0.439 0.046 156.7)`（纸面上 7.1:1，AAA），深 `oklch(0.734 0.049 159.3)`（墨底上 8.6:1，AAA）。
-- `--color-accent-strong`：浅 `oklch(0.36 0.046 157)` / 深 `oklch(0.8 0.049 158)`，留给强对比 hover。
-- 色阶规则：两端色相差 <3°，属同一感知色相；任何衍生档位只动 L，不动 C 与 H。
-- 灰阶：正文 87% 墨、次要 60%、辅助 38%（日期、年份标签）。新颜色值一律写 oklch。
+一屏之内实物不超过一组，旁注不超过四处。超过这个数，桌子就乱了。
 
-## 3. Typography
+## 2. 颜色
 
-- **界面层（导航、列表、卡片、页脚）**：sans。中西文都用 MiSans（小米，见《MiSans 字体知识产权许可协议》），
-  这样 Linux / Windows / macOS 看到的是同一张脸，而不是平方 / 雅黑 / Noto 各一套。
-  标题 semibold + tracking -0.01em，层级靠字号阶
-  （1.05rem 页面题 / 0.9375rem 条目题 / 0.8125rem 辅文）与灰度，不引入 display 字体。
-- **元信息（mono）**：日期、年份、状态字、EXIF。0.65–0.75rem，tabular-nums；
-  中文上下文不 uppercase、letter-spacing 不超过 0.1em。
-- **文章阅读态**：英文大标题与正文用 Source Serif 4（`font-serif-en`）。
-  中文大标题用 Noto Serif SC（`font-article-title`），中文正文用 MiSans。衬线属于"读"的标题，不进界面层。
-- 正文 16px / 400 / 1.75，行长 65–75ch；文章标题 `text-wrap: balance`。
+### 2.1 纸墨灰阶（不变）
 
-## 4. Components
+纸、面、墨四级、线，全部沿用 `docs/design/colors.md` 的 token；深色模式是灰阶反转的夜读，不是另一套配色。
 
-- **列表即目录**：按年份分组，年份 mono 小字，条目一行（标题 + 右对齐 mono 日期），
-  hover 唯一反馈是标题染青竹。不用左侧指示线、不用编号、不用插画。
-- **项目卡片**：16:10 缩略图 + 名称/一句话/状态字一至两行。图上不压渐变与文字；
-  hover 仅 1.03 缓慢缩放。图片 lazy load + 显式宽高防 CLS。
-- **Header**：字标 + 少量导航项；active 态青竹。**Footer**：纯文本链接一行，
-  下划线用 35% currentColor，hover 染青竹。旧 colophon 三栏结构退役。
-- **竹影（DappledLight）**：全站唯一氛围签名，只出现在首页首屏，影可压内容，
-  深色模式隐藏，`prefers-reduced-motion` 冻结。其他页面不引入新的氛围层。
-- **选中文本**：青竹底 + 纸色文字，是最小的全站签名。
-- **按钮**：能用文字链接就不用按钮；确需按钮时 filled 矩形无圆角，触达目标 ≥44px。
-- **代码块**：Mac 三点窗口签名保留。
+### 2.2 青竹：wayfinding（不变）
 
-## 5. Motion
+`--color-accent`，浅 `oklch(0.44 0.075 157)`，深 `oklch(0.734 0.08 159)`。
+用途只有导向：链接 hover、focus ring、导航激活、TOC 激活、状态字、`::selection`。
+永远不做底色，永远不做封面色。竹与玉之色象征君子，这是站点主人的色彩叙事，不要换。
 
-- 零入场动画、零 whileInView、零 parallax、零自动轮播；framer-motion 不进入界面层。
-- 允许的全部动效：颜色过渡 150ms、项目图 hover 缩放 400ms、View Transitions 页面过渡、竹影摇曳。
-- `prefers-reduced-motion` 下只保留颜色过渡。
+### 2.3 封面色（新增，实物专用）
 
-## 6. Do's and Don'ts
+五个低饱和的传统色，专给桌上的实物用：项目卡封面、系列徽标、标注墨色。它们**不出现在文字层**：不做链接色、不做标题色、不做页面底色。
 
-### Do:
+| 名 | Token | 浅色 | 深色 | 默认归属 |
+| --- | --- | --- | --- | --- |
+| 朱砂 | `--cover-vermilion` | `oklch(0.62 0.16 35)` | `oklch(0.72 0.14 35)` | 标注默认墨色 |
+| 赭石 | `--cover-ochre` | `oklch(0.66 0.10 65)` | `oklch(0.74 0.09 65)` | |
+| 藤黄 | `--cover-gamboge` | `oklch(0.82 0.13 90)` | `oklch(0.84 0.11 90)` | |
+| 靛 | `--cover-indigo` | `oklch(0.50 0.12 265)` | `oklch(0.68 0.11 265)` | |
+| 黛 | `--cover-dai` | `oklch(0.38 0.04 250)` | `oklch(0.60 0.04 250)` | |
 
-- **Do** 新页面从"能不能只用文字排出来"开始想，图片只留内容图。
-- **Do** 元信息一律 mono + tabular-nums；日期右对齐。
-- **Do** hover/focus 的导向反馈用 `var(--color-accent)`；焦点态必须可见。
-- **Do** 保持深浅双主题同等打磨：深色是灰阶反转的"夜读"，不是另一套配色。
-- **Do** 图片显式宽高、字体与首屏图 preload、44px 触达目标。
+规则：
 
-### Don't:
+- **一物一色，写进内容**。项目和系列在 frontmatter 里声明 `cover: vermilion`，页面只读不猜。同一屏内尽量不重复。
+- **封面色以面的形式出现**，不以文字形式出现。卡片封面带是「封面色染的纸」：`color-mix(in oklch, var(--cover-*) 18%, var(--color-paper))`，截图压在这张染纸上。深色模式染 24%。
+- 封面色上的文字只用墨或纸，不用另一个封面色。
+- 衍生档位只动 L，不动 C 与 H；两端色相差不超过 3°。
+- 语义状态色（错误红、成功绿）另算，不从封面色里取。
 
-- **Don't** 复活 kicker、folio 编号、双导轨栏线、colophon 三栏页脚（杂志系统已退役）。
-- **Don't** 引入青竹以外的彩色（语义状态色除外）；图纸蓝与 orange 是历史遗留，不要复活。
-- **Don't** 用 `#fff` / `#000`、阴影层级、渐变装饰、glassmorphism、卡片边框网格。
-- **Don't** 加 scroll 触发动效或入场 stagger；动效不响应输入就砍掉。
+## 3. 字体
+
+四个角色，每个角色一款字体，角色不互串。
+
+| 角色 | 字体 | 出现在 | 不出现在 |
+| --- | --- | --- | --- |
+| **显示（display）** | Instrument Serif；中文 Noto Serif SC | 首页身份行、页面标题、栏目标题（Writing / Projects）、项目卡名、文章大标题 | 导航、列表条目、正文、按钮 |
+| **正文（body）** | MiSans | 正文、列表、导航、页脚、说明文字 | 大标题 |
+| **元信息（meta）** | 系统 mono | 日期、年份、状态字、EXIF、技术栈 | 任何句子 |
+| **手写（hand）** | Caveat；中文 霞鹜文楷 子集 | 旁注、箭头旁的短注、首页一句签名 | 标题、正文、导航、任何超过八个词的文字 |
+
+### 3.1 显示衬线
+
+Instrument Serif 只有 Regular 和 Italic 两个样式，这是有意的：显示字体不靠字重分层，靠字号。
+字号阶：`display-xl` 2.5rem（文章标题、首页身份行）/ `display-lg` 1.75rem（页面标题）/ `display-md` 1.25rem（栏目标题、项目卡名）。
+行高 1.1 到 1.2，`letter-spacing: -0.01em`，`text-wrap: balance`。中文用 Noto Serif SC 600，字号阶降一档，因为宋体在同字号下视觉更重。
+
+### 3.2 手写体
+
+Caveat 用可变字重 500，字号 1rem 到 1.125rem，倾斜由字体自带，不加 `font-style: italic`。
+中文旁注用霞鹜文楷，**构建时按实际用到的字子集化**（`scripts/` 下的字体子集脚本负责），单个页面手写字体载荷控制在 30KB 以内。旁注优先写英文，中文界面下英文旁注也成立：铅笔批注本来就常是英文。
+
+手写体的颜色是墨（次级，60%）或朱砂，二选一。永远不用青竹，青竹是导向色，旁注不是导向。
+
+### 3.3 正文与元信息（不变）
+
+正文 16px / 400 / 1.75，行长 65 到 75ch。元信息 mono 0.65 到 0.75rem，`tabular-nums`；中文上下文不 uppercase，`letter-spacing` 不超过 0.1em。
+
+## 4. 版式
+
+- **纸面版心**：`max-w-content` 40rem，文字层全部在这个宽度里。
+- **桌面舞台**：实物层允许突破到 64rem（`max-w-stage`），居中，两侧留白。项目卡堆、摄影画廊、带标注的大图用这一档。
+- **舞台不改变文字层**。舞台上方和下方的文字仍回到 40rem，舞台是一段插进纸里的桌面，不是新的页面宽度。
+- 移动端舞台等于视口宽度减去 1.5rem 内边距，实物改为横向滚动或单列。
+
+## 5. 组件
+
+### 5.1 项目卡堆（Project Deck）
+
+首页项目区和项目页顶部的核心实物。
+
+- **一张卡**：封面带（染纸 + 截图，截图顶部对齐、圆角 6px、1px 线描边）+ 显示衬线的名字 + mono 状态字。卡本身圆角 12px，纸色底，双层柔影：`0 1px 2px oklch(0 0 0 / 0.06), 0 8px 24px oklch(0 0 0 / 0.08)`。深色模式阴影失效，改为 1px `--color-line` 描边加 `--color-surface` 底。
+- **卡堆**：四到六张，依次倾斜 -6° 到 +6°，纵向错落 0 到 16px，横向重叠约 20%。层级顺序固定，不随机。
+- **交互**：hover 当前卡摆正、抬起 8px、阴影加深，200ms ease-out；其他卡不动。点击进项目页。键盘 focus 等同 hover。
+- **移动端**：横向滚动 + scroll-snap，不倾斜不重叠。
+- **reduced-motion**：静态网格，无倾斜。
+- **少于三张卡时不做卡堆**，退回普通网格。数量不够，扇形只会显得空。
+
+### 5.2 标注图（Annotated Figure）
+
+MDX 组件，用在文章和项目页里讲「读者第一眼看不出的东西」。
+
+```mdx
+<Annotated src={img} alt="Pace 的 Trajectory 视图">
+  <Note x={62} y={18} dir="down">every tool call, in order</Note>
+  <Note x={88} y={70} dir="left">cost per turn</Note>
+</Annotated>
+```
+
+- 图是实物：圆角 8px、1px 线描边、单层柔影。
+- 注是旁注：手写体，朱砂或墨次级，箭头是手绘感的 SVG 曲线（两段贝塞尔、1.5px 描边、圆头），从注文指向图上的坐标点。
+- 一图最多四处注，每处不超过八个词。注文在图外的边距里，不压在图上。
+- 移动端注文改为编号列表放在图下方，图上只留编号圆点。
+- 组件不用于装饰性图片。没有需要指出的东西，就用普通 `<img>`。
+
+### 5.3 首页签名旁注
+
+首页身份区，在名字和 Macintosh 小图之间，一句手写体英文短注加一条手绘箭头指向 Mac，例如 `indie since Jun 2026`。全站只有这一处「无所指的旁注」，其它旁注必须指向具体内容。
+
+### 5.4 列表即目录（不变）
+
+文章列表按年份分组，年份 mono 小字，条目一行，hover 标题染青竹。不加指示线、编号、插画。
+
+### 5.5 系列徽标
+
+系列文章（独立开发周报、量化笔记）在列表行和文章页头部带一枚徽标：封面色染纸的小圆角块，内部 mono 系列名。它是文字层里唯一允许出现封面色的元素，因为它代表一个「桌上的东西」（系列本身是一叠稿纸）。
+
+### 5.6 其它（不变）
+
+Header 字标 + 少量导航，active 青竹。Footer 纯文本一行。代码块保留 Mac 三点窗口。竹影只在首页首屏，深色隐藏，reduced-motion 冻结。选中文本青竹底纸色字。按钮能用文字链接就不用；确需按钮时 filled 矩形、圆角 6px、触达 44px。
+
+## 6. 表面与深度
+
+- **文字层零表面**：无边框、无阴影、无背景块。
+- **实物层两级深度**：静置（双层柔影）与抬起（hover，阴影扩大、位移 8px）。不做第三级。
+- **阴影只用墨的透明度**，不带色相；深色模式用描边和面色代替阴影。
+- 禁 glassmorphism、禁渐变装饰、禁纯色大块背景。封面色染纸是「面」，不是渐变。
+- 嵌套圆角同心：外 12px 内 6px，内外差等于内边距。
+
+## 7. 动效
+
+- **入场**：每次页面加载，首屏的实物层和标题允许一次 120 到 200ms 的淡入加 6px 上移，stagger 不超过 40ms，最多四个元素。首屏以下不入场。View Transitions 页面过渡保留。
+- **响应输入**：颜色过渡 150ms；卡片抬起 200ms ease-out；标注箭头 hover 时描边由 60% 到 100% 不透明。
+- **禁止**：scroll 触发、`whileInView`、parallax、自动轮播、循环动画（竹影除外）。页面不自己表演，桌子不会自己动。
+- **reduced-motion**：入场关闭，只保留颜色过渡。
+- framer-motion 只进实物层组件，文字层不引入。
+
+## 8. Do 与 Don't
+
+### Do
+
+- **Do** 先问「这是纸上的还是桌上的」，再决定它能不能有阴影和颜色。
+- **Do** 一物一封面色，写进 frontmatter，同屏不重复。
+- **Do** 旁注指向具体东西，八个词以内，四处以内。
+- **Do** 显示衬线只做标题，正文导航永远 MiSans。
+- **Do** 深浅双主题同等打磨，深色用描边替代阴影。
+- **Do** 图片显式宽高、显示字体和手写字体 preload 或子集化、44px 触达目标。
+
+### Don't
+
+- **Don't** 把封面色用在链接、标题或页面背景上。它们是实物的颜色。
+- **Don't** 把青竹用在封面或旁注上。它是导向的颜色。
+- **Don't** 用手写体写标题、正文、按钮，或任何超过八个词的句子。
+- **Don't** 给文字层加阴影、边框或背景块。
+- **Don't** 加 scroll 触发动效、入场 stagger 超过四个元素、首屏以下的入场。
+- **Don't** 少于三张卡时做卡堆。
+- **Don't** 复活 kicker、folio 编号、双导轨栏线、colophon 三栏（v1 杂志系统）。
+- **Don't** 用 `#fff` / `#000`、hex / hsl 新颜色、em dash（用逗号、冒号或括号）。
 - **Don't** 在中文上下文 uppercase 或 letter-spacing 超过 0.1em。
-- **Don't** 用 em dash（用逗号、冒号或括号）。
-- **Don't** 新增 hex/hsl 颜色值；一律 oklch，衍生色只动 L。
+
+## 9. 实施顺序
+
+1. Token 与字体：`global.css` 加封面色 token 与 `max-w-stage`；接入 Instrument Serif 与 Caveat（自托管 woff2），霞鹜文楷子集脚本。同步更新 `docs/design/colors.md`。
+2. 项目卡堆：先在临时路由做两到三个变体对比，定稿后替换首页项目区与项目页顶部。项目 frontmatter 加 `cover` 字段。
+3. 显示衬线落到标题角色；首页签名旁注。
+4. `Annotated` MDX 组件，先用在一篇技术文和一个项目页。
+5. 项目独立页面与系列徽标。
