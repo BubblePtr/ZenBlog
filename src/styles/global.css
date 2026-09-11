@@ -777,6 +777,59 @@ body {
     color: var(--color-accent);
   }
 
+  /* 显示衬线（v3 书桌 §3.1）：只担任标题角色，三档靠字号不靠字重。
+     Instrument Serif 只有 Regular，所以字重固定 400；中文页面切到宋体 600
+     并降一档字号，因为宋体同字号下视觉更重。 */
+  .display-xl,
+  .display-lg,
+  .display-md {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--color-ink-strong);
+  }
+  .display-xl {
+    font-size: var(--font-size-display-xl);
+  }
+  .display-lg {
+    font-size: var(--font-size-display-lg);
+  }
+  .display-md {
+    font-size: var(--font-size-display-md);
+  }
+  :lang(zh) .display-xl,
+  :lang(zh) .display-lg,
+  :lang(zh) .display-md {
+    font-family: var(--font-serif);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+  :lang(zh) .display-xl {
+    font-size: var(--font-size-display-lg);
+  }
+  :lang(zh) .display-lg {
+    font-size: var(--font-size-display-md);
+  }
+  :lang(zh) .display-md {
+    font-size: var(--font-size-ui-lg);
+  }
+
+  /* 手写旁注（v3 书桌 §3.2）：只担任旁注角色，≤8 词。颜色是墨次级或朱砂，
+     永远不是青竹。倾斜由字体自带，不加 italic。 */
+  .hand-note {
+    font-family: var(--font-hand);
+    font-weight: var(--font-weight-medium);
+    font-size: 1.125rem;
+    line-height: 1.2;
+    color: var(--color-ink-secondary);
+  }
+  .hand-note-vermilion {
+    color: var(--color-cover-vermilion);
+  }
+
   /* 统一焦点指示器样式：焦点属于 wayfinding，用青竹（与 :root 强调色策略一致） */
   .focus-ring {
     @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
