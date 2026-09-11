@@ -40,6 +40,9 @@
      Header, footer, and every page column share this width; wider media
      surfaces (photo gallery, blog hero image) are deliberate breakouts. */
   --container-content: 40rem;
+  /* 桌面舞台（v3）：实物层（项目卡堆、标注大图、画廊）允许突破到这一档，
+     舞台上下的文字层仍回到 --container-content。 */
+  --container-stage: 64rem;
 }
 
 /* ==================== 色彩系统 ====================
@@ -58,6 +61,14 @@
   --color-line: var(--line);
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
+
+  /* 封面色（v3）：只给桌上的实物用（项目卡封面、系列徽标、标注墨色），
+     以染纸的面出现，不进链接、标题与页面底色。 */
+  --color-cover-vermilion: var(--cover-vermilion);
+  --color-cover-ochre: var(--cover-ochre);
+  --color-cover-gamboge: var(--cover-gamboge);
+  --color-cover-indigo: var(--cover-indigo);
+  --color-cover-dai: var(--cover-dai);
 }
 
 @layer base {
@@ -81,6 +92,20 @@
        C 0.075 是可辨认门槛：更低会沉进墨字里读作灰（2026-08 三档对比后定档）。 */
     --accent: oklch(0.44 0.075 157);
     --accent-strong: oklch(0.36 0.075 157);
+
+    /* 封面色（v3 书桌）：五个低饱和传统色，一物一色写进 frontmatter。
+       衍生档位只动 L；深色模式提 L 降 C 保持在墨底上可辨。 */
+    --cover-vermilion: oklch(0.62 0.16 35); /* 朱砂，也是旁注的默认墨色 */
+    --cover-ochre: oklch(0.66 0.1 65); /* 赭石 */
+    --cover-gamboge: oklch(0.82 0.13 90); /* 藤黄 */
+    --cover-indigo: oklch(0.5 0.12 265); /* 靛 */
+    --cover-dai: oklch(0.38 0.04 250); /* 黛 */
+    /* 染纸：封面色混入纸面的比例，卡片封面带与系列徽标共用 */
+    --cover-tint: 18%;
+
+    /* 实物两级深度（v3）：静置与抬起。只用墨的透明度，不带色相。 */
+    --shadow-object: 0 1px 2px oklch(0 0 0 / 0.06), 0 8px 24px oklch(0 0 0 / 0.08);
+    --shadow-object-raised: 0 2px 4px oklch(0 0 0 / 0.08), 0 16px 40px oklch(0 0 0 / 0.14);
 
     /* 抬升：卡片类表面统一用半透明阴影（1px 环替代实线边框 + 两层柔影），
        透明度天然适配任意底色。--elevation-depth 单独可组合：hover 换环色时
@@ -108,6 +133,17 @@
     /* 暗色青竹：提高 L 保证对比度（墨底上 8.6:1，AAA），色相与浅色同，彩度与浅色同档 */
     --accent: oklch(0.734 0.08 159);
     --accent-strong: oklch(0.8 0.08 158);
+
+    --cover-vermilion: oklch(0.72 0.14 35);
+    --cover-ochre: oklch(0.74 0.09 65);
+    --cover-gamboge: oklch(0.84 0.11 90);
+    --cover-indigo: oklch(0.68 0.11 265);
+    --cover-dai: oklch(0.6 0.04 250);
+    --cover-tint: 24%;
+
+    /* 暗色下阴影失效：实物改为描边加面色（见 DESIGN.md §6），阴影置空 */
+    --shadow-object: 0 0 0 1px var(--line);
+    --shadow-object-raised: 0 0 0 1px var(--line);
 
     /* 暗色下柔影不可见：抬升塌缩为一道 1px 低透明度白环 */
     --elevation-depth: 0 0 rgb(0 0 0 / 0);

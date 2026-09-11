@@ -1,0 +1,12 @@
+/**
+ * Design System v3 "desk" faces. All three packages ship unicode-range
+ * split woff2, so a page only fetches the chunks its glyphs need; the
+ * LXGW WenKai face in particular is 97 slices and is never loaded whole.
+ *
+ * - Instrument Serif (OFL): display role, titles only.
+ * - Caveat Variable (OFL): hand role, margin notes only.
+ * - LXGW WenKai (OFL): hand role fallback for CJK notes.
+ */
+@import '@fontsource/instrument-serif/index.css';
+@import '@fontsource-variable/caveat/index.css';
+@import 'lxgw-wenkai-webfont/lxgwwenkai-regular.css';

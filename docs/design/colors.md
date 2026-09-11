@@ -27,6 +27,27 @@
 5. **新增颜色一律写 oklch**，不再出现 hex / rgb / hsl 字面量；透明度写在 `/` 后。
 6. 原生 CSS 里（`<style>` 块、global.css）直接用 `var(--color-*)`；class 里用工具类，避免 `text-[var(...)]` 任意值写法。
 
+## 封面色（v3 书桌，2026-09）
+
+DESIGN.md v3 把元素分为纸上（文字层）、桌上（实物层）、纸边（旁注层）。封面色只属于实物层：项目卡封面带、系列徽标、标注墨色。它们**不进文字层**：不做链接色、标题色、页面底色。青竹仍是唯一 wayfinding 色，两者互不越界。
+
+| 名 | Token | 工具类 | 浅色 | 深色 | 默认归属 |
+| --- | --- | --- | --- | --- | --- |
+| 朱砂 | `--color-cover-vermilion` | `bg-cover-vermilion` 等 | `oklch(0.62 0.16 35)` | `oklch(0.72 0.14 35)` | 旁注默认墨色 |
+| 赭石 | `--color-cover-ochre` | `bg-cover-ochre` | `oklch(0.66 0.1 65)` | `oklch(0.74 0.09 65)` | |
+| 藤黄 | `--color-cover-gamboge` | `bg-cover-gamboge` | `oklch(0.82 0.13 90)` | `oklch(0.84 0.11 90)` | |
+| 靛 | `--color-cover-indigo` | `bg-cover-indigo` | `oklch(0.5 0.12 265)` | `oklch(0.68 0.11 265)` | |
+| 黛 | `--color-cover-dai` | `bg-cover-dai` | `oklch(0.38 0.04 250)` | `oklch(0.6 0.04 250)` | |
+
+约定：
+
+1. **一物一色，写进内容**。项目与系列在 frontmatter 声明 `cover: vermilion`，组件只读不猜；同屏尽量不重复。
+2. **以面出现**。封面带与徽标用「染纸」：`color-mix(in oklch, var(--color-cover-*) var(--cover-tint), var(--color-paper))`，`--cover-tint` 浅色 18%、深色 24%。封面色上的文字只用墨或纸。
+3. **衍生档位只动 L**，两端色相差不超过 3°。深色模式提 L 降 C，保证在墨底上可辨。
+4. 语义状态色不从封面色里取。
+
+配套的实物阴影 token：`--shadow-object`（静置）与 `--shadow-object-raised`（抬起），只用墨的透明度；深色模式下两者都塌缩为 1px `--line` 描边。
+
 ## 有意保留的例外
 
 - **Lightbox**：遮罩、按钮用固定黑白（`bg-black/80`、`border-white/15`），照片查看器两个模式下都应是暗场，不随主题翻转。
@@ -35,6 +56,8 @@
 - **代码块红绿灯**：装饰性 red/amber/emerald-400，与 `DemoBrowser.client.tsx` 同一组。
 
 ## 历史
+
+- 2026-09 v3「书桌」：新增五个封面色与实物阴影 token，青竹角色不变。见 `docs/adr/0001-design-system-v3.md`。
 
 - 2026-07 杂志改版的「图纸蓝」与更早的橙色强调色均已废弃。
 - 2026-08 本次重构：删除了 `_variables.scss`（291 行零引用的 TipTap 遗留 token）、`--rainbow-*`、`--background`/`--foreground`（无消费方）、未定义就被引用的 `--color-text-tertiary`（此前永远落在 `#b3b3ae` 兜底且不分明暗）；`--color-text-primary/secondary/emphasis/disabled` 收编为 ink 四级。
