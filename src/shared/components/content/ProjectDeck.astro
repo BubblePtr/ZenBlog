@@ -3,12 +3,11 @@
  * Project deck (DESIGN.md v3 §5.1, decision in docs/design/decisions/project-deck.md).
  *
  * Objects on the desk: a fanned stack of project cards. Click lifts one
- * card to the top of the stage and the rest retreat beneath it; a second
+ * card to the top of the stage and the rest retreat beneath it while the
+ * page scrolls to keep the whole arrangement centred in view; a second
  * click opens the project. Fewer than three projects falls back to the
- * plain grid, since a fan needs bodies to read as a stack.
- *
- * Shared layer on purpose: both the home feature and the projects feature
- * render it, and features may not import each other.
+ * plain grid, since a fan needs bodies to read as a stack. Rendered by
+ * the home page's projects section.
  */
 import type { ProjectListItem } from '@/types/content';
 
@@ -239,17 +238,18 @@ const isDeck = n >= 3;
   [data-cover='indigo'] { --cover: var(--color-cover-indigo); }
   [data-cover='dai'] { --cover: var(--color-cover-dai); }
 
-  /* rest: hover straightens and lifts the card under the pointer */
+  /* rest: hover only scales the card in place — z-index never changes on
+     hover, so overlapped corners don't swap layers mid-gesture */
   @media (hover: hover) and (pointer: fine) {
-    .deck-stage:not([data-open]) .deck-item:hover { z-index: 100; }
     .deck-stage:not([data-open]) .deck-item:hover .deck-card {
-      transform: rotate(0deg) translateY(-8px);
+      transform: rotate(var(--rot)) translateY(var(--dy)) scale(1.05);
       box-shadow: var(--shadow-object-raised);
     }
   }
+  /* keyboard focus still raises the card so the ring isn't clipped by the next */
   .deck-stage:not([data-open]) .deck-item:focus-within { z-index: 100; }
   .deck-stage:not([data-open]) .deck-item:focus-within .deck-card {
-    transform: rotate(0deg) translateY(-8px);
+    transform: rotate(var(--rot)) translateY(var(--dy)) scale(1.05);
     box-shadow: var(--shadow-object-raised);
   }
 
