@@ -28,6 +28,7 @@ bun run photos:sync-exif       # 从本地图片读取 EXIF 写入 frontmatter
 bun run photos:variants        # 生成摄影展示用 WebP 变体并上传 R2（-w800/-w1600）
 bun run r2:images:upload       # 扫描 content 中外部图片上传到 R2
 bun run r2:images:replace      # 批量替换 content 中的图片宿主域名
+bun run hero:capture -- --app="应用名" --cover=indigo    # 截项目封面：调窗口大小→截屏→合成 cover 色 4:3 画布
 ```
 
 ## 核心架构

@@ -13,10 +13,10 @@ colors:
   cover-indigo: "oklch(0.50 0.12 265)" # 靛
   cover-dai: "oklch(0.38 0.04 250)" # 黛
 typography:
-  display: "'Instrument Serif', 'Noto Serif SC', Georgia, serif"
+  display: "'Spectral', 'Noto Serif SC', Georgia, serif"
   body: "'MiSans', -apple-system, 'PingFang SC', sans-serif"
   meta: "ui-monospace, 'SF Mono', Monaco, monospace"
-  hand: "'Caveat', 'LXGW WenKai', cursive"
+  hand: "'Shantell Sans', cursive"
 ---
 
 # Design System v3：书桌（The Desk）
@@ -91,21 +91,21 @@ neat-annotations 自带的五色，饱和度比封面色高，是这套系统里
 
 | 角色 | 字体 | 出现在 | 不出现在 |
 | --- | --- | --- | --- |
-| **显示（display）** | Instrument Serif；中文 Noto Serif SC | 首页身份行、页面标题、栏目标题（Writing / Projects）、项目卡名、文章大标题 | 导航、列表条目、正文、按钮 |
+| **显示（display）** | Spectral；中文逐字符回落 Noto Serif SC | 首页身份行、页面标题、栏目标题（Writing / Projects）、项目卡名、文章大标题 | 导航、列表条目、正文、按钮 |
 | **正文（body）** | MiSans | 正文、列表、导航、页脚、说明文字 | 大标题 |
 | **元信息（meta）** | 系统 mono | 日期、年份、状态字、EXIF、技术栈 | 任何句子 |
-| **手写（hand）** | Caveat；中文 霞鹜文楷 子集 | 旁注、箭头旁的短注、首页一句签名 | 标题、正文、导航、任何超过八个词的文字 |
+| **手写（hand）** | Shantell Sans | 旁注、箭头旁的短注、首页一句签名 | 标题、正文、导航、任何超过八个词的文字 |
 
 ### 3.1 显示衬线
 
-Instrument Serif 只有 Regular 和 Italic 两个样式，这是有意的：显示字体不靠字重分层，靠字号。
+Spectral 是为屏幕阅读设计的衬线（400/400-italic/600 自托管），中西文共用同一字族：拉丁字符走 Spectral，中文逐字符回落 Noto Serif SC，中英文页面的同一串拉丁标题字族一致。英文文章正文（`.prose:lang(en)`）也用 Spectral，全站西文衬线只有这一款。
 字号阶：`display-xl` 2.5rem（文章标题、首页身份行）/ `display-lg` 1.75rem（页面标题）/ `display-md` 1.25rem（栏目标题、项目卡名）。
-行高 1.1 到 1.2，`letter-spacing: -0.01em`，`text-wrap: balance`。中文用 Noto Serif SC 600，字号阶降一档，因为宋体在同字号下视觉更重。
+行高 1.1 到 1.2，`letter-spacing: -0.01em`，`text-wrap: balance`。中英文页面字号、字重、行高、字距完全一致——同一串拉丁标题（如站点名）跨语言切换不允许度量跳动。
 
 ### 3.2 手写体
 
-Caveat 用可变字重 500，字号 1rem 到 1.125rem，倾斜由字体自带，不加 `font-style: italic`。
-中文旁注用霞鹜文楷，**构建时按实际用到的字子集化**（`scripts/` 下的字体子集脚本负责），单个页面手写字体载荷控制在 30KB 以内。旁注优先写英文，中文界面下英文旁注也成立：铅笔批注本来就常是英文。
+Shantell Sans 用 400/500 两档（自托管），字号 1rem 到 1.125rem，倾斜由字体自带，不加 `font-style: italic`。
+旁注全部写英文，中文界面下也成立：铅笔批注本来就常是英文；因此不加载任何中文手写字体。
 
 手写体的颜色：讲解型旁注用墨（次级，60%）或朱砂；首页标注导航的旁注用 §2.4 的五个旁注色。都不用青竹，青竹留给页面导向。
 
@@ -146,7 +146,7 @@ Caveat 用可变字重 500，字号 1rem 到 1.125rem，倾斜由字体自带，
 - 一共四处注，每处不超过八个词。签名旁注 `indie since Jun 2026` 并入这一组，指向「关于」，全站不再有无所指的旁注。
 - 两行居中，第一行的注全在上方，第二行的注全在下方，行距不拉开，块的上下边距留出标签空间。标签和箭头不占布局空间。
 - 入场是首页那一次入场，也是 §7「≤200ms」的唯一例外：高亮刷出、箭头画出、标签淡入三段，每条 900ms，四条依次错开约 2s 画完。像是有人在纸边现写，所以允许比界面动效慢。
-- 标签字体是库默认的 Shantell Sans，这是全站唯一不用 Caveat 的手写场合。
+- 标签字体是库默认的 Shantell Sans，与全站手写角色同款，自托管（`src/styles/desk-fonts.css`）。
 - 旁注颜色用库的五色：琥珀、蓝、绿、红、紫（见 §2.4）。
 - 首页顶栏桌面端只留语言与主题切换；720px 以下不画旁注，只留词的高亮与链接，顶栏菜单照常。
 
@@ -207,7 +207,7 @@ Header 字标 + 少量导航，active 青竹。Footer 纯文本一行。代码�
 
 ## 9. 实施顺序
 
-1. Token 与字体：`global.css` 加封面色 token 与 `max-w-stage`；接入 Instrument Serif 与 Caveat（自托管 woff2），霞鹜文楷子集脚本。同步更新 `docs/design/colors.md`。
+1. Token 与字体：`global.css` 加封面色 token 与 `max-w-stage`；接入 Spectral 与 Shantell Sans（自托管 woff2）。同步更新 `docs/design/colors.md`。
 2. 项目卡堆：先在临时路由做两到三个变体对比，定稿后替换首页项目区与项目页顶部。项目 frontmatter 加 `cover` 字段。
 3. 显示衬线落到标题角色；首页签名旁注。
 4. 首页标注导航：先在临时路由做两到三个变体对比，定稿后替换首页 bio 与顶栏栏目链接。签名旁注并入。

@@ -1,12 +1,15 @@
 /**
- * Design System v3 "desk" faces. All three packages ship unicode-range
- * split woff2, so a page only fetches the chunks its glyphs need; the
- * LXGW WenKai face in particular is 97 slices and is never loaded whole.
+ * Design System v3 "desk" faces. Both packages ship unicode-range
+ * split woff2, so a page only fetches the chunks its glyphs need.
  *
- * - Instrument Serif (OFL): display role, titles only.
- * - Caveat Variable (OFL): hand role, margin notes only.
- * - LXGW WenKai (OFL): hand role fallback for CJK notes.
+ * - Spectral (OFL): display role + English reading serif. 400/600 for
+ *   titles, 400-italic for prose emphasis.
+ * - Shantell Sans (OFL): hand role, annotation labels + margin notes.
+ *   neat-annotations' native pairing. Notes are English on both locales,
+ *   so no CJK hand fallback is shipped.
  */
-@import '@fontsource/instrument-serif/index.css';
-@import '@fontsource-variable/caveat/index.css';
-@import 'lxgw-wenkai-webfont/lxgwwenkai-regular.css';
+@import '@fontsource/spectral/400.css';
+@import '@fontsource/spectral/400-italic.css';
+@import '@fontsource/spectral/600.css';
+@import '@fontsource/shantell-sans/400.css';
+@import '@fontsource/shantell-sans/500.css';

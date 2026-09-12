@@ -266,7 +266,7 @@ body {
     color: var(--color-ink-strong);
   }
 
-  /* 文章大标题：中文 Noto Serif SC，英文由 :lang(en) 切到 Source Serif 4 */
+  /* 文章大标题：中文 Noto Serif SC，英文由 :lang(en) 切到 Spectral */
   .prose h1 {
     font-family: var(--font-article-title);
     font-size: var(--font-size-article-title);
@@ -778,8 +778,9 @@ body {
   }
 
   /* 显示衬线（v3 书桌 §3.1）：只担任标题角色，三档靠字号不靠字重。
-     Instrument Serif 只有 Regular，所以字重固定 400；中文页面切到宋体 600
-     并降一档字号，因为宋体同字号下视觉更重。 */
+     中西文共用 Spectral：拉丁字符由 Spectral 渲染，中文逐字符回落宋体。
+     中英文页面完全同字族、字号、字重、行高、字距——同一串拉丁标题
+     （如站点名）跨语言切换时不能有任何度量跳动。 */
   .display-xl,
   .display-lg,
   .display-md {
@@ -798,23 +799,6 @@ body {
   }
   .display-md {
     font-size: var(--font-size-display-md);
-  }
-  :lang(zh) .display-xl,
-  :lang(zh) .display-lg,
-  :lang(zh) .display-md {
-    font-family: var(--font-serif);
-    font-weight: var(--font-weight-semibold);
-    line-height: 1.25;
-    letter-spacing: 0;
-  }
-  :lang(zh) .display-xl {
-    font-size: var(--font-size-display-lg);
-  }
-  :lang(zh) .display-lg {
-    font-size: var(--font-size-display-md);
-  }
-  :lang(zh) .display-md {
-    font-size: var(--font-size-ui-lg);
   }
 
   /* 手写旁注（v3 书桌 §3.2）：只担任旁注角色，≤8 词。颜色是墨次级或朱砂，
@@ -1127,7 +1111,7 @@ html.theme-switching::view-transition-new(root) {
 }
 
 /* neat-annotations 站点覆盖（故意不放进 @layer：vendor 文件未分层，分层规则压不过它）
-   （v3 §5.2 标注导航）。标签用库默认的 Shantell Sans（BaseHead 里随 Google Fonts 加载）；
+   （v3 §5.2 标注导航）。标签用库默认的 Shantell Sans，与全站手写角色同款（自托管）；
    库的 --ann-mark 依赖 light-dark()，站点靠 .dark 类切换而非 color-scheme，
    所以深色高亮在这里手动给。词是链接：目标本身可点，悬停时字取旁注色。 */
 .ann {
