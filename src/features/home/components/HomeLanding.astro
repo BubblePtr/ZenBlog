@@ -27,6 +27,12 @@ const projectsHref = withTrailingSlash(isZh ? '/zh/projects' : '/projects');
 const projectHref = (slug: string) => `${projectsHref}#${slug}`;
 
 const blogHref = withTrailingSlash(isZh ? '/zh/blog' : '/blog');
+
+/* Home shows only the newest posts; the full year-grouped index lives on
+   the blog page. A count, not a year, so January never leaves home empty. */
+const HOME_POST_LIMIT = 8;
+const homePosts = posts.slice(0, HOME_POST_LIMIT);
+const hasMorePosts = posts.length > homePosts.length;
 const photosHref = withTrailingSlash(isZh ? '/zh/photography' : '/photography');
 const aboutHref = withTrailingSlash(isZh ? '/zh/about' : '/about');
 
@@ -97,8 +103,15 @@ const notes = {
   <section class="mt-16">
     <h2 class="display-md">{translate('home.writing')}</h2>
     <div class="mt-5">
-      <PostIndex posts={posts} lang={lang} />
+      <PostIndex posts={homePosts} lang={lang} />
     </div>
+    {
+      hasMorePosts && (
+        <a href={blogHref} class="view-all focus-ring">
+          {translate('home.viewAll')} →
+        </a>
+      )
+    }
   </section>
 
   {/* Projects: objects on the desk (DESIGN.md v3 §5.1). The stage breaks out
@@ -165,6 +178,20 @@ const notes = {
     .ann-nav .ann::after {
       animation: none;
     }
+  }
+
+  /* View-all: a list row's quiet sibling, in the wayfinding colour. */
+  .view-all {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.25rem 0;
+    font-size: 0.875rem;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .view-all:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .group:hover .post-title {
