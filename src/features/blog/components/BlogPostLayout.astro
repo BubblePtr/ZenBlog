@@ -92,8 +92,8 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
           )}
 
           <h1
-            class="text-[2.2rem] sm:text-[2.9rem] font-semibold text-zinc-900 dark:text-zinc-100 leading-[1.2] mb-8"
-            style={`view-transition-name: bt-${(slug ?? '').replace(/[^a-zA-Z0-9]/g, '-')}; ${lang === 'zh' ? 'font-family: var(--font-article-title)' : 'font-family: var(--font-serif-en)'}`}
+            class="display-xl mb-8"
+            style={`view-transition-name: bt-${(slug ?? '').replace(/[^a-zA-Z0-9]/g, '-')}`}
           >
             {title}
           </h1>
@@ -178,7 +178,7 @@ const resolvedAuthor = resolveBlogAuthor(author, lang);
       </article>
 
       <section class="mx-auto w-full max-w-content px-6 mt-20">
-        <h2 class="text-[1.05rem] font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 mb-6">
+        <h2 class="display-md mb-6">
           {lang === 'zh' ? '评论' : 'Comments'}
         </h2>
         <GiscusComments client:load lang={lang} />
