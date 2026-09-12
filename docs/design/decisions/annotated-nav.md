@@ -7,8 +7,8 @@
 ## 决定
 
 - 首页不靠顶栏栏目链接，靠一段分行的自我介绍导航：每行一个入口词，词是链接，旁边手写旁注加箭头。
-- 实现用 [neat-annotations](https://github.com/syabro/neat-annotations)（纯 CSS，8.5KB，MIT），vendor 到 `src/styles/neat-annotations.css`，站点覆盖在 `global.css`：标签字体换成 Caveat，深色高亮手动给（库依赖 `light-dark()`，站点没有 `color-scheme`）。
-- 每行一个入口，一共四处：projects（蓝）、writing（绿）、photography（琥珀）、about（紫）。词在行尾的用 `ann-w` 把标签放在右侧；词在行中的用 `ann-n` 把标签放在下方，并给这一行留 3.25rem 下边距。
+- 实现用 [neat-annotations](https://github.com/syabro/neat-annotations)（纯 CSS，8.5KB，MIT），vendor 到 `src/styles/neat-annotations.css`，站点覆盖在 `global.css`：深色高亮手动给（库依赖 `light-dark()`，站点没有 `color-scheme`）。标签字体用库默认的 Shantell Sans，随 BaseHead 的 Google Fonts 链接加载；Caveat 仍是其它旁注的手写体。
+- 两行正文，四处入口：projects（蓝，标签在上）、writing（绿，标签在下）、photography（琥珀，标签在下）、about（紫，行尾，标签在右）。正文不受阅读列 40rem 限制，左沿对齐阅读列、右沿可到舞台宽 64rem；两行之间与下方各留约 4rem 放标签。
 - 旁注颜色放开：用库自带的五色（amber / blue / green / red / purple），不再限于墨与朱砂。青竹仍是页面导向色（顶栏当前项、焦点环、链接悬停），旁注色只出现在旁注和它高亮的词上。
 - 720px 以下不画箭头和标签，只留词的高亮与链接；顶栏在小屏仍有菜单。
 - 首页顶栏桌面端隐藏四个栏目链接，只留语言和主题切换；其它页面不变。

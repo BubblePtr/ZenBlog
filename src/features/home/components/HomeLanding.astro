@@ -77,23 +77,17 @@ const notes = {
     </div>
   </div>
 
-  <nav class="ann-nav mt-10" aria-label={translate('home.projects')}>
+  <nav class="ann-nav" aria-label={translate('home.projects')}>
     {
       isZh ? (
         <>
-          <p>我是 Kieran，在南京的 AI-native 独立开发者。</p>
-          <p>我在做几件 <a class="ann ann-w ann-blue" data-note={notes.projects} href={projectsHref}>小产品</a>。</p>
-          <p class="ann-room">也 <a class="ann ann-n ann-green" data-note={notes.writing} href={blogHref}>写</a> 一些关于 agentic 工程和独自造东西的文章。</p>
-          <p>离开书桌的时候，会带上 <a class="ann ann-w ann-amber" data-note={notes.photos} href={photosHref}>相机</a>。</p>
-          <p>还有一点 <a class="ann ann-n ann-purple" data-note={notes.about} href={aboutHref}>关于我</a> 的事。</p>
+          <p>我是 Kieran，在南京的 AI-native 独立开发者。我在做几件 <a class="ann ann-s ann-blue" data-note={notes.projects} href={projectsHref}>小产品</a>，也 <a class="ann ann-n ann-green" data-note={notes.writing} href={blogHref}>写</a> 一些关于 agentic 工程的文章。</p>
+          <p>离开书桌的时候会带上 <a class="ann ann-n ann-amber" data-note={notes.photos} href={photosHref}>相机</a>，还有一点 <a class="ann ann-w ann-purple" data-note={notes.about} href={aboutHref}>关于我</a> 的事。</p>
         </>
       ) : (
         <>
-          <p>I'm Kieran, an AI-native indie builder in Nanjing.</p>
-          <p>I ship <a class="ann ann-w ann-blue" data-note={notes.projects} href={projectsHref}>small products</a>.</p>
-          <p class="ann-room">I <a class="ann ann-n ann-green" data-note={notes.writing} href={blogHref}>write</a> about agentic engineering and building alone.</p>
-          <p>When I leave the desk, I carry a <a class="ann ann-w ann-amber" data-note={notes.photos} href={photosHref}>camera</a>.</p>
-          <p>There is a little more <a class="ann ann-n ann-purple" data-note={notes.about} href={aboutHref}>about me</a>.</p>
+          <p>I'm Kieran, an AI-native indie builder in Nanjing. I ship <a class="ann ann-s ann-blue" data-note={notes.projects} href={projectsHref}>small products</a> and <a class="ann ann-n ann-green" data-note={notes.writing} href={blogHref}>write</a> about agentic engineering.</p>
+          <p>When I leave the desk I carry a <a class="ann ann-n ann-amber" data-note={notes.photos} href={photosHref}>camera</a>, and there is a little more <a class="ann ann-w ann-purple" data-note={notes.about} href={aboutHref}>about me</a>.</p>
         </>
       )
     }
@@ -123,29 +117,33 @@ const notes = {
 </div>
 
 <style>
-  /* The prose nav: one entry per line so every note has room. Labels are
-     pseudo-elements that reserve no space (library note), so the line with
-     a note below it gets explicit room. */
+  /* The prose nav: two lines that may run past the reading column (left edge
+     stays on it, right edge may reach the stage width). Labels are
+     pseudo-elements that reserve no space, so the rows carry the room:
+     one label above line 1, two below the lines, one to the right. */
+  .ann-nav {
+    margin-top: 4.5rem;
+    width: min(calc(50vw + 18.5rem), var(--container-stage), calc(100vw - 3rem));
+  }
   .ann-nav p {
-    margin: 0;
-    max-width: 34rem;
+    margin: 0 0 3.75rem;
     font-size: 1.0625rem;
     line-height: 1.8;
     color: var(--color-ink);
   }
-  .ann-nav .ann-room {
-    margin-bottom: 3.25rem;
-  }
   .ann-nav p:last-child {
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
   }
   @media (max-width: 720px) {
+    .ann-nav {
+      margin-top: 2.5rem;
+      width: auto;
+    }
     .ann-nav .ann::before,
     .ann-nav .ann::after {
       display: none;
     }
-    .ann-nav .ann-room,
-    .ann-nav p:last-child {
+    .ann-nav p {
       margin-bottom: 0;
     }
   }
