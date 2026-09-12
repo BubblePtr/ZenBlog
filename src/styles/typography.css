@@ -16,16 +16,17 @@
   --font-serif-stack: 'Noto Serif SC', 'Source Han Serif SC', Georgia, 'Times New Roman', serif;
 
   /* 英文衬线字体栈（英文文章标题与正文）。
-     Source Serif 4：可变字体（wght 400–700 + opsz），阅读型衬线 */
-  --font-serif-en-stack: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+     与 display 同为 Spectral：屏幕阅读衬线，400/400-italic/600 自托管 */
+  --font-serif-en-stack: 'Spectral', Georgia, 'Times New Roman', serif;
 
   /* 显示字体栈（v3 书桌：只担任标题角色，不进正文与导航）。
-     Instrument Serif 只有 Regular/Italic，层级靠字号不靠字重；中文回落宋体 */
-  --font-display-stack: 'Instrument Serif', 'Noto Serif SC', 'Source Han Serif SC', Georgia, serif;
+     Spectral：屏幕优先的衬线，中西文共用同一字族：拉丁字符走 Spectral，
+     中文按字符回落宋体，中英文页面的同一串拉丁名字渲染一致 */
+  --font-display-stack: 'Spectral', 'Noto Serif SC', 'Source Han Serif SC', Georgia, serif;
 
   /* 手写字体栈（v3 书桌：只担任旁注角色，≤8 词、一图 ≤4 处）。
-     Caveat 可变字重；中文旁注回落霞鹜文楷 */
-  --font-hand-stack: 'Caveat Variable', 'LXGW WenKai', cursive;
+     Shantell Sans：neat-annotations 原生搭配；旁注全部写英文，无中文回落 */
+  --font-hand-stack: 'Shantell Sans', cursive;
 
   /* 等宽字体栈 */
   --font-mono-stack:

@@ -2,11 +2,11 @@
 
 ## 概述
 
-本博客的字体定义集中在 `typography.css` 的 `@theme` 块中。中文无衬线加载 **MiSans**（小米，仅 CJK `unicode-range`），中文文章标题走 Noto Serif SC，英文阅读态走 Source Serif 4：
+本博客的字体定义集中在 `typography.css` 的 `@theme` 块中。中文无衬线加载 **MiSans**（小米，仅 CJK `unicode-range`），西文衬线统一为 **Spectral**（标题 + 英文阅读体，自托管），中文衬线走 Noto Serif SC：
 
 - ✅ **单一数据源**：所有字体定义集中在 `typography.css` 的 `@theme` 块中
 - ✅ **界面中西文统一**：MiSans 同时覆盖拉丁字母和汉字，避免各系统默认黑体不一致
-- ✅ **衬线只用于文章标题**（中文 Noto Serif SC）以及英文正文（Source Serif 4）
+- ✅ **衬线分工**：西文衬线只有 Spectral（display 标题 + 英文文章正文），中文衬线只有 Noto Serif SC
 
 ## 架构
 
@@ -25,7 +25,7 @@ src/
 
 | 场景 | 字体类型 | 字号 | 字重 | Tailwind 类 |
 |------|---------|------|------|-------------|
-| 文章大标题 (H1) | 中文 Noto Serif SC / 英文 Source Serif 4 | 40px | 700 | `font-article-title` / `font-serif-en` |
+| 文章大标题 (H1) | 中文 Noto Serif SC / 英文 Spectral | 40px | 700 | `font-article-title` / `font-serif-en` |
 | 正文中的标题 (H2/H3/H4) | 无衬线 | 26px | 400 | `font-heading` |
 | 正文段落 | 中文 MiSans / 英文衬线 | 16px | 400 | `font-body` |
 | 正文加粗 (strong/b) | 无衬线 | 17px | 400 | - |
@@ -53,7 +53,7 @@ src/
 用于英文文章大标题与正文。
 
 ```css
---font-serif-en-stack: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+--font-serif-en-stack: 'Spectral', Georgia, 'Times New Roman', serif;
 ```
 
 ### 等宽字体栈
@@ -179,7 +179,7 @@ Tailwind 会自动生成 `font-custom` 工具类。
 - 只引入 Regular / Medium / Semibold / Bold 四档；`scripts/sync-misans-css.mjs` 把 Xiaomi 光学字重 330/380/520/630 写成 400/500/600/700。升级 `misans` 后重跑该脚本。
 - `@font-face` 按 Google Fonts 的 CJK unicode-range 切片，浏览器只下载当前页用到的汉字块。
 - Latin 面保留，界面西文也走 MiSans。
-- 中文文章标题走 Google Fonts 的 Noto Serif SC（600/700）；英文阅读体走 Source Serif 4。
+- 中文衬线走 Google Fonts 的 Noto Serif SC（400 标题/导语、700 文章大标题）；西文衬线统一为自托管的 Spectral（400/400-italic/600，`src/styles/desk-fonts.css`）。
 
 ## 参考资料
 

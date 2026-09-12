@@ -7,7 +7,7 @@
 ## 决定
 
 - 首页不靠顶栏栏目链接，靠一段分行的自我介绍导航：每行一个入口词，词是链接，旁边手写旁注加箭头。
-- 实现用 [neat-annotations](https://github.com/syabro/neat-annotations)（纯 CSS，8.5KB，MIT），vendor 到 `src/styles/neat-annotations.css`，站点覆盖在 `global.css`：深色高亮手动给（库依赖 `light-dark()`，站点没有 `color-scheme`）。标签字体用库默认的 Shantell Sans，随 BaseHead 的 Google Fonts 链接加载；Caveat 仍是其它旁注的手写体。
+- 实现用 [neat-annotations](https://github.com/syabro/neat-annotations)（纯 CSS，8.5KB，MIT），vendor 到 `src/styles/neat-annotations.css`，站点覆盖在 `global.css`：深色高亮手动给（库依赖 `light-dark()`，站点没有 `color-scheme`）。标签字体用库默认的 Shantell Sans，即全站唯一手写体，自托管于 `src/styles/desk-fonts.css`。
 - 两行正文居中排在舞台宽（64rem）内，行距正常不拉开。第一行的两处注（projects 蓝、writing 绿）统一放在上方，第二行的两处（photography 琥珀、about 紫）统一放在下方，块的上下边距留出标签空间。
 - 入场沿用 neat-annotations 官网首页的三段式：词的高亮从左向右刷出（background-size），箭头用 clip-path 从标签一端向词画出，最后标签淡入。每条 900ms，从 300ms 起每 250ms 错开一条，四条约 2s 内画完。箭头方向决定 clip 起点：标签在右侧的（sw / nw / w）从右向左画。`prefers-reduced-motion` 下全部关闭、直接显示。
 - 旁注颜色放开：用库自带的五色（amber / blue / green / red / purple），不再限于墨与朱砂。青竹仍是页面导向色（顶栏当前项、焦点环、链接悬停），旁注色只出现在旁注和它高亮的词上。

@@ -33,9 +33,31 @@ describe('Chinese typeface', () => {
   test('loads MiSans for UI/body and Noto Serif SC for Chinese titles', () => {
     expect(baseHead).toContain('MiSans');
     expect(baseHead).toContain('Noto+Serif+SC');
+    expect(baseHead).not.toContain('Source+Serif');
+    expect(baseHead).not.toContain('Shantell+Sans');
   });
 
   test('applies the article-title token to Chinese post titles and standfirsts', () => {
     expect(postLayout).toContain("lang === 'zh' ? 'font-family: var(--font-article-title)'");
+  });
+
+  test('uses Spectral for both display titles and English reading text', () => {
+    expect(themeBlock('--font-display-stack').trimStart().startsWith("'Spectral'")).toBe(true);
+    expect(themeBlock('--font-display-stack')).toContain("'Noto Serif SC'");
+    expect(themeBlock('--font-serif-en-stack').trimStart().startsWith("'Spectral'")).toBe(true);
+  });
+
+  test('keeps one self-hosted hand font, Shantell Sans, with no CJK fallback', () => {
+    const stack = themeBlock('--font-hand-stack');
+
+    expect(stack.trimStart().startsWith("'Shantell Sans'")).toBe(true);
+    expect(stack).not.toContain('Caveat');
+    expect(stack).not.toContain('WenKai');
+  });
+
+  test('applies identical display metrics on zh and en pages so shared Latin titles never jump', () => {
+    const globalCss = readFileSync(new URL('./global.css', import.meta.url), 'utf8');
+
+    expect(globalCss).not.toMatch(/:lang\(zh\) \.display-(xl|lg|md)/);
   });
 });
