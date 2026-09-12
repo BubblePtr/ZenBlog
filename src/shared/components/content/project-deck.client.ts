@@ -24,11 +24,9 @@ function wireDeck(stage: HTMLElement) {
 
   const open = (li: HTMLElement, card: HTMLElement) => {
     close();
-    // FLIP: measure the card's untransformed slot, aim its top edge at the anchor.
-    const prev = card.style.transform;
-    card.style.transform = 'none';
-    const from = card.getBoundingClientRect();
-    card.style.transform = prev;
+    // FLIP: the li is never transformed, so its rect is the card's
+    // untransformed slot even mid-transition; aim the card's top edge at the anchor.
+    const from = li.getBoundingClientRect();
     const to = anchor.getBoundingClientRect();
     card.style.setProperty('--lx', `${to.left - (from.width * LIFT_SCALE) / 2 - from.left}px`);
     card.style.setProperty('--ly', `${to.top - from.top}px`);
