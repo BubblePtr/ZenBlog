@@ -1,0 +1,161 @@
+---
+/**
+ * PROTOTYPE — home annotated navigation for DESIGN.md v3 §5.2.
+ * Throwaway route. Nothing in production imports from here; delete after
+ * the decision is written down (emil-prototype Phase 7).
+ */
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
+import { getUnifiedBlogList } from '@/features/blog/server';
+import PageShell from '@/shared/components/layout/PageShell.astro';
+import PostIndex from '@/shared/components/content/PostIndex.astro';
+import { getTranslationDictionary } from '@/shared/i18n/types';
+import { inlineProse, keys, notes, prose } from './_annotated-prose';
+
+const lang = 'en' as const;
+const t = getTranslationDictionary(lang);
+const posts = (await getUnifiedBlogList(lang)).slice(0, 5);
+
+const pageTitle = 'Proto · Annotated | ' + SITE_TITLE;
+---
+
+<PageShell lang={lang} title={pageTitle} description={SITE_DESCRIPTION} currentPath="/proto/annotated">
+  <div id="stage" class="relative z-10 mx-auto max-w-content px-6 pb-24 pt-24 sm:pt-28">
+    <div class="flex items-center justify-between gap-6">
+      <h1 class="display-xl">{t['home.hero.name']}</h1>
+      <img src="/images/home/mac-light.webp" alt="" width="488" height="640" class="h-24 w-auto rounded-xl sm:h-28 dark:hidden" />
+      <img src="/images/home/mac-dark.webp" alt="" width="488" height="640" class="hidden h-24 w-auto rounded-xl sm:h-28 dark:block" />
+    </div>
+
+    <div class="ann ann-margin mt-8" data-variant="margin">
+      <p class="ann-prose" set:html={prose()} />
+      {keys.map((k) => (
+        <a class="ann-note hand-note" data-for={k} href={notes[k].href} tabindex="-1" aria-hidden="true">{notes[k].note}</a>
+      ))}
+      <svg class="ann-arrows" aria-hidden="true" />
+    </div>
+
+    <div class="ann ann-float mt-8" data-variant="float" hidden>
+      <p class="ann-prose" set:html={prose()} />
+      {keys.map((k) => (
+        <a class="ann-note hand-note" data-for={k} href={notes[k].href} tabindex="-1" aria-hidden="true">{notes[k].note}</a>
+      ))}
+      <svg class="ann-arrows" aria-hidden="true" />
+    </div>
+
+    <div class="ann ann-inline mt-8" data-variant="inline" hidden>
+      <p class="ann-prose" set:html={inlineProse} />
+    </div>
+
+    <section class="mt-16">
+      <h2 class="display-md">{t['home.writing']}</h2>
+      <div class="mt-5"><PostIndex posts={posts} lang={lang} /></div>
+    </section>
+  </div>
+
+  <nav class="proto-picker" aria-label="Prototype variants">
+    <span class="proto-picker-highlight" aria-hidden="true"></span>
+    <button class="proto-picker-item" data-active aria-current="true">Margin</button>
+    <button class="proto-picker-item">Float</button>
+    <button class="proto-picker-item">Inline</button>
+  </nav>
+</PageShell>
+
+<style is:global>
+  .ann { position: relative; }
+  .ann-prose {
+    max-width: 34rem;
+    font-size: 1.0625rem;
+    line-height: 1.85;
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+  .ann-word {
+    position: relative;
+    color: var(--color-ink-strong);
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color 150ms ease-out;
+  }
+  .ann-word:hover, .ann-word[data-hot] { color: var(--color-accent); }
+
+  /* Notes and arrows (Margin, Float): positioned by the script. */
+  .ann-note {
+    position: absolute;
+    display: block;
+    max-width: 12rem;
+    text-decoration: none;
+    line-height: 1.15;
+    transform: rotate(-3deg);
+    transition: color 150ms ease-out;
+  }
+  .ann-note:hover { color: var(--color-ink-strong); }
+  .ann-arrows {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    fill: none;
+    stroke: var(--color-ink-secondary);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ann-margin .ann-note { left: calc(100% + 1.5rem); width: 12rem; }
+  .ann-float .ann-prose { line-height: 2.9; }
+  .ann-float .ann-note { white-space: nowrap; max-width: none; }
+
+  /* Inline: circle + trailing tag, no positioning script. */
+  .ann-inline .ann-word { text-decoration: none; }
+  .ann-circle {
+    position: absolute;
+    inset: -0.2em -0.35em;
+    width: calc(100% + 0.7em);
+    height: calc(100% + 0.4em);
+    overflow: visible;
+    pointer-events: none;
+    fill: none;
+    stroke: var(--color-ink-secondary);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .ann-circle path { vector-effect: non-scaling-stroke; }
+  .ann-inline .ann-word:hover .ann-circle { stroke: var(--color-accent); }
+  .ann-tag {
+    display: inline-block;
+    margin-left: 0.4em;
+    font-size: 0.9375rem;
+    line-height: 0;
+    vertical-align: 0.5em;
+    transform: rotate(-3deg);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1040px) {
+    .ann-margin .ann-note, .ann-margin .ann-arrows { display: none; }
+  }
+  @media (max-width: 720px) {
+    .ann-note, .ann-arrows, .ann-tag { display: none; }
+    .ann-float .ann-prose { line-height: 1.85; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ann-word, .ann-note { transition: none; }
+  }
+
+  /* picker chrome, PICKER.md verbatim */
+  .proto-picker { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 2147483647; display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 999px; background: rgba(10, 10, 10, 0.82); -webkit-backdrop-filter: blur(12px) saturate(1.4); backdrop-filter: blur(12px) saturate(1.4); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset, 0 8px 24px rgba(0, 0, 0, 0.24), 0 2px 6px rgba(0, 0, 0, 0.12); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 13px; line-height: 1; -webkit-font-smoothing: antialiased; user-select: none; -webkit-user-select: none; }
+  .proto-picker-highlight { position: absolute; top: 4px; left: 0; height: 28px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); will-change: transform; }
+  .proto-picker[data-ready] .proto-picker-highlight { transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1), width 250ms cubic-bezier(0.23, 1, 0.32, 1); }
+  @media (prefers-reduced-motion: reduce) { .proto-picker[data-ready] .proto-picker-highlight { transition: none; } }
+  .proto-picker-item { position: relative; display: flex; align-items: center; height: 28px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent; color: rgba(255, 255, 255, 0.55); font: inherit; cursor: pointer; transition: color 150ms ease-out; }
+  .proto-picker-item:hover { color: rgba(255, 255, 255, 0.85); }
+  .proto-picker-item:active { transform: scale(0.97); }
+  .proto-picker-item:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.4); outline-offset: 2px; }
+  .proto-picker-item[data-active] { color: #fff; }
+</style>
+
+<script src="./_annotated.client.js"></script>
