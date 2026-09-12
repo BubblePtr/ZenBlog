@@ -81,4 +81,67 @@ describe('project deck', () => {
     // --lx uses the untransformed slot width (240), not the mid-flight one (204).
     expect(cards[1].style.getPropertyValue('--lx')).toBe('38px');
   });
+
+  describe('viewport centering', () => {
+    let scrolls: ScrollToOptions[];
+
+    beforeEach(() => {
+      // Stage spans y 100..500; --retreat grows it by 380 below when open.
+      stage.getBoundingClientRect = () => rect(0, 100, 1000, 400);
+      stage.style.setProperty('--retreat', '380px');
+      Object.defineProperty(document.documentElement, 'scrollHeight', {
+        value: 4000,
+        configurable: true,
+      });
+      scrolls = [];
+      window.scrollTo = ((opts: ScrollToOptions) => {
+        scrolls.push(opts);
+      }) as typeof window.scrollTo;
+    });
+
+    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    test('opening glides to the centred position over ~480ms', async () => {
+      cards[0].click();
+
+      // Centre of 100..880 is 490; happy-dom innerHeight is 768 → target 106.
+      // The rAF glide issues per-frame instant scrolls ending exactly there.
+      await sleep(600);
+      expect(scrolls.length).toBeGreaterThan(1);
+      expect(scrolls.at(-1)).toEqual({ top: 106, behavior: 'instant' });
+    });
+
+    test('the glide aborts when the user scrolls manually', async () => {
+      cards[0].click();
+      await sleep(100);
+      window.dispatchEvent(new dom.Event('wheel'));
+      const count = scrolls.length;
+
+      await sleep(600);
+      expect(scrolls.length).toBe(count);
+    });
+
+    test('closing scrolls back to the pre-open position', async () => {
+      cards[0].click();
+      await sleep(50);
+      stage.dispatchEvent(new dom.Event('click', { bubbles: true }));
+
+      expect(scrolls.at(-1)).toEqual({ top: 0, behavior: 'smooth' });
+      // The open glide is cancelled: no further per-frame scrolls.
+      const count = scrolls.length;
+      await sleep(600);
+      expect(scrolls.length).toBe(count);
+    });
+
+    test('closing does not scroll back after the user scrolled manually', async () => {
+      cards[0].click();
+      await sleep(50);
+      window.dispatchEvent(new dom.Event('wheel'));
+      const count = scrolls.length;
+      stage.dispatchEvent(new dom.Event('click', { bubbles: true }));
+
+      await sleep(600);
+      expect(scrolls.length).toBe(count);
+    });
+  });
 });
