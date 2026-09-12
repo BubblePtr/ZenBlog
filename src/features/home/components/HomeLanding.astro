@@ -81,13 +81,13 @@ const notes = {
     {
       isZh ? (
         <>
-          <p>我是 Kieran，在南京的 AI-native 独立开发者。我在做几件 <a class="ann ann-s ann-blue" data-note={notes.projects} href={projectsHref}>小产品</a>，也 <a class="ann ann-n ann-green" data-note={notes.writing} href={blogHref}>写</a> 一些关于 agentic 工程的文章。</p>
-          <p>离开书桌的时候会带上 <a class="ann ann-n ann-amber" data-note={notes.photos} href={photosHref}>相机</a>，还有一点 <a class="ann ann-w ann-purple" data-note={notes.about} href={aboutHref}>关于我</a> 的事。</p>
+          <p>我是 Kieran，在南京的 AI-native 独立开发者。我在做几件 <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}>小产品</a>，也 <a class="ann ann-sw ann-green" style="--ann-delay: 140ms" data-note={notes.writing} href={blogHref}>写</a> 一些关于 agentic 工程的文章。</p>
+          <p>离开书桌的时候会带上 <a class="ann ann-n ann-amber" style="--ann-delay: 280ms" data-note={notes.photos} href={photosHref}>相机</a>，还有一点 <a class="ann ann-nw ann-purple" style="--ann-delay: 420ms" data-note={notes.about} href={aboutHref}>关于我</a> 的事。</p>
         </>
       ) : (
         <>
-          <p>I'm Kieran, an AI-native indie builder in Nanjing. I ship <a class="ann ann-s ann-blue" data-note={notes.projects} href={projectsHref}>small products</a> and <a class="ann ann-n ann-green" data-note={notes.writing} href={blogHref}>write</a> about agentic engineering.</p>
-          <p>When I leave the desk I carry a <a class="ann ann-n ann-amber" data-note={notes.photos} href={photosHref}>camera</a>, and there is a little more <a class="ann ann-w ann-purple" data-note={notes.about} href={aboutHref}>about me</a>.</p>
+          <p>I'm Kieran, an AI-native indie builder in Nanjing. I ship <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}>small products</a> and <a class="ann ann-sw ann-green" style="--ann-delay: 140ms" data-note={notes.writing} href={blogHref}>write</a> about agentic engineering.</p>
+          <p>When I leave the desk I carry a <a class="ann ann-n ann-amber" style="--ann-delay: 280ms" data-note={notes.photos} href={photosHref}>camera</a>, and there is a little more <a class="ann ann-nw ann-purple" style="--ann-delay: 420ms" data-note={notes.about} href={aboutHref}>about me</a>.</p>
         </>
       )
     }
@@ -117,34 +117,53 @@ const notes = {
 </div>
 
 <style>
-  /* The prose nav: two lines that may run past the reading column (left edge
-     stays on it, right edge may reach the stage width). Labels are
-     pseudo-elements that reserve no space, so the rows carry the room:
-     one label above line 1, two below the lines, one to the right. */
+  /* The prose nav: two centred lines on the stage width. Line 1 carries its
+     labels above, line 2 below, so the lines stay together. Labels are
+     pseudo-elements that reserve no space: the block's margins hold the room.
+     Entrance (DESIGN.md §7): the four notes appear one after another, 200ms
+     each, arrow and label only; the words themselves never animate. */
   .ann-nav {
-    margin-top: 4.5rem;
-    width: min(calc(50vw + 18.5rem), var(--container-stage), calc(100vw - 3rem));
+    margin: 4.75rem auto 4.5rem;
+    width: min(var(--container-stage), 100vw - 3rem);
+    margin-left: calc(50% - min(var(--container-stage), 100vw - 3rem) / 2);
+    text-align: center;
   }
   .ann-nav p {
-    margin: 0 0 3.75rem;
+    margin: 0;
     font-size: 1.0625rem;
     line-height: 1.8;
     color: var(--color-ink);
   }
-  .ann-nav p:last-child {
-    margin-bottom: 4rem;
+  .ann-nav .ann::before,
+  .ann-nav .ann::after {
+    animation: ann-in 200ms cubic-bezier(0.32, 0.72, 0, 1) both;
+    animation-delay: calc(240ms + var(--ann-delay, 0ms));
+  }
+  @keyframes ann-in {
+    from {
+      opacity: 0;
+      translate: 0 4px;
+    }
+    to {
+      opacity: 0.9;
+      translate: 0 0;
+    }
   }
   @media (max-width: 720px) {
     .ann-nav {
-      margin-top: 2.5rem;
+      margin: 2.5rem 0 0;
       width: auto;
+      text-align: left;
     }
     .ann-nav .ann::before,
     .ann-nav .ann::after {
       display: none;
     }
-    .ann-nav p {
-      margin-bottom: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ann-nav .ann::before,
+    .ann-nav .ann::after {
+      animation: none;
     }
   }
 
