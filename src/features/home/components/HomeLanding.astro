@@ -87,13 +87,13 @@ const notes = {
     {
       isZh ? (
         <>
-          <p>我叫 Kieran，一个独立开发者，手上有几件 <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}>小产品</a>，也攒了一些关于 agentic 工程的 <a class="ann ann-sw ann-green" style="--ann-delay: 250ms" data-note={notes.writing} href={blogHref}>文章</a>。</p>
-          <p>出门总带着一台 <a class="ann ann-ne ann-amber" style="--ann-delay: 500ms" data-note={notes.photos} href={photosHref}>相机</a>，剩下的，在 <a class="ann ann-nw ann-purple" style="--ann-delay: 750ms" data-note={notes.about} href={aboutHref}>自我介绍</a> 里慢慢说。</p>
+          <p>我叫 Kieran，一个独立开发者，手上有几件 <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}><span class="ann-word">小产品</span></a>，也攒了一些关于 agentic 工程的 <a class="ann ann-sw ann-green" style="--ann-delay: 250ms" data-note={notes.writing} href={blogHref}><span class="ann-word">文章</span></a>。</p>
+          <p>出门总带着一台 <a class="ann ann-ne ann-amber" style="--ann-delay: 500ms" data-note={notes.photos} href={photosHref}><span class="ann-word">相机</span></a>，剩下的，在 <a class="ann ann-nw ann-purple" style="--ann-delay: 750ms" data-note={notes.about} href={aboutHref}><span class="ann-word">自我介绍</span></a> 里慢慢说。</p>
         </>
       ) : (
         <>
-          <p>I'm Kieran, an indie developer with a few <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}>small products</a> in the wild and some <a class="ann ann-sw ann-green" style="--ann-delay: 250ms" data-note={notes.writing} href={blogHref}>writing</a> on agentic engineering.</p>
-          <p>A <a class="ann ann-n ann-amber" style="--ann-delay: 500ms" data-note={notes.photos} href={photosHref}>camera</a> comes along whenever I leave the desk, and the rest is on the <a class="ann ann-nw ann-purple" style="--ann-delay: 750ms" data-note={notes.about} href={aboutHref}>about page</a>.</p>
+          <p>I'm Kieran, an indie developer with a few <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}><span class="ann-word">small products</span></a> in the wild and some <a class="ann ann-sw ann-green" style="--ann-delay: 250ms" data-note={notes.writing} href={blogHref}><span class="ann-word">writing</span></a> on agentic engineering.</p>
+          <p>A <a class="ann ann-n ann-amber" style="--ann-delay: 500ms" data-note={notes.photos} href={photosHref}><span class="ann-word">camera</span></a> comes along whenever I leave the desk, and the rest is on the <a class="ann ann-nw ann-purple" style="--ann-delay: 750ms" data-note={notes.about} href={aboutHref}><span class="ann-word">about page</span></a>.</p>
         </>
       )
     }
@@ -205,6 +205,97 @@ const notes = {
     84%,
     100% {
       opacity: 0.9;
+    }
+  }
+  /* Hover: the annotation gets restless (DESIGN.md §7). Arrow and label rock
+     slowly, quicken, then buzz, the frequency stepping up in three stages.
+     The trigger zone is the annotation itself, not the word: the library sets
+     pointer-events:none on the pseudo-elements, so here they get auto, which
+     makes hovering (and clicking) the arrow or label count as hovering the
+     link. :not(:has(.ann-word:hover)) then filters out hover arriving via the
+     word span, so hovering the word only tints it while hovering the
+     annotation shakes it; keyboard focus keeps the shake as its equivalent.
+     The jitter animations are appended after the entrance animation in the
+     same list: a name already in the list keeps its finished state, so the
+     entrance never replays when hover starts or ends. Motion uses the
+     standalone rotate/translate properties, which compose on top of the
+     library's positioning transforms. */
+  .ann-nav .ann::before,
+  .ann-nav .ann::after {
+    pointer-events: auto;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ann-nav .ann:hover:not(:has(.ann-word:hover))::before,
+    .ann-nav .ann:focus-visible::before {
+      animation:
+        ann-arrow-draw 900ms linear both,
+        ann-jitter-sway 400ms ease-in-out 2,
+        ann-jitter-quicken 200ms ease-in-out 3,
+        ann-jitter-buzz 110ms linear infinite;
+      animation-delay:
+        calc(300ms + var(--ann-delay, 0ms)),
+        0ms,
+        800ms,
+        1.4s;
+    }
+    .ann-nav .ann:hover:not(:has(.ann-word:hover))::after,
+    .ann-nav .ann:focus-visible::after {
+      animation:
+        ann-label-reveal 900ms linear both,
+        ann-jitter-sway 400ms ease-in-out 2,
+        ann-jitter-quicken 200ms ease-in-out 3,
+        ann-jitter-buzz 110ms linear infinite;
+      animation-delay:
+        calc(300ms + var(--ann-delay, 0ms)),
+        0ms,
+        800ms,
+        1.4s;
+    }
+  }
+  @keyframes ann-jitter-sway {
+    0%,
+    100% {
+      rotate: 0deg;
+    }
+    25% {
+      rotate: 0.8deg;
+    }
+    75% {
+      rotate: -0.8deg;
+    }
+  }
+  @keyframes ann-jitter-quicken {
+    0%,
+    100% {
+      rotate: 0deg;
+      translate: 0 0;
+    }
+    25% {
+      rotate: 1.1deg;
+      translate: 0.3px 0;
+    }
+    75% {
+      rotate: -1.1deg;
+      translate: -0.3px 0;
+    }
+  }
+  @keyframes ann-jitter-buzz {
+    0%,
+    100% {
+      rotate: 0deg;
+      translate: 0 0;
+    }
+    25% {
+      rotate: 1.5deg;
+      translate: 0.4px -0.2px;
+    }
+    50% {
+      rotate: 0deg;
+      translate: 0 0.2px;
+    }
+    75% {
+      rotate: -1.5deg;
+      translate: -0.4px -0.2px;
     }
   }
   @media (max-width: 720px) {
