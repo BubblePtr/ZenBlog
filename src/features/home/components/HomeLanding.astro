@@ -87,13 +87,13 @@ const notes = {
     {
       isZh ? (
         <>
-          <p>我叫 Kieran，一个独立开发者，手上有几件 <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}>小产品</a>，也攒了一些关于 agentic 工程的 <a class="ann ann-sw ann-green" style="--ann-delay: 140ms" data-note={notes.writing} href={blogHref}>文章</a>。</p>
-          <p>出门总带着一台 <a class="ann ann-ne ann-amber" style="--ann-delay: 280ms" data-note={notes.photos} href={photosHref}>相机</a>，剩下的，在 <a class="ann ann-nw ann-purple" style="--ann-delay: 420ms" data-note={notes.about} href={aboutHref}>自我介绍</a> 里慢慢说。</p>
+          <p>我叫 Kieran，一个独立开发者，手上有几件 <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}>小产品</a>，也攒了一些关于 agentic 工程的 <a class="ann ann-sw ann-green" style="--ann-delay: 250ms" data-note={notes.writing} href={blogHref}>文章</a>。</p>
+          <p>出门总带着一台 <a class="ann ann-ne ann-amber" style="--ann-delay: 500ms" data-note={notes.photos} href={photosHref}>相机</a>，剩下的，在 <a class="ann ann-nw ann-purple" style="--ann-delay: 750ms" data-note={notes.about} href={aboutHref}>自我介绍</a> 里慢慢说。</p>
         </>
       ) : (
         <>
-          <p>I'm Kieran, an indie developer with a few <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}>small products</a> in the wild and some <a class="ann ann-sw ann-green" style="--ann-delay: 140ms" data-note={notes.writing} href={blogHref}>writing</a> on agentic engineering.</p>
-          <p>A <a class="ann ann-n ann-amber" style="--ann-delay: 280ms" data-note={notes.photos} href={photosHref}>camera</a> comes along whenever I leave the desk, and the rest is on the <a class="ann ann-nw ann-purple" style="--ann-delay: 420ms" data-note={notes.about} href={aboutHref}>about page</a>.</p>
+          <p>I'm Kieran, an indie developer with a few <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}>small products</a> in the wild and some <a class="ann ann-sw ann-green" style="--ann-delay: 250ms" data-note={notes.writing} href={blogHref}>writing</a> on agentic engineering.</p>
+          <p>A <a class="ann ann-n ann-amber" style="--ann-delay: 500ms" data-note={notes.photos} href={photosHref}>camera</a> comes along whenever I leave the desk, and the rest is on the <a class="ann ann-nw ann-purple" style="--ann-delay: 750ms" data-note={notes.about} href={aboutHref}>about page</a>.</p>
         </>
       )
     }
@@ -147,19 +147,64 @@ const notes = {
     line-height: 1.8;
     color: var(--color-ink);
   }
-  .ann-nav .ann::before,
-  .ann-nav .ann::after {
-    animation: ann-in 200ms cubic-bezier(0.32, 0.72, 0, 1) both;
-    animation-delay: calc(240ms + var(--ann-delay, 0ms));
+  /* Entrance, after the neat-annotations demo: the mark swipes in, the arrow
+     draws itself from the label end toward the word, then the label fades.
+     One 0.9s sequence per note, staggered by --ann-delay. Marks drawn with a
+     background gradient so their width can animate; the library's ±0.3em
+     box-shadow extension is dropped on home for that. */
+  .ann-nav .ann {
+    --ann-clip-from: inset(0 100% 0 0);
+    background: linear-gradient(var(--ann-mark), var(--ann-mark)) left center / 0 100% no-repeat;
+    box-shadow: none;
+    animation: ann-mark-swipe 900ms linear both;
+    animation-delay: calc(300ms + var(--ann-delay, 0ms));
   }
-  @keyframes ann-in {
-    from {
-      opacity: 0;
-      translate: 0 4px;
+  /* arrows that leave from the right-hand label draw right-to-left */
+  .ann-nav .ann-sw,
+  .ann-nav .ann-nw,
+  .ann-nav .ann-w {
+    --ann-clip-from: inset(0 0 0 100%);
+  }
+  .ann-nav .ann::before {
+    animation: ann-arrow-draw 900ms linear both;
+    animation-delay: calc(300ms + var(--ann-delay, 0ms));
+  }
+  .ann-nav .ann::after {
+    animation: ann-label-reveal 900ms linear both;
+    animation-delay: calc(300ms + var(--ann-delay, 0ms));
+  }
+  @keyframes ann-mark-swipe {
+    0% {
+      background-size: 0 100%;
     }
-    to {
+    22%,
+    100% {
+      background-size: 100% 100%;
+    }
+  }
+  @keyframes ann-arrow-draw {
+    0%,
+    24% {
+      clip-path: var(--ann-clip-from);
+      opacity: 0;
+    }
+    27% {
       opacity: 0.9;
-      translate: 0 0;
+    }
+    58%,
+    100% {
+      clip-path: inset(0);
+      opacity: 0.9;
+    }
+  }
+  @keyframes ann-label-reveal {
+    0%,
+    62% {
+      opacity: 0;
+    }
+    84%,
+    100% {
+      opacity: 0.9;
     }
   }
   @media (max-width: 720px) {
@@ -174,9 +219,13 @@ const notes = {
     }
   }
   @media (prefers-reduced-motion: reduce) {
+    .ann-nav .ann,
     .ann-nav .ann::before,
     .ann-nav .ann::after {
       animation: none;
+    }
+    .ann-nav .ann {
+      background-size: 100% 100%;
     }
   }
 
