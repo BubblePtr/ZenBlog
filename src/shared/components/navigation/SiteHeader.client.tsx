@@ -129,8 +129,10 @@ export default function SiteHeader({ currentPath, lang, t, localizedPaths }: Sit
       <div className="relative mx-auto max-w-content px-6 h-16 flex items-center justify-between">
         {/* -mx-2.5 eats the first/last link's hit-area padding so the visible
             text edge lines up with the max-w-content column below */}
+        {/* On home the annotated prose is the navigation (DESIGN.md v3 §5.2);
+            the bar keeps only language and theme there. Mobile keeps its menu. */}
         <nav
-          className="hidden sm:flex items-center gap-1 -mx-2.5 text-sm text-zinc-500 dark:text-zinc-400"
+          className={`${isHome ? 'hidden' : 'hidden sm:flex'} items-center gap-1 -mx-2.5 text-sm text-zinc-500 dark:text-zinc-400`}
           aria-label="Primary"
         >
           {navItems.map((item) => {

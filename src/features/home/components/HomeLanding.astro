@@ -26,8 +26,27 @@ const isZh = lang === 'zh';
 const projectsHref = withTrailingSlash(isZh ? '/zh/projects' : '/projects');
 const projectHref = (slug: string) => `${projectsHref}#${slug}`;
 
-/* The one unanchored hand-written aside on the site (DESIGN.md §5.3). */
-const signature = 'indie since Jun 2026';
+const blogHref = withTrailingSlash(isZh ? '/zh/blog' : '/blog');
+
+/* Home shows only the newest posts; the full year-grouped index lives on
+   the blog page. A count, not a year, so January never leaves home empty. */
+const HOME_POST_LIMIT = 8;
+const homePosts = posts.slice(0, HOME_POST_LIMIT);
+const hasMorePosts = posts.length > homePosts.length;
+const photosHref = withTrailingSlash(isZh ? '/zh/photography' : '/photography');
+const aboutHref = withTrailingSlash(isZh ? '/zh/about' : '/about');
+
+/* Annotated navigation (DESIGN.md v3 §5.2): the prose is the home page's
+   nav; each entry word is a link, the note beside it is the aside. Notes
+   stay English on both locales. Project counts come from the collection. */
+const building = projects.filter((p) => p.data.status === 'building').length;
+const shipped = projects.length - building;
+const notes = {
+  projects: building > 0 ? `${shipped} shipped, ${building} still building` : `${shipped} shipped`,
+  writing: 'mostly in Chinese',
+  photos: 'film + digital',
+  about: 'indie since Jun 2026',
+};
 ---
 
 <div class="home-min relative z-10 mx-auto max-w-content px-6 pb-24 pt-24 sm:pt-28">
@@ -40,31 +59,8 @@ const signature = 'indie since Jun 2026';
   <div class="flex items-center justify-between gap-6">
     <div class="min-w-0">
       <h1 class="display-xl">{translate('home.hero.name')}</h1>
-      <p class="mt-3 max-w-[26rem] text-sm leading-6 text-zinc-500 dark:text-zinc-400">
-        {translate('home.hero.bio')}
-      </p>
     </div>
-    <div class="flex shrink-0 items-center gap-1" aria-hidden="true">
-      {/* Signature note (DESIGN.md v3 §5.3): the site's one aside that points
-          at nothing but the Mac. English on both locales, ≤8 words, ink at
-          60% — never bamboo. Hidden where the hero has no room for it. */}
-      <div class="signature hidden md:flex">
-        <span class="hand-note">{signature}</span>
-        <svg
-          class="signature-arrow"
-          viewBox="0 0 64 36"
-          width="64"
-          height="36"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M2 24c8-14 20-19 34-14s20 8 26 12" />
-          <path d="M54 14l8 8-11 2" />
-        </svg>
-      </div>
+    <div class="shrink-0" aria-hidden="true">
       <img
         src="/images/home/mac-light.webp"
         alt=""
@@ -87,12 +83,35 @@ const signature = 'indie since Jun 2026';
     </div>
   </div>
 
+  <nav class="ann-nav" aria-label={translate('home.projects')}>
+    {
+      isZh ? (
+        <>
+          <p>我叫 Kieran，一个独立开发者，手上有几件 <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}>小产品</a>，也攒了一些关于 agentic 工程的 <a class="ann ann-sw ann-green" style="--ann-delay: 250ms" data-note={notes.writing} href={blogHref}>文章</a>。</p>
+          <p>出门总带着一台 <a class="ann ann-ne ann-amber" style="--ann-delay: 500ms" data-note={notes.photos} href={photosHref}>相机</a>，剩下的，在 <a class="ann ann-nw ann-purple" style="--ann-delay: 750ms" data-note={notes.about} href={aboutHref}>自我介绍</a> 里慢慢说。</p>
+        </>
+      ) : (
+        <>
+          <p>I'm Kieran, an indie developer with a few <a class="ann ann-se ann-blue" style="--ann-delay: 0ms" data-note={notes.projects} href={projectsHref}>small products</a> in the wild and some <a class="ann ann-sw ann-green" style="--ann-delay: 250ms" data-note={notes.writing} href={blogHref}>writing</a> on agentic engineering.</p>
+          <p>A <a class="ann ann-n ann-amber" style="--ann-delay: 500ms" data-note={notes.photos} href={photosHref}>camera</a> comes along whenever I leave the desk, and the rest is on the <a class="ann ann-nw ann-purple" style="--ann-delay: 750ms" data-note={notes.about} href={aboutHref}>about page</a>.</p>
+        </>
+      )
+    }
+  </nav>
+
   {/* Writing index, grouped by year */}
   <section class="mt-16">
     <h2 class="display-md">{translate('home.writing')}</h2>
     <div class="mt-5">
-      <PostIndex posts={posts} lang={lang} />
+      <PostIndex posts={homePosts} lang={lang} />
     </div>
+    {
+      hasMorePosts && (
+        <a href={blogHref} class="view-all focus-ring">
+          {translate('home.viewAll')} →
+        </a>
+      )
+    }
   </section>
 
   {/* Projects: objects on the desk (DESIGN.md v3 §5.1). The stage breaks out
@@ -111,20 +130,117 @@ const signature = 'indie since Jun 2026';
 </div>
 
 <style>
-  /* Signature: the note tilts like a pencil aside; the arrow reaches the Mac. */
-  .signature {
-    align-items: flex-start;
-    gap: 2px;
-    margin-right: -6px;
-    color: var(--color-ink-secondary);
+  /* The prose nav: two centred lines on the stage width. Line 1 carries its
+     labels above, line 2 below, so the lines stay together. Labels are
+     pseudo-elements that reserve no space: the block's margins hold the room.
+     Entrance (DESIGN.md §7): the four notes appear one after another, 200ms
+     each, arrow and label only; the words themselves never animate. */
+  .ann-nav {
+    margin: 4.75rem auto 4.5rem;
+    width: min(var(--container-stage), 100vw - 3rem);
+    margin-left: calc(50% - min(var(--container-stage), 100vw - 3rem) / 2);
+    text-align: center;
   }
-  .signature .hand-note {
-    transform: rotate(-4deg) translateY(-2px);
-    white-space: nowrap;
+  .ann-nav p {
+    margin: 0;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--color-ink);
   }
-  .signature-arrow {
-    flex-shrink: 0;
-    margin-top: 6px;
+  /* Entrance, after the neat-annotations demo: the mark swipes in, the arrow
+     draws itself from the label end toward the word, then the label fades.
+     One 0.9s sequence per note, staggered by --ann-delay. Marks drawn with a
+     background gradient so their width can animate; the library's ±0.3em
+     box-shadow extension is dropped on home for that. */
+  .ann-nav .ann {
+    --ann-clip-from: inset(0 100% 0 0);
+    background: linear-gradient(var(--ann-mark), var(--ann-mark)) left center / 0 100% no-repeat;
+    box-shadow: none;
+    animation: ann-mark-swipe 900ms linear both;
+    animation-delay: calc(300ms + var(--ann-delay, 0ms));
+  }
+  /* arrows that leave from the right-hand label draw right-to-left */
+  .ann-nav .ann-sw,
+  .ann-nav .ann-nw,
+  .ann-nav .ann-w {
+    --ann-clip-from: inset(0 0 0 100%);
+  }
+  .ann-nav .ann::before {
+    animation: ann-arrow-draw 900ms linear both;
+    animation-delay: calc(300ms + var(--ann-delay, 0ms));
+  }
+  .ann-nav .ann::after {
+    animation: ann-label-reveal 900ms linear both;
+    animation-delay: calc(300ms + var(--ann-delay, 0ms));
+  }
+  @keyframes ann-mark-swipe {
+    0% {
+      background-size: 0 100%;
+    }
+    22%,
+    100% {
+      background-size: 100% 100%;
+    }
+  }
+  @keyframes ann-arrow-draw {
+    0%,
+    24% {
+      clip-path: var(--ann-clip-from);
+      opacity: 0;
+    }
+    27% {
+      opacity: 0.9;
+    }
+    58%,
+    100% {
+      clip-path: inset(0);
+      opacity: 0.9;
+    }
+  }
+  @keyframes ann-label-reveal {
+    0%,
+    62% {
+      opacity: 0;
+    }
+    84%,
+    100% {
+      opacity: 0.9;
+    }
+  }
+  @media (max-width: 720px) {
+    .ann-nav {
+      margin: 2.5rem 0 0;
+      width: auto;
+      text-align: left;
+    }
+    .ann-nav .ann::before,
+    .ann-nav .ann::after {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ann-nav .ann,
+    .ann-nav .ann::before,
+    .ann-nav .ann::after {
+      animation: none;
+    }
+    .ann-nav .ann {
+      background-size: 100% 100%;
+    }
+  }
+
+  /* View-all: a list row's quiet sibling, in the wayfinding colour. */
+  .view-all {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.25rem 0;
+    font-size: 0.875rem;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .view-all:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .group:hover .post-title {
