@@ -10,7 +10,12 @@
   "categories": {
     "correctness": "error"
   },
-  "rules": {},
+  "rules": {
+    "react/refs": "off",
+    "react/set-state-in-effect": "off",
+    "react/purity": "off",
+    "react/immutability": "off"
+  },
   "env": {
     "builtin": true
   }
