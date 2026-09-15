@@ -65,7 +65,7 @@ Pi Package 是 Pi 的另一抽象，简单来说就是 extensions, skills, promp
 
 ## Pi Package 推荐
 
-截至 2026 年 5 月，[pi.dev/packages](https://pi.dev/packages) 已收录 **3,328+ 个包**。这里我推荐 10 个自己安装的。文末会给出我整理的 Awesome Pi 目录站供大家选择。
+截至 2026 年 5 月，[pi.dev/packages](https://pi.dev/packages) 已收录 **3,328+ 个包**。这里我推荐 10 个自己安装的。文末会给出我整理的 Pi Index 目录站供大家选择。
 
 1. **context-mode**：节省 98% 上下文窗口，提供沙箱代码执行、FTS5 知识库和意图驱动搜索，Pi 用户几乎必装。
 2. **pi-subagents**：子代理任务委派，支持链式调用、并行执行和 TUI 交互确认，让一个主代理调度多个子代理协作完成复杂任务。
@@ -78,15 +78,15 @@ Pi Package 是 Pi 的另一抽象，简单来说就是 extensions, skills, promp
 9. **@narumitw/pi-goal**：`/goal` 模式，保持代理工作直到任务完成。
 10. **@narumirw/statusline**：丰富的状态栏，显示模型、工具、git 分支、上下文使用、token 总计、费用和时间。
 
-## Awesome Pi
+## Pi Index
 
 如果你想继续探索更多 Pi Package，我做了一个持续更新的目录站，支持按分类浏览、中英文搜索，并可一键复制安装命令：
 
-<a class="site-card" href="https://awesome-pi-list.vercel.app/" target="_blank" rel="noopener noreferrer">
-  <img class="site-card-og" src="/images/cards/awesome-pi-list-og.webp" alt="Awesome Pi 网站预览图" width="1400" height="735" loading="lazy" />
+<a class="site-card" href="https://piindex.dev/" target="_blank" rel="noopener noreferrer">
+  <img class="site-card-og" src="/images/cards/piindex-og.webp" alt="Pi Index 网站预览图" width="1400" height="735" loading="lazy" />
   <span class="site-card-body">
-    <span class="site-card-site"><img class="site-card-favicon" src="/images/cards/awesome-pi-list-favicon.svg" alt="" width="16" height="16" loading="lazy" />awesome-pi-list.vercel.app</span>
-    <span class="site-card-title">Awesome Pi — A curated directory for Pi Coding Agent</span>
+    <span class="site-card-site"><img class="site-card-favicon" src="/images/cards/piindex-favicon.svg" alt="" width="16" height="16" loading="lazy" />piindex.dev</span>
+    <span class="site-card-title">Pi Index — A curated directory for Pi Coding Agent</span>
     <span class="site-card-description">社区包、主题与工具的精选目录，支持按分类浏览与中英文搜索，安装命令一键复制。</span>
   </span>
 </a>
